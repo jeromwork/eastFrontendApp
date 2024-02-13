@@ -1,7 +1,7 @@
 <template>
     <div class="white" style="height: 100%;">
         <MainPageSearch />
-        <PlateLinks />
+        <MainPagePlateLinks />
         <div class="main-container">
             <InstaSlider />
         </div>

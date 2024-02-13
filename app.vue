@@ -4,5 +4,10 @@
 </script>
 
 <template>
-    <NuxtPage/>
+    <NuxtLayout>
+        <v-app>
+
+        <NuxtPage />
+        </v-app>
+    </NuxtLayout>
 </template>

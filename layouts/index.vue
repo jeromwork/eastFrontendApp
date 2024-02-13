@@ -4,16 +4,7 @@
     <MobileMenu
       :menuToggle="menuToggle"
     />
-<!--    <a href="/srochnyj-test-na-covid-19" class="covid-banner text-semibold">-->
-<!--      <span>Тесты на COVID-19</span>-->
-<!--      <span class="icons forward-white"></span>-->
-<!--    </a>-->
     <div class="white-container">
-<!--      <a href="/srochnyj-test-na-covid-19" class="covid-banner text-semibold">-->
-<!--        <span>Тесты на COVID-19</span>-->
-<!--        <span class="icons forward-white"></span>-->
-
-<!--      </a>-->
       <div class="main-container">
         <Header
           :noMenu="true"
@@ -23,16 +14,16 @@
     <v-app>
       <Nuxt/>
     </v-app>
-    <Callback2/>
-    <BookingDialog
-      :dialog="dialog"
-      :doctor="doctor"
-      :clinic="clinic"
-      :day="day"
-      :slotUnix="slot"
-    ></BookingDialog>
-    <PageFooter/>
-    <OrganizationSchemaOrg/>
+<!--    <Callback2/>-->
+<!--    <BookingDialog-->
+<!--      :dialog="dialog"-->
+<!--      :doctor="doctor"-->
+<!--      :clinic="clinic"-->
+<!--      :day="day"-->
+<!--      :slotUnix="slot"-->
+<!--    ></BookingDialog>-->
+<!--    <PageFooter/>-->
+<!--    <OrganizationSchemaOrg/>-->
   </div>
 </template>
 
