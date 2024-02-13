@@ -1,0 +1,139 @@
+.rewiews {
+  &_wrap {
+    display: grid;
+    grid-template-columns: 4fr 2fr;
+    @media (max-width: $screen-md) {
+      grid-template-columns: 1fr;
+    }
+  }
+  &__header {
+    &__rate {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      border-bottom: 1px solid #f2f3f6;
+      padding-bottom: 12px;
+      & span {
+        font-size: 20px;
+        color: #FFB443;
+      }
+      & svg {
+        position: relative;
+        top: -1px;
+        margin-right: 4px;
+      }
+      &-count {
+        margin-left: 10px;
+      }
+    }
+  }
+  &__gallery {
+    margin: 12px 0;
+    &__container {
+      max-width: 370px;
+      & .v-slide-group__wrapper {
+        border-radius: 0;
+      }
+      & .v-slide-group__content {
+        gap: 0;
+      }
+      & .v-slide-group__next--disabled, & .v-slide-group__prev--disabled {
+        display: none;
+      }
+      & .v-slide-group__prev {
+        margin-right: 12px;
+        position: absolute;
+        left: 10px;
+        top: 29px;
+        z-index: 1;
+      }
+      & .v-slide-group__next {
+        margin-right: 12px;
+        right: -35px;
+        top: 29px;
+        z-index: 1;
+      }
+    }
+    &__item {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+      & img {
+        width: 100%;
+      }
+      &__video {
+        position: relative;
+        & .instaslider__covers__item__play-button {
+          top: 24px;
+          left: 24px;
+        }
+      }
+    }
+    &__navigation {
+      //
+    }
+  }
+
+  &__item {
+    border-bottom: 1px solid $fields-back-color;
+    padding: $margin-6 0;
+    &:last-child {
+      border-bottom: none;
+    }
+    &_rewiew {
+      &_header {
+
+        &_autor {
+          display: inline;
+        }
+        &_date {
+          margin-left: 8px;
+          font-size: 14px;
+          color: $text-secondary-color;
+          display: inline;
+        }
+        &_rate {
+          margin-top: 4px;
+          & svg {
+            margin-right: 5px;
+          }
+        }
+      }
+      &_body {
+        margin-top: $margin-4;
+      }
+    }
+
+    &_answer {
+      display: grid;
+      grid-template-areas: "photo name"
+                            "photo answer";
+      grid-template-rows: 32px auto;
+      column-gap: 8px;
+      &_photo {
+        grid-area: photo;
+        & .eastclinic {
+          width: 32px;
+          height: 32px;
+        }
+      }
+      &__doctor {
+        grid-area: name;
+      }
+      &_date {
+
+      }
+      &_answer_body {
+        grid-area: answer;
+      }
+      &_answer_comment {
+
+      }
+    }
+  }
+}

@@ -1,0 +1,307 @@
+
+.buttons {
+  width: 500px;
+  margin: 10px 0;
+}
+.theme--light.v-btn:hover::before {
+  opacity: 0 !important;
+}
+.theme--light.v-btn:hover {
+  background-color: $main-hover-back-color;
+}
+.theme--light.v-btn.disabled:hover {
+  background-color: $fields-back-color;
+}
+.button {
+  font-size: 16px !important;
+  border-radius: 15px !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  text-decoration: none;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  @include transition;
+  &:hover {
+    text-decoration: none;
+  }
+  &.wide {
+    min-width: 240px !important;
+  }
+  &.full-width {
+    width: 100%;
+    &-mobile {
+      width: 100%;
+      max-width: 450px;
+      @media (min-width: 768px) {
+        max-width: 228px;
+      }
+    }
+  }
+  &.search {
+    width: 120px;
+    box-sizing: border-box;
+    justify-content: center;
+    @media (max-width: $screen-md) {
+      width: 100%;
+    }
+  }
+  &.secondary-color {
+    background-color: $secondary-default-color !important;
+    color: $main-color !important;
+  }
+  &.contact {
+    min-width: 150px !important;
+    width: calc(50% - 30px);
+    @media (max-width: $screen-xxs) {
+      min-width: 80px;
+      width: calc(49% - 25px);
+    }
+    &.single.write {
+      width: calc(90% - 50px) !important;
+      @media (max-width: 550px) {
+        width: calc(90% - 60px) !important;
+      }
+      @media (max-width: 380px) {
+        width: calc(90% - 70px) !important;
+      }
+    }
+    &.single.call {
+      width: 44px !important;
+      min-width: 44px !important;
+    }
+  }
+  &.terracotta {
+    background-color: #e85032 !important;
+    color: #fff !important;
+  }
+  &.whatsapp {
+    background-color: $whatsapp-color;
+    width: 44px;
+    height: 44px;
+    border-radius: 50% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  & svg.right {
+    margin-right: 5px;
+  }
+  & svg.left {
+    margin-left: 5px;
+  }
+  &.large {
+    height: 55px !important;
+    min-width: 20px;
+    padding: 0 15px;
+  }
+  &.medium {
+    height: 44px !important;
+    min-width: 40px;
+    padding: 0 20px;
+  }
+  &.small {
+    height: 40px;
+    min-width: 40px;
+    padding: 0 20px;
+  }
+  &.xsmall {
+    height: 36px;
+    min-width: 36px;
+    padding: 0 15px;
+  }
+  &.rounded-42 {
+    border-radius: 42px !important;
+  }
+  &.rounded-15 {
+    border-radius: 15px !important;
+  }
+  &.primary  {
+    background-color: $main-color;
+    color: #fff;
+    &:hover {
+      @include shadow-1;
+      background-color: $main-hover-back-color;
+      color: $button-primary-text-color;
+    }
+    &:active {
+      background-color: $main-hover-back-color;
+      color: $button-primary-text-color;
+    }
+    &.disabled {
+      background-color: $disabled-color;
+      cursor: not-allowed;
+    }
+  }
+  &.gray-color {
+    background-color: #F2F3F6;
+  }
+  &.primary-outline {
+    background-color: transparent;
+    color: $main-color;
+    border: 1px solid $main-color;
+    &:hover {
+      @include shadow-1;
+      background-color: $main-hover-back-color;
+      color: $button-primary-text-color;
+    }
+    &:active {
+      background-color: $main-hover-back-color;
+      color: $button-primary-text-color;
+    }
+    &.disabled {
+      background-color: $disabled-color;
+      cursor: not-allowed;
+    }
+  }
+  &.secondary-b  {
+    color: $main-color !important;
+    border: 1px solid $main-color;
+    @include transition;
+    & svg path {
+      fill: #fff;
+    }
+    &:hover {
+      @include shadow-1;
+      background-color: $main-color !important;
+      color: #fff !important;
+      @include transition;
+    }
+    &:active {
+      background-color: $secondary-active-color;
+      color: $button-secondary-text-color;
+      @include border-transparent;
+    }
+    &.disabled {
+      background-color: $secondary-disabled-color;
+      color: $button-secondary-disable-text-color;
+      cursor: not-allowed;
+    }
+    &.disabled svg path {
+      fill: #92b6ff;
+    }
+    &.disabled:hover {
+      @include border-transparent;
+    }
+  }
+  &.secondary-l {
+    &:hover {
+      color: white;
+    }
+  }
+  &.disabled:hover {
+    box-shadow: none;
+  }
+  &.only-icon {
+    background-color: #e6eeff;
+    @include border-transparent;
+    @include transition;
+    & svg path {
+      fill: $main-color;
+    }
+    &:hover {
+      background-color: transparent;
+      border: 1px solid $main-color;
+    }
+    &:active {
+      background-color: $secondary-active-color;
+      @include border-transparent;
+    }
+  }
+  &.m-wide {
+    width: 250px;
+    @media (max-width: $screen-md) {
+      width: 150px;
+    }
+  }
+  &.h-wide {
+    width: 49%;
+    //@media (max-width: $screen-md) {
+    //  width: 49%;
+    //}
+  }
+  &.shadow-button {
+    @include shadow-button;
+  }
+  &.button__gallery {
+    cursor: pointer;
+    background: #fff;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50% !important;
+    box-shadow: 0 2px 12px rgba(42, 46, 53, 0.15);
+    & .icons {
+      width: 7px;
+      position: relative;
+      &.back {
+        right: 1px;
+      }
+      &.forward {
+        left: 2px;
+      }
+    }
+  }
+}
+.player-button {
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px 85px;
+  &.outline {
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff !important;
+  }
+  &:hover {
+    text-decoration: none;
+  }
+}
+.h-wide-blocks {
+  display: flex;
+  flex-direction: row;
+  gap: 2%;
+  //@media (max-width: 680px) {
+  //  & .button:last-child {
+  //    margin-top: 8px;
+  //  }
+  //}
+}
+.plate-button {
+  background-color: $fields-back-color;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  flex-shrink: 0;
+  border-radius: 10px;
+  max-width: 275px;
+  min-width: 130px;
+  padding: 16px;
+  min-height: 70px;
+  line-height: 1.2em;
+  @media (max-width: $screen-md) {
+    max-width: 550px;
+    width: 100%;
+  }
+  &:hover {
+    text-decoration: none !important;
+  }
+}
+.plate-block {
+  background-color: $fields-back-color;
+  display: flex;
+  width: 100%;
+}
+.plate-buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  @media (max-width: $screen-md) {
+    justify-content: center;
+  }
+}
+

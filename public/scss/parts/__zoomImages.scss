@@ -1,0 +1,34 @@
+.zoomed-image {
+  width: 100%;
+  object-fit: contain;
+  &__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & .v-window-item {
+      height: 89vh;
+    }
+    @media (max-width: $screen-md) {
+      background-color: rgba(33, 33, 33, .8);
+    }
+  }
+  & .v-skeleton-loader__image {
+    height: 1000px;
+  }
+  .v-image__image.v-image__image--cover {
+    background-size: contain !important;
+  }
+}
+.zoomed-video {
+  align-self: center;
+  margin: 0 auto;
+}
+.dialog__image {
+  box-shadow: none !important;
+  &.v-dialog--fullscreen {
+    position: relative !important;
+  }
+}
+.dialog__gallery .v-window-item {
+  display: flex;
+}

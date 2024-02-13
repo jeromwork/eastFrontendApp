@@ -1,0 +1,246 @@
+$input-height: 60px;
+
+.input {
+  & .v-input__slot {
+    background-color: $fields-back-color !important;
+    border: 1px solid $tooltips-color;
+    border-radius: 15px !important;
+    overflow: hidden;
+    position: relative;
+    height: $input-height;
+    vertical-align: top;
+    box-sizing: border-box;
+  }
+  &.error--text .v-input__slot{
+    border: 1px solid $error-color;
+  }
+  @include transition;
+  &.full-width {
+    width: 100%;
+  }
+  &__native {
+    border: none;
+    outline: none;
+    font-size: 20px;
+    line-height: 24px;
+    background-color: $fields-back-color;
+    width: 100%;
+    padding: 15px 20px;
+    z-index: 100;
+    @include transition;
+  }
+  &__native:focus {
+    padding: 24px 20px 5px;
+    @include transition;
+  }
+  &__label {
+    color: $input-placeholder-text-color;
+    position: absolute;
+    font-size: 14px;
+    top: 5px;
+    left: 20px;
+    opacity: 0;
+  }
+  &:focus-within &__label{
+    opacity: 1;
+    @include transition;
+  }
+  &__icon {
+    position: absolute;
+    right: 20px;
+    top: 16px;
+    z-index: 0;
+    @include transition;
+  }
+  &:focus-within &__icon{
+    transform: rotate(180deg);
+    @include transition;
+  }
+  &:focus-within .dropdown-panel{
+    display: inline-flex;
+    opacity: 1;
+    @include transition;
+  }
+  &.half-width {
+    width: 423px;
+  }
+  @media all and (max-width: 991px) {
+    margin-bottom: 10px;
+  }
+}
+.search-input {
+  .main-page & {
+    max-width: 485px !important;
+    @media (max-width: $screen-md) {
+      max-width: 680px !important;
+    }
+  }
+  width: 100%;
+  @media (max-width: $screen-md) {
+    max-width: 900px !important;
+  }
+  & .v-input__slot {
+    background-color: #fff !important;
+    border-bottom: 2px solid $main-color !important;
+    border-top: 2px solid $main-color !important;
+
+    overflow: hidden;
+    position: relative;
+    height: $input-height !important;
+
+  }
+  &.left .v-input__slot{
+    border-radius: 15px 0 0 15px !important;
+    border-left: 2px solid $main-color;
+    border-right: 1px solid $tooltips-color;
+    @media (max-width: $screen-md) {
+      border-right: 2px solid $main-color;
+      border-radius: 15px !important;
+      margin-bottom: 10px !important;
+    }
+  }
+  &.right .v-input__slot{
+    border-radius: 0 15px 15px 0 !important;
+    border-right: 2px solid $main-color;
+    @media (max-width: $screen-md) {
+      border-left: 2px solid $main-color;
+      border-radius: 15px !important;
+      margin-bottom: $margin-4 !important;
+    }
+  }
+  //.mobile & .v-input__slot {
+  //  border: none;
+  //  background-color: $fields-back-color !important;
+  //  height: 47px;
+  //}
+  &__search {
+    width: 17px;
+    height: 17px;
+    transform: translateY(2px);
+  }
+  & .v-input__prepend-inner {
+    padding-right: 10px !important;
+  }
+  & .v-text-field--outlined .v-label {
+    top: 17px;
+  }
+  & .v-text-field--enclosed .v-input__prepend-inner {
+    margin-top: 17px;
+  }
+}
+.fake-search-input {
+  background-color: #fff !important;
+  border-bottom: 2px solid $main-color;
+  border-top: 2px solid $main-color;
+
+  overflow: hidden;
+  position: relative;
+  height: $input-height;
+  width: 100%;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  max-width: 485px !important;
+  @media (max-width: $screen-md) {
+    max-width: 900px !important;
+  }
+
+  &.right {
+    border-radius: 0 15px 15px 0 !important;
+    border-right: 2px solid $main-color;
+    @media (max-width: $screen-md) {
+      border-left: 2px solid $main-color;
+      border-radius: 15px !important;
+      margin-bottom: $margin-4 !important;
+    }
+  }
+  &.mobile.active {
+    border: none;
+  }
+  &__prepend {
+    width: 20px;
+    margin-right: 7px;
+  }
+  &.mobile.active &__prepend {
+    display: none;
+  }
+  &__input {
+    flex: 1;
+    text-align: left;
+    transition: .12s;
+  }
+  &.mobile.active &__input {
+    text-align: center;
+    font-size: 16px;
+    transform: translateY(2px);
+  }
+  &.active &__input{
+    color: $main-color;
+    transition: .12s;
+  }
+  &.active &__input.no-focus{
+    color: $text-main-color;
+    transition: .12s;
+  }
+  &__append {
+    @include transition;
+  }
+  &.active &__append {
+    transform: rotate(180deg);
+    @include transition;
+  }
+  &.mobile.active &__append {
+    display: none;
+  }
+}
+.checkbox {
+  display: flex;
+  align-items: center;
+  & .v-input--selection-controls__input {
+    align-items: center;
+    border-radius: 4px;
+  }
+  &__label {
+
+  }
+}
+// vuetify
+.booking__dialog__item .v-text-field--outlined .v-label {
+  top: 20px !important;
+}
+.v-file-input .v-input__prepend-outer {
+  display: none;
+}
+.v-input__slot {
+    background-color: $fields-back-color !important;
+    border: 1px solid $tooltips-color;
+    border-radius: 15px !important;
+    overflow: hidden;
+    position: relative;
+    height: $input-height;
+    vertical-align: top;
+    box-sizing: border-box;
+  }
+.checkbox .v-input__slot {
+  background-color: transparent !important;
+  border: none;
+  border-radius: inherit !important;
+}
+.v-input .v-label--active {
+  transform: translateY(-14px) scale(0.75) !important;
+}
+.v-input input {
+  transform: translateY(9px);
+}
+.back-call__input input {
+  transform: translateY(0);
+}
+.v-select__selections input {
+  transform: translateY(0px);
+}
+.v-text-field--outlined > .v-input__control > .v-input__slot {
+  min-height: 60px !important;
+}
+.booking__dialog__item .v-select__selections {
+  transform: translateY(8px);
+}

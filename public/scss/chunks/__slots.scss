@@ -1,0 +1,211 @@
+
+.slots {
+  max-width: 334px;
+  &__header {
+    font-size: 12px;
+    @media (max-width: $b-screen-lg) {
+      font-size: 12px;
+    }
+  }
+  &__clinic-changer_metro-noclick {
+    padding: 11px 15px;
+  }
+  &__clinic-changer {
+    background-color: $fields-back-color;
+    //width: 335px;
+    //min-height: 35px;
+    //padding: 0 15px;
+    align-items: center;
+    border-radius: 10px;
+    margin-top: $margin-2;
+    box-sizing: border-box;
+
+    @media (max-width: $screen-xxs) {
+      //width: 100%;
+      //min-width: 300px;
+    }
+    &_current-clinic {
+      position: relative;
+    }
+
+    &_dropdown-input {
+      display: grid;
+      grid-template-columns: auto 30px;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      padding: 11px 15px;
+    }
+    &_onthemap {
+      position: absolute;
+      top: 0;
+      right: 0;
+      & svg {
+        position: relative;
+        top: 2px;
+      }
+    }
+    &_clinic-info {
+      margin: $margin-2 0 $margin-4;
+      &_link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        line-height: 1em;
+      }
+      &_name {
+        font-size: 12px;
+      }
+      &_addr {
+        font-size: 12px;
+        color: $main-color !important;
+        text-decoration: underline;
+      }
+    }
+  }
+  &__calendar {
+    margin: $margin-6 0 $margin-4;
+    &_wrapper {
+
+    }
+    &_carousel {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+      &_nav {
+        &_right, &_left {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+        }
+      }
+      &_slide {
+        width: 320px;
+        margin: 0 auto;
+        @media (max-width: $screen-xxxs) {
+          width: 100%;
+        }
+      }
+    }
+    &__divider {
+      position: absolute;
+      width: 1px;
+      height: 50px;
+      left: -8px;
+      background-color: $text-secondary-color;
+    }
+    &__month {
+      position:absolute;
+      transform: translate(-7px, -40px);
+      display: block;
+      font-size: 12px;
+      text-transform: capitalize
+    }
+    &_weekdays {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      justify-content: center;
+
+      &_day {
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 58px;
+        border-radius: 19px;
+        position: relative;
+        &:not(:last-child) {
+          margin-right: 15px;
+        }
+        &_metro {
+          position: absolute;
+          top: -6px;
+          left: 1px;
+        }
+        &-name {
+          font-size: 14px;
+        }
+        @media (max-width: $screen-xxs) {
+          width: 36px;
+        }
+        &:hover {
+          background-color: $fields-back-color;
+        }
+        &-number {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        &.active &-number{
+          color: #fff;
+        }
+        &.active &-name{
+          color: #fff;
+        }
+        &.active {
+          background-color: $main-color;
+        }
+        &.disable {
+          &:hover {
+            background-color: transparent;
+          }
+          cursor: not-allowed;
+        }
+        &.disable &-number{
+          background-color: transparent;
+        }
+        &.disable span {
+          color: $black-10;
+        }
+      }
+    }
+  }
+  &__timeslots-wrapper {
+    display: grid;
+    justify-content: start;
+    gap: 9px;
+    grid-template-columns: repeat(5, 1fr);
+    @media (max-width: 340px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  &_item {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    box-sizing: border-box;
+    min-width: 59px !important;
+    user-select: none;
+    column-count: 2;
+    @media (max-width: $screen-xxs) {
+      min-width: 40px !important;
+    }
+  }
+  &__resting {
+    margin: $margin-4 0;
+    display: grid;
+    grid-template-columns: 45px auto;
+    align-items: center;
+  }
+  &__message {
+    &__wrapper {
+      padding: $margin-4;
+      background-color: $fields-back-color;
+      border-radius: 10px;
+      @media (max-width: $screen-md) {
+        font-size: 14px;
+      }
+    }
+
+  }
+}

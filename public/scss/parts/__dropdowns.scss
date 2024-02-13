@@ -1,0 +1,244 @@
+.dropdown-wrapper {
+  position: relative;
+  display: inline-flex;
+  vertical-align: top;
+  @media (max-width: 992px) {
+    width: 100%;
+    max-width: 700px;
+  }
+
+}
+
+.dropdown-panel {
+  position: absolute;
+  left: 0;
+  top: $input-height + 5px;
+  width: 100%;
+  text-align: left;
+  background-color: #fff;
+  //padding: 5px 14px 14px;
+  border-radius: 10px;
+  z-index: 10;
+  max-height: 280px;
+  overflow-y: scroll;
+  @include shadow-4;
+
+  &__items-list__header {
+    font-size: 16px;
+    line-height: 16px;
+    padding: 11px 18px 12px;
+    width: 100%;
+    color: $black-20;
+    border-bottom: 1px solid $main-back;
+  }
+  &__items-list__item {
+    text-align: left;
+    //display: flex;
+    //justify-content: space-between;
+    font-size: 16px;
+    line-height: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    //height: 100%;
+    padding: 13px 10px;
+    border-radius: 10px;
+    &.doctor {
+      justify-content: left;
+      gap: 8px;
+      align-items: center;
+      padding: 5px 10px;
+    }
+    &.clinic {
+      justify-content: left;
+      align-items: center;
+      gap: 4px;
+      & .metro-label {
+        top: 0
+      }
+    }
+    &_img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+    }
+    &_new {
+      float: right;
+      color: white;
+      background-color: $secondary-color;
+      padding: 0 10px;
+      border-radius: 10px;
+      font-size: 12px;
+    }
+    &:hover {
+      background-color: $main-nav-hover-back-color !important;
+    }
+    &.active {
+      background-color: $main-nav-hover-back-color !important;
+    }
+    &.no-hover {
+      padding: 13px 0;
+    }
+    &:hover.no-hover {
+      background-color: transparent !important;
+      padding: 13px 0;
+    }
+  }
+  &__items-list__online-item {
+    background-color: $fields-back-color;
+    padding: 8px;
+    border-radius: 10px;
+    display: flex;
+    margin-top: $margin-2;
+    &__icon {
+      width: 40px;
+      height: 40px;
+      margin-right: $margin-3;
+      border-radius: 10px;
+      background-image: url('https://eastclinic.ru/assets/images/online-doctors-menu.jpg');
+    }
+    &__text {
+      text-align: left;
+      flex: 1;
+      &_desc {
+        font-size: 14px;
+      }
+    }
+    &__forward {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 14px;
+    }
+  }
+  &__items-list__not-found {
+    text-align: center;
+    padding: 20px 0;
+    & .smiles {
+      width: 80px;
+      height: 80px;
+    }
+  }
+}
+.mobile-menu {
+  &__dropdown {
+    padding-left: 10px;
+    height: fit-content;
+    &_icon {
+      width: 12px !important;
+      top: 1px !important;
+    }
+  }
+  &__header {
+    height: 70px;
+    display: grid;
+    align-items: center;
+    padding: 10px;
+  }
+  &__divider {
+    width: 232px;
+    margin: 15px auto;
+  }
+  &__contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    &__item {
+      &_phone {
+        display: flex;
+        flex-direction: column;
+        //display: grid;
+        //grid-template-columns: 35px auto;
+        //grid-template-areas: "phone-icon phone"
+        //                      "phone-icon hours";
+        margin-right: 8px;
+        & svg {
+          grid-area: phone-icon;
+          justify-self: left;
+        }
+        & .phone {
+          grid-area: phone;
+          font-size: 16px;
+          color: $text-main-color;
+        }
+        & .hours {
+          grid-area: hours;
+        }
+      }
+      &_whatsapp {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        &_icon {
+          position: relative;
+          left: 3px;
+        }
+      }
+    }
+  }
+}
+//vuetify
+.v-navigation-drawer__content {
+  padding: 0 16px;
+}
+.v-list-item--link {
+  border-radius: 10px;
+}
+.v-select-list {
+  padding-left: 8px !important;
+}
+.v-list-item--link:before {
+  background-color: transparent !important;
+}
+.v-menu__content, .scroll {
+  &::-webkit-scrollbar {
+    width: 15px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #fff;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $tooltips-color;
+    background-clip: content-box;
+    border: 5px solid transparent;
+    border-radius: 20px;
+  }
+  scrollbar-width: thin;
+  scrollbar-color: $tooltips-color #fff;
+}
+.v-input {
+  //width: 423px;
+  //@media (max-width: 992px){
+  //  width: auto;
+  //  max-width: 423px;
+  //  min-width: 300px;
+  //}
+}
+.v-autocomplete__content.v-menu__content {
+  border-radius: 0 0 10px 10px !important;
+}
+.v-input--is-focused .v-input__append-inner svg{
+  transform: rotate(180deg);
+  @include transition;
+}
+.v-input__append-inner svg {
+  @include transition;
+  position: relative;
+  top: 7px;
+}
+.v-select-list {
+  @include text-semibold;
+  padding-bottom: 10px !important;
+}
+.v-list-item {
+  &__title {
+    cursor: pointer;
+    padding: 8px 16px;
+    @include transition;
+    font-size: 16px;
+    //&:hover {
+    //  background-color: $dropdown-bg-hover !important;
+    //  color: $primary-default-color;
+    //}
+  }
+}

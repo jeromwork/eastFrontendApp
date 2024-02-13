@@ -1,0 +1,281 @@
+$font-name: 'Roboto Flex';
+
+$text-small: 12px;
+$text-medium: 14px;
+$text-regular: 16px;
+$text-large: 18px;
+$text-xlarge: 20px;
+
+$header-sizes: (
+  h1: 28px,
+  h2: 24px,
+  h3: 20px,
+  h4: 18px
+);
+$header-mobile-sizes: (
+  h1: 24px,
+  h2: 20px,
+  h3: 18px,
+  h4: 16px
+);
+
+$text-black: (
+  text-black-5: $black-5,
+  text-black-10: $black-10,
+  text-black-20: $black-20,
+  text-black-40: $black-40,
+);
+$text-sizes: (
+  text-small: $text-small,
+  text-medium: $text-medium,
+  text-regular: $text-regular,
+  text-large: $text-large,
+  text-xlarge: $text-xlarge
+);
+
+$margin-1: 4px;
+$margin-2: 8px;
+$margin-3: 12px;
+$margin-4: 16px;
+$margin-5: 20px;
+$margin-6: 24px;
+$margin-8: 32px;
+$margin-10: 40px;
+$margin-14: 56px;
+$margin-16: 64px;
+$margin-18: 72px;
+$margin-22: 88px;
+$margins: (
+  1: $margin-1,
+  2: $margin-2,
+  3: $margin-3,
+  4: $margin-4,
+  5: $margin-5,
+  6: $margin-6,
+  8: $margin-8,
+  10: $margin-10,
+  14: $margin-14,
+  16: $margin-16,
+  18: $margin-18,
+  22: $margin-22)
+;
+@font-face {
+  font-family: 'Roboto Flex';
+  src: url("/assets/fonts/Roboto/Roboto-Flex.woff2") format("woff2-variations"),
+  url('/assets/fonts/Roboto/Roboto-Flex.woff2') format("woff2 supports variations");
+  font-weight: 400 700;
+}
+//@font-face {
+//  font-family: $font-name + ' Light';
+//  font-display: swap;
+//  src: url("../fonts/"+ $font-name +"-Light.woff2") format("woff2"),
+//  url("../fonts/"+ $font-name +"-Light.woff") format("woff"),
+//  url("../fonts/"+ $font-name +"-Light.ttf") format("ttf");
+//}
+//@font-face {
+//  font-family: $font-name;
+//  font-display: swap;
+//  src: url("../fonts/"+ $font-name +"-Regular.woff2") format("woff2"),
+//  url("../fonts/"+ $font-name +"-Regular.woff") format("woff"),
+//  url("../fonts/"+ $font-name +"-Regular.ttf") format("ttf");
+//}
+//@font-face {
+//  font-family: $font-name + ' Bold';
+//  font-display: swap;
+//  src: url("../fonts/"+ $font-name +"-Bold.woff2") format("woff2"),
+//  url("../fonts/"+ $font-name +"-Bold.woff") format("woff"),
+//  url("../fonts/"+ $font-name +"-Bold.ttf") format("ttf");
+//}
+//@font-face {
+//  font-family: $font-name + ' SemiBold';
+//  font-display: swap;
+//  src: url("../fonts/"+ $font-name +"-Medium.woff2") format("woff2"),
+//  url("../fonts/"+ $font-name +"-Medium.woff") format("woff"),
+//  url("../fonts/"+ $font-name +"-Medium.ttf") format("ttf");
+//}
+body {
+  font-family: 'Roboto Flex', sans-serif;
+  font-weight: 400;
+}
+b, strong {
+  @include text-bold;
+}
+.white-container {
+  background-color: #fff;
+}
+.text-light {
+  @include text-light;
+}
+.text-bold {
+  @include text-bold;
+}
+.text-semibold {
+  @include text-semibold;
+}
+
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.text-secondary {
+  color: $text-secondary-color !important;
+}
+.text-blue {
+  color: $text-blue-color;
+}
+.text-green {
+  color: $green-color;
+}
+.annotation {
+  color: $text-secondary-color;
+  & a {
+    text-decoration: underline;
+    color: $text-secondary-color !important;
+  }
+  font-size: 14px;
+}
+.font-12 {
+  font-size: 12px;
+}
+.font-14 {
+  font-size: 14px;
+}
+.font-18 {
+  font-size: 18px;
+}
+.secondary-text {
+  color: $text-gray-color;
+}
+hr {
+  border: solid $fields-back-color;
+  border-width: 0 0 1px 0;
+}
+.mobilebr {
+  display: block;
+  @media (max-width: $screen-xss) {
+    display: inline;
+  }
+}
+.grid {
+  display: grid;
+}
+.layout-enter-active,
+.layout-leave-active {
+  transition: all 0.1s;
+}
+.layout-enter-from,
+.layout-leave-to {
+  opacity: 0;
+}
+@each $header, $size in $header-sizes {
+  #{$header} {
+    font-size: $size;
+    @include text-bold;
+  }
+}
+@each $header, $size in $header-sizes {
+  .header-#{$header} {
+    font-size: $size;
+    @include text-bold;
+  }
+}
+@media (max-width: $screen-md) {
+  @each $header, $size in $header-mobile-sizes {
+    #{$header} {
+      font-size: $size;
+      @include text-bold;
+    }
+  }
+}
+@each $text, $color in $text-black {
+  .#{$text} {
+    color: $color;
+  }
+}
+@each $text, $size in $text-sizes {
+  .#{$text} {
+    font-size: $size;
+  }
+}
+@each $i, $margin in $margins {
+  .#{'margin-bottom-'+$i} {
+    margin-bottom: $margin;
+  }
+}
+@each $i, $margin in $margins {
+  .#{'margin-top-'+$i} {
+    margin-top: $margin;
+  }
+}
+@each $i, $margin in $margins {
+  .#{'margin-'+$i} {
+    margin: $margin;
+  }
+}
+@each $i, $margin in $margins {
+  .#{'margin-right-'+$i} {
+    margin-right: $margin;
+  }
+}
+@each $i, $margin in $margins {
+  .#{'margin-left-'+$i} {
+    margin-left: $margin;
+  }
+}
+.main-h1 {
+  font-size: 28px;
+  line-height: 28px;
+  //letter-spacing: -1px;
+  @media (max-width: $screen-md) {
+    font-size: 24px;
+    line-height: 24px;
+  }
+  &.catalog-header {
+    margin-bottom: $margin-6;
+  }
+}
+.pointer {
+  cursor: pointer;
+}
+.relative {
+  position: relative;
+}
+.no-underline:hover {
+  text-decoration: none;
+}
+a {
+  color: $text-main-color !important;
+  text-decoration: none;
+  &.primary-link {
+    padding: 5px 16px 7px;
+    border-radius: 15px;
+    &:active {
+      background: $main-nav-hover-back-color;
+      text-decoration: none;
+    }
+    &:hover {
+      background: $main-nav-hover-back-color;
+      text-decoration: none;
+    }
+  }
+  &.link-contrast, &.link-contrast:visited {
+    color: $text-main-color;
+  }
+  @include transition;
+  &:visited {
+    color: $text-main-color;
+  }
+  // off??
+  //&:active {
+  //  background: none;
+  //}
+  &:hover {
+    //background: none;
+    text-decoration: underline;
+  }
+  &.no-hover:hover {
+    background: none;
+  }
+}

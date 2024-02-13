@@ -1,0 +1,221 @@
+.f-right {
+    float: right;
+}
+.f-left {
+    float: left;
+}
+.main-color {
+  color: $main-color !important;
+}
+.white-background {
+  background-color: #fff;
+}
+.line-height-1 {
+  line-height: 1em;
+}
+.v-application {
+  font-weight: 400;
+}
+.flex-wrapper {
+    display: flex;
+    &.f-row {
+        flex-direction: row;
+    }
+    &.center {
+        align-items: center;
+      &.center {
+        justify-content: center;
+      }
+      &.left {
+        justify-content: left;
+      }
+      &.right {
+        justify-content: right;
+        justify-content: flex-end;
+      }
+    }
+    &.baseline {
+        align-items: baseline;
+    }
+    &.between {
+        justify-content: space-between;
+    }
+}
+.line-through {
+  text-decoration: line-through;
+}
+.no-wrap {
+  white-space: nowrap;
+}
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  &.gap-8 {
+    gap: 8px;
+  }
+}
+.flex-inline-container {
+  display: inline-flex;
+}
+.text-color-main {
+  color: $text-main-color !important;
+}
+.text-color-grey {
+  color:  $text-secondary-color !important;
+}
+.nuxt-progress {
+  background: rgb(46,36,221);
+  background: linear-gradient(90deg, rgba(46,36,221,1) 0%, rgba(101,137,233,1) 29%, rgba(67,114,234,1) 86%);
+  height: 4px;
+}
+.white-circle {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 50%;
+  filter: drop-shadow(0px 0px 10px rgba(23, 30, 54, 0.25));
+}
+.scroll-container {
+  display: flex;
+  overflow-x: hidden;
+  overflow-y: visible;
+  & .scrolling-block {
+    overflow-x: auto;
+    overflow-y: visible;
+    &.scroll-enable {
+      overflow-x: scroll;
+    }
+  }
+}
+.booking__dialog__item_row .v-input__slot {
+  height: auto;
+}
+.booking__dialog__item_row .v-messages {
+  min-height: 0;
+}
+.round-block-80 {
+  width: 80px;
+  height: 80px;
+  border-radius: 80px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.playbutton-back {
+  position: absolute;
+  border-radius: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  background-color: rgba(0, 0, 0, 0.50);
+}
+.no-overflow {
+  overflow: hidden;
+  position: relative;
+}
+@media (max-width: $screen-md) {
+  .hidden-md {
+    display: none;
+  }
+}
+@media (max-width: $b-screen-md) {
+  .hidden-lg {
+    display: none !important;
+  }
+}
+.v-application--wrap {
+  min-height: auto !important;
+}
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ellipsis div {
+  position: absolute;
+  top: 33px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #fff;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: 8px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: 8px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: 32px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: 56px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.12s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+.v-expansion-panel-header {
+  border-radius: 15px !important;
+  background-color: $fields-back-color;
+  margin-bottom: $margin-4;
+}
+.v-expansion-panel--active > .v-expansion-panel-header {
+  min-height: 48px !important;
+}
+.v-expansion-panel--active:not(:first-child), .v-expansion-panel--active + .v-expansion-panel {
+  margin-top: 0;
+}
+.v-expansion-panel--active:not(:first-child), .v-expansion-panel--active + .v-expansion-panel {
+  margin-top: 0 !important;
+}
+.v-expansion-panel-content__wrap {
+  padding: 0 16px 8px !important;
+}
+.v-expansion-panel--active {
+  & .icons {
+    transform: rotate(180deg);
+    transition: .3s;
+  }
+}

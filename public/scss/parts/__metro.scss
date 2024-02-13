@@ -1,0 +1,57 @@
+$metro-colors: (
+  m1: #ee2d24,
+  m-universitet: #ee2d24,
+  //m2: #029a55,
+  //m-sokol: #029a55,
+  m2: #58ba36,
+  m-sokol: #58ba36,
+  m3: #0078bf,
+  m4: #19c1f3,
+  m5: #894e35,
+  //m6: #3399cc,
+  //m6a: #ff3366,
+  //m6b: #F48335,
+  m6: #F48335,
+  m-belyaevo: #F48335,
+  m7: #8F479D,
+  m-lyubercy: #8F479D,
+  m8: #ffcb31,
+  m9: #798ea2,
+  m-chertanovskaya: #798ea2,
+  m10: #b3d445,
+  m11: #79cdcd,
+  m12: #acbfe1,
+  m14: #ffa8af,
+  mck: #ffa8af,
+  mcd2: #df477c,
+  mlyb: #8F479D,
+  mmyt: #3399cc,
+  m-mytishchi: #3399cc,
+  mkor: #ff3366,
+  m-korolev: #ff3366,
+  modin: #f6a600,
+  m-odintsovo: #f6a600,
+  md1: #f6a600,
+);
+
+.metro-label {
+  width: 8px;
+  height: 8px;
+  display: inline-grid;
+  border-radius: 10px;
+  position: relative;
+  top: -1px;
+  line-height: 12px;
+  font-size: 15px;
+  color: #fff;
+  user-select: none;
+  text-align: center;
+  @each $metro, $color in $metro-colors {
+    &.#{$metro} {
+      background-color: $color;
+      @if $metro == 'mlyb' or $metro == 'mmyt' or $metro == 'mkor' or $metro == 'modin' {
+        color: $color;
+      }
+    }
+  }
+}

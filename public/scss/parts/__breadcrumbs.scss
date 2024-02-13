@@ -1,0 +1,23 @@
+.breadcrumbs {
+  & * {
+    display: inline;
+  }
+  & :not(:last-child) {
+    margin-right: $margin-1;
+  }
+  font-size: 14px;
+  color: $text-secondary-color !important;
+  gap: 10px;
+  margin-bottom: $margin-4;
+  @media (max-width: $screen-md) {
+    margin-bottom: $margin-3;
+  }
+  &__item {
+    & a {
+      color: $text-secondary-color !important;
+    }
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+}

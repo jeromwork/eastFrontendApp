@@ -1,0 +1,41 @@
+.back-call {
+  border: 1px solid $fields-back-color;
+  padding: 24px;
+  border-radius: 30px;
+  &__row {
+    gap: 12px;
+  }
+  &__header {
+    font-size: 24px;
+    line-height: 30px;
+    margin-bottom: 12px;
+    @media (max-width: $screen-md) {
+      font-size: 20px;
+    }
+  }
+  &__form {
+    display: flex;
+    max-width: 455px;
+    margin: 0 auto;
+    gap: 10px;
+    @media (max-width: $screen-md) {
+      margin: 24px 0 0 0;
+    }
+    &__wrapper {
+      text-align: center;
+      @media (max-width: $screen-md) {
+        text-align: left;
+      }
+    }
+  }
+  &__button {
+    width: 56px;
+  }
+  &__annotation {
+    margin-top: 4px;
+    @media (max-width: $screen-md) {
+      max-width: 80%;
+    }
+
+  }
+}

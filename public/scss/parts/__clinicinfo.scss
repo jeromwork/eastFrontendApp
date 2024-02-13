@@ -1,0 +1,235 @@
+.clinic-info {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-areas: "clinic-info-header clinic-info-gallery"
+                        "clinic-info-details clinic-info-gallery";
+  @media (max-width: $b-screen-md) {
+    grid-template-columns: 100%;
+    grid-template-areas: "clinic-info-header"
+                         "clinic-info-gallery"
+                        "clinic-info-details";
+  }
+  @media (max-width: $screen-xs) {
+    padding: 0 5px;
+  }
+  & .v-slide-group__wrapper {
+    border-radius: 10px;
+  }
+  & .v-slide-group__content {
+    grid-gap: 0;
+  }
+  & .v-slide-group__prev--disabled {
+    display: none;
+  }
+  & .v-slide-group__next {
+    right: -16px;
+    background-color: white;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
+
+    & .icons {
+      position: relative;
+      right: -1px;
+      width: 6px;
+      height: 12px;
+    }
+  }
+  & .v-slide-group__prev {
+    left: -14px;
+    background-color: white;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    z-index: 1;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
+    & .icons {
+      position: relative;
+      right: 1px;
+      width: 6px;
+      height: 12px;
+
+    }
+  }
+  &__address {
+    grid-area: clinic-info-header;
+  }
+  &__details {
+    grid-area: clinic-info-details;
+    grid-auto-flow: column;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    margin-top: 5px;
+    @media (max-width: $screen-md) {
+      display: block;
+      margin-top: 5px;
+    }
+    &_item {
+      & .icons {
+        margin-right: 7px;
+      }
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: $margin-2;
+      @media (max-width: $b-screen-md) {
+        margin-bottom: $margin-4;
+      }
+    }
+  }
+  &__adress {
+    margin: 16px 0;
+  }
+  &__gallery {
+    grid-area: clinic-info-gallery;
+    @media (max-width: $b-screen-md) {
+      margin-top: 8px;
+    }
+    &__photos-wrapper {
+      display: flex;
+    }
+    &__map-button {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+    }
+    &__photo-item {
+      width: 210px;
+      height: 140px;
+      border-radius: 15px;
+      overflow: hidden;
+      cursor: pointer;
+      @media (max-width: $b-screen-lg) {
+        width: 140px;
+        height: 120px;
+      }
+      &:not(:last-child) {
+        margin-right: 4px;
+      }
+      & img {
+        width: 100%;
+        @media (max-width: $b-screen-lg) {
+          width: 130%;
+        }
+      }
+    }
+    & .v-card__actions {
+      padding: 0 !important;
+    }
+  }
+  &__button {
+    @media (max-width: $screen-md) {
+      width: calc(100% - 94px) !important;
+    }
+  }
+  &__way-cover-image {
+    position: relative;
+    top: 10px;
+  }
+}
+.way-block {
+  width: 100px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+.clinic-awards {
+  &__item {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    background-color: $fields-back-color;
+    height: 55px;
+    padding: 0 16px 0 10px;
+    min-width: 175px;
+    border-radius: 55px;
+    flex-direction: row;
+    &:not(:last-child) {
+      margin-right: 8px;
+    }
+  }
+  &__logo {
+    display: flex;
+    justify-content: center;
+  }
+  &__text {
+    margin-left: 8px;
+    line-height: 1.2em;
+  }
+}
+.zoom-gallery {
+  @media (max-width: $screen-md) {
+    display: flex;
+    align-items: center;
+  }
+  &__wrapper {
+    background-color: transparent !important;
+    display: flex;
+    align-items: center;
+    @media (max-width: $screen-md) {
+      background-color: rgba(0,0,0,.4);
+    }
+  }
+  &__close-button {
+    display: none !important;
+    @media (max-width: $screen-md) {
+      display: inline !important;
+      position: absolute !important;
+      filter: brightness(100);
+      top: 10px;
+      right: 11px;
+      z-index: 100;
+    }
+  }
+  @media (max-width: $screen-md) {
+
+  }
+  &.v-dialog {
+    box-shadow: none;
+    @media (max-width: $screen-md) {
+      background: rgba(0,0,0,.4);
+      margin: 0;
+      border-radius: 0;
+    }
+
+  }
+  &__images-wrap {
+
+  }
+  &__main-photo {
+    display: flex;
+    height: 100%;
+    background-color: #ffffff78;
+    & img {
+      width: 100%;
+    }
+  }
+  & .v-window__container {
+    @media (max-width: $screen-md) {
+      border-radius: 0;
+    }
+  }
+  & .doctor__top__gallery__back_arrow, & .doctor__top__gallery__next_arrow {
+    @media (max-width: $screen-md) {
+      width: 24px;
+      height: 24px;
+      & .icons {
+        height: 10px;
+      }
+    }
+
+  }
+
+  @media (max-width: $screen-sm) {
+    & .doctor__top__gallery__back_arrow {
+      left: 3px;
+    }
+    & .doctor__top__gallery__next_arrow {
+      right: 3px;
+    }
+  }
+
+}

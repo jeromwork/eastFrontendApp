@@ -1,0 +1,20 @@
+// Ref: https://github.com/nuxt-community/vuetify-module#customvariables
+//
+// The variables you want to modify
+$body-font-family: 'Roboto Flex', sans-serif;
+$text-field-border-radius: 15px;
+
+$text-field-outlined-fieldset-border: none;
+$text-field-outlined-fieldset-border-width: 0px;
+
+$list-padding: 0;
+$list-item-padding: 0;
+$list-item-min-height: 15px;
+
+$main-gradient: linear-gradient(247.17deg, rgba(244, 239, 235, 0.5) -4.3%, #F7F7F9 92.11%);
+$material-light: (
+  'background': $main-gradient
+);
+$menu-content-border-radius: 0 0 5px 5px;
+
+$dialog-border-radius: 30px;

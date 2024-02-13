@@ -1,0 +1,163 @@
+$padding: 40px;
+$mobile-padding: 20px;
+.modal-card-title {
+  font-size: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @media (max-width: $screen-md) {
+    padding: 15px 12px 0 ;
+  }
+    //padding: 28px 18px 10px;
+  &_close {
+    width: 14px !important;
+  }
+}
+.v-application .rounded-xl {
+  @media (max-width: $screen-md) {
+    border-radius: 0 !important;
+  }
+}
+.v-card__text {
+  padding: 0 !important;
+  box-sizing: border-box;
+}
+.v-card-text {
+  //&.scroll {
+  //  height: 600px;
+  //}
+}
+.vcard-padding {
+  padding: $padding;
+  @media (max-width: $screen-md) {
+    padding: $mobile-padding;
+  }
+}
+.booking-container.vcard-padding {
+  padding: 0;
+}
+.button-container {
+  //.mobile & {
+  //  position: fixed;
+  //}
+  bottom: 0;
+  width: 100%;
+}
+.v-card-container {
+  padding: $padding;
+  @media (max-width: $screen-md) {
+    padding: $mobile-padding;
+  }
+  background-color: white;
+  &.first {
+
+    //padding-top: 30px;
+  }
+  &.last {
+    padding-bottom: 20px;
+    //.mobile & {
+    //  padding-bottom: 170px;
+    //}
+    border-radius: 30px 30px 0 0;
+  }
+  &.divider {
+    border-radius: 0 0 30px 30px;
+    &.first {
+      border-radius: 30px 30px 0 0;
+    }
+    &.last {
+      border-radius: 0 0 30px 30px;
+    }
+
+    &.middle {
+      border-radius: 30px;
+    }
+    margin-bottom: 6px;
+
+  }
+  &.button-container {
+    padding: 0;
+    &.padding-c {
+      padding: 14px 40px;
+      @media (max-width: $screen-md) {
+        padding:  14px 20px;
+      }
+    }
+    @media (max-width: $screen-md) {
+      padding: 10px 20px 14px;
+    }
+  }
+}
+.v-card-container {
+  padding: 40px;
+  @media (max-width: $screen-md) {
+    padding: 24px 20px;
+  }
+
+  & .v-btn__content {
+    width: 100%;
+  }
+
+  & .modal-card-title {
+    //padding-bottom: 18px;
+    @media (max-width: $screen-md) {
+      //padding-bottom: 32px;
+    }
+    @media (max-width: $screen-xxs) {
+      font-size: 18px;
+    }
+  }
+}
+.map-dialog {
+  &__button {
+    position:absolute;
+    bottom: 20px;
+    right: 20px
+  }
+}
+.map-dialog-container {
+  height: 89vh;
+  max-height: 600px !important;
+  & .v-card__text {
+    overflow: hidden !important;
+  }
+}
+.border-radius-30 {
+  border-radius: 30px;
+}
+
+.dialog {
+  &__image {
+    width: 100%;
+    display: flex;
+  }
+  &__gallery {
+    width: 90%;
+    max-width: 900px;
+    @media (max-width: 900px) {
+      width: 100%;
+    }
+  }
+}
+.popup {
+  z-index: 100;
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  min-height: 100px;
+  border-radius: 30px 30px 0 0;
+  background: #fff;
+  width: 100%;
+  padding: 16px;
+  @media (max-width: $screen-md) {
+    padding: 12px;
+    &.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1000;
+    }
+  }
+
+}

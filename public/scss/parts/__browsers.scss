@@ -1,0 +1,52 @@
+.safari {
+  & b {
+    line-height: normal;
+  }
+  &.mobile {
+    & .instaslider__close {
+      top: 30px;
+    }
+  }
+  & .mobile-menu__contacts__item_phone .hours {
+    line-height: 10px;
+  }
+  &.desktop .doctor-card-2__fio {
+    line-height: 30px;
+  }
+}
+.mobile {
+  .mobile-divider {
+    &.m-8 {
+      margin-bottom: 8px;
+    }
+  }
+}
+.desktop {
+  .scroll-container {
+    & .scrolling-block {
+      //scroll-snap-type: x mandatory;
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        width: 10px;
+      }
+      &::-webkit-scrollbar-track {
+        background: #fff;
+        border-radius: 10px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: $scroll-color;
+        background-clip: content-box;
+        border: 7px solid transparent;
+        border-radius: 20px;
+      }
+      scrollbar-width: thin;
+      scrollbar-color: $scroll-color #fff;
+    }
+  }
+  .bind {
+     &.phone {
+        margin-bottom: 15px;
+     }
+  }
+
+}

@@ -1,0 +1,131 @@
+//screens
+$screen-md : 680px;
+$screen-sm: 584px;
+$screen-xs: 530px;
+$screen-xss: 400px;
+$screen-xxs: 376px;
+$screen-xxxs: 340px;
+
+$b-screen-md: 768px;
+$b-screen-lg: 992px;
+
+@import "~/public/scss/parts/__mixins.scss";
+//.main-container {
+//  width: 90%;
+//  max-width: 1170px;
+//  margin-right: auto;
+//  margin-left: auto;
+//  &.margin-container {
+//    margin-top: 32px;
+//    @media (max-width: $screen-md) {
+//      margin-top: 24px;
+//    }
+//  }
+//  @media (max-width: $b-screen-md) {
+//    width: 95%;
+//  }
+//  @media (max-width: $screen-xxs) {
+//    width: 100%;
+//  }
+//}
+.v-application--wrap {
+  min-width: 310px;
+}
+.main-container {
+  width: 100%;
+  max-width: 1170px;
+  margin: 0 auto;
+  @media (max-width: 1170px) {
+    padding: 0 40px;
+  }
+  @media (max-width: 1075px) {
+    padding: 0 20px;
+  }
+}
+
+
+.container-972 {
+  max-width: 972px;
+  width: 100%;
+  margin: 0 auto;
+}
+.main-container-s {
+  width: 90%;
+  max-width: 1094px;
+  margin-right: auto;
+  margin-left: auto;
+  @media (max-width: $b-screen-md) {
+    width: 95%;
+  }
+  @media (max-width: $screen-xxs) {
+    width: 97%;
+  }
+}
+.mobile-padding {
+  @media (max-width: $screen-xxs) {
+    padding: 0 5px;
+  }
+}
+.mainpage-container {
+  max-width: 950px;
+  margin: 0 auto;
+}
+.white-rounded-container {
+  background: #fff;
+  border-radius: 30px;
+  &.shadow {
+    @include container-shadow;
+  }
+}
+.justify-self-end {
+  justify-self: flex-end;
+}
+.justify-self-center {
+  justify-self: center;
+}
+.no-margin {
+  margin: 0;
+}
+.v-application--wrap {
+  overflow: hidden;
+}
+.g-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  @media (max-width: $screen-md) {
+    display: block !important;
+  }
+}
+.col-50 {
+  width: 50%;
+  @media (max-width: $screen-md) {
+    width: 100%;
+  }
+}
+.col-30 {
+  width: 30%;
+  @media (max-width: $screen-md) {
+    width: 100%;
+  }
+}
+.col-35 {
+  width: 35%;
+  @media (max-width: $screen-md) {
+    width: 100%;
+  }
+}
+.col-65 {
+  width: 65%;
+  @media (max-width: $screen-md) {
+    width: 100%;
+  }
+}
+.col-70 {
+  width: 70%;
+  @media (max-width: $screen-md) {
+    width: 100%;
+  }
+}
+
+

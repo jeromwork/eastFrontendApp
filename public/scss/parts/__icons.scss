@@ -1,0 +1,201 @@
+$icons: (
+  'baby',
+  'camp',
+  'comment',
+  'cup',
+  'dna',
+  'doctor',
+  'guy',
+  'eastclinic',
+  'foot',
+  'hospital',
+  'mac',
+  'massage',
+  'mommy',
+  'pregnant',
+  'whatsapp',
+  'whatsapp-2',
+  'yoga',
+  'down',
+  'down-white',
+  'down-blue',
+  'back',
+  'forward',
+  'forward-white',
+  'close',
+  'closesearch',
+  'closewhite',
+  'back-arrow',
+  'burger',
+  'photo_soon',
+  'watches',
+  'ruble',
+  'map',
+  'checkbox',
+  'cart',
+  'arrow-white',
+  'minus',
+  'plus',
+  'trash',
+  'pen',
+  'chair',
+  'parking',
+  'clock',
+  'playbutton',
+  'pausebutton',
+  'volumeon',
+  'volumeoff',
+  'star',
+  'ya',
+  'nap',
+  'prodoc'
+);
+.icons {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  transition: .3s;
+  @each $icon in $icons {
+    &.#{$icon} {
+      $image: '../images/icons/icon-'+#{$icon}+'.svg';
+      background-image: url($image);
+    }
+  }
+  &.pregnant {
+    background-image: url("../images/icons/icon-pregnant.svg");
+  }
+  &.down {
+    width: 12px;
+    top: 1px;
+  }
+  &.back-arrow, &.minus, &.plus {
+    width: 11px;
+  }
+  &.minus, &.plus {
+    cursor: pointer;
+  }
+  &.map {
+    width: 9px;
+    height: 12px;
+    margin: 0 5px 0 0;
+    position: relative;
+    top: 2px
+  }
+  &.down-white {
+    width: 14px;
+  }
+  &.close {
+    width: 14px;
+    cursor: pointer;
+    &.big {
+      width: 17px;
+    }
+  }
+  &.closesearch.turn {
+    width: 11px;
+    transform: rotate(45deg);
+  }
+  &.burger {
+    width: 22px;
+    cursor: pointer;
+  }
+  &.guy {
+    width: 10px;
+    top: 4px;
+    margin: 0 2px 0 12px;
+  }
+  &.photo_soon {
+    width: 100%;
+  }
+  &.trash {
+    width: 10px;
+    height: 10px;
+  }
+  &.pen {
+    width: 18px;
+    min-width: 18px;
+    height: 18px;
+  }
+  &.down-blue {
+    width: 10px;
+    height: 10px;
+  }
+  &.playbutton {
+    width: 10px;
+    transform: translateX(1px);
+  }
+  &.forward.gray {
+    filter: contrast(.1);
+  }
+  &.ya, &.nap, &.prodoc {
+    width: 35px;
+    height: 35px;
+  }
+}
+$smiles: (
+'smile-sad',
+'smile-joy',
+'smile-oops'
+);
+.smiles {
+  width: 120px;
+  height: 120px;
+  display: inline-block;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  @each $smile in $smiles {
+    &.#{$smile} {
+      $image: '../images/smiles/'+#{$smile}+'.png';
+      background-image: url($image);
+    }
+  }
+}
+// через тире
+$checkbox: (
+  'checkbox',
+  'checkbox-off'
+);
+.icons {
+  @each $icon in $checkbox {
+    &-#{$icon} {
+      $image: '../images/icons/icon-'+#{$icon}+'.svg';
+      background-image: url($image);
+      height: 24px;
+      border-radius: 8px;
+    }
+  }
+}
+$pngs: (
+  'woman',
+  'medal1',
+  'medal2',
+  'medal3',
+);
+.icons {
+  @each $png in $pngs {
+    &.#{$png} {
+      $image: '../images/icons/icon-'+#{$png}+'.png';
+      background-image: url($image);
+      height: 35px;
+      width: 35px;
+    }
+  }
+  &.medal1 {
+    height: 34px;
+  }
+  &.woman {
+    height: 24px;
+    width: 24px;
+    &.card {
+      width: 18px;
+      transform: translateX(2px);
+    }
+  }
+}
+

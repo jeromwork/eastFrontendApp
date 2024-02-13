@@ -1,0 +1,21 @@
+.catalog {
+  & h3 {
+    font-weight: normal;
+    font-size: 16px;
+    color: $text-secondary-color;
+  }
+  & ul {
+    margin: 12px 0;
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    & li {
+      font-size: 14px;
+      white-space: nowrap;
+      background-color: $fields-back-color;
+      display: inline;
+      padding: 7px;
+      border-radius: 10px;
+    }
+  }
+}

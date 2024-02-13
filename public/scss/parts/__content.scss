@@ -1,0 +1,341 @@
+
+.quality-content-wrapper {
+  & .first-paragraph {
+    display: block;
+    margin-bottom: $margin-4;
+  }
+  & ul li {
+    list-style: disc inside;
+  }
+}
+.content-global-css-wrapper {
+  font-size: 18px;
+  max-width: 675px;
+  @media (max-width: $screen-md) {
+    font-size: 16px;
+  }
+  &.wide {
+    width: 100%;
+    max-width: 1300px;
+    @media (max-width: $screen-xxs) {
+      width: 95%;
+      margin: 0 auto;
+    }
+  }
+  & details {
+    margin-bottom: $margin-3;
+    & p, & ul, & ol {
+      margin: 0 15px 8px;
+    }
+    & summary {
+      cursor: pointer;
+      padding: 16px 10px 16px 10px;
+      background-color: $fields-back-color;
+      border-radius: 15px;
+      margin-bottom: 8px;
+      &:first-of-type {
+        margin-right: 20px;
+      }
+    }
+  }
+  & h1, & h2, & h3 {
+    margin: $margin-4 0;
+  }
+  & h2 {
+    font-size: 24px;
+    @media (max-width: $screen-md) {
+      font-size: 20px;
+    }
+  }
+  & h3 {
+    font-size: 20px;
+    @media (max-width: $screen-md) {
+      font-size: 18px;
+    }
+  }
+  & p {
+    font-size: 18px;
+    @media (max-width: $screen-md) {
+      font-size: 16px;
+    }
+  }
+  & ul > li {
+    list-style: outside url('https://eastclinic.ru/assets/images/list-style-disk.svg');
+    margin-left: 18px;
+    padding-top: $margin-4;
+    padding-left: $margin-2;
+  }
+  & ol li {
+    margin-left: 16px;
+  }
+  & ul li:first-child, & ol li:first-child {
+    padding-top: 0;
+  }
+  & ul li:last-child, & ol li:last-child {
+    padding-bottom: 16px;
+  }
+  & img {
+    width: 100%;
+    border-radius: 20px;
+  }
+  .cg {
+    &__margin-block-big {
+      margin: $margin-8 0;
+    }
+    &__image-desc {
+      font-size: 14px;
+      color: $text-secondary-color;
+      margin-bottom: 12px;
+      @media (max-width: $screen-md) {
+        font-size: 12px;
+      }
+    }
+    &__article-info {
+      color: $text-secondary-color;
+      margin: 8px 0 24px;
+      & span:not(:last-child) {
+        margin-right: 16px;
+      }
+    }
+    &__video-block {
+      display: grid;
+      grid-template-areas: 'v-desc v-link';
+      flex-direction: row;
+      background-color: $fields-back-color;
+      padding: 16px;
+      border-radius: 15px;
+      @media (max-width: $screen-md) {
+        max-width: 450px;
+      }
+      @media (max-width: $screen-md) {
+        grid-template-areas: 'v-link'
+                              'v-desc';
+        justify-content: center;
+      }
+      &__desc {
+        grid-area: v-desc;
+        max-width: 330px;
+        font-size: 18px;
+        @media (max-width: $screen-md) {
+          max-width: 400px;
+        }
+        & p {
+          margin-bottom: 12px;
+        }
+        & p:last-child {
+          margin-bottom: 0;
+        }
+      }
+      &__video {
+        grid-area: v-link;
+        display: flex;
+        justify-content: right;
+        @media (max-width: $screen-md) {
+          margin-bottom: 12px;
+          max-width: 680px;
+          max-height: 400px;
+        }
+        &-link {
+          @media (max-width: $screen-md) {
+            width: 100%;
+          }
+          &__cover {
+            width: auto;
+            border-radius: 10px;
+            @media (max-width: $screen-md) {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+    &__accent-block {
+      margin-top: 16px;
+      background-color: $fields-back-color;
+      padding: 16px;
+      border-radius: 15px;
+      & p {
+        margin: 0;
+      }
+      @media (max-width: $screen-md) {
+        max-width: 450px;
+      }
+    }
+    &__treatment-block {
+      flex-shrink: 0;
+      background-color: $fields-back-color;
+      width: 180px;
+      height: 260px;
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      &:not(:last-child) {
+        margin-right: $margin-2 + 2;
+      }
+      &__header {
+        padding-top: $margin-3;
+      }
+      &__desc {
+        padding-top: $margin-2;
+        color: $text-secondary-color;
+        font-size: 12px;
+      }
+      &__image {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+    }
+    &__round-video-block {
+      width: 205px;
+      &__preview {
+        width: 205px;
+        height: 205px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &__button {
+          background-color: rgba(0, 0, 0, 0.5);
+          border-radius: 50%;
+          width: 60px;
+          height: 60px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+      &__desc {
+        padding-top: $margin-2;
+        text-align: center;
+        font-size: 14px;
+      }
+    }
+    &__expert-advice-block {
+      border: 2px solid $main-color;
+      border-radius: 15px;
+      margin-bottom: 32px;
+      padding: 24px 16px;
+      position: relative;
+      &__chevron {
+        top: -15px;
+        position: absolute;
+        width: 135px;
+        height: 30px;
+        background: linear-gradient(87.37deg, #4372EA 0%, #6993FF 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 14px;
+      }
+      &__doctor {
+        display: flex;
+        margin-bottom: 10px;
+        &-info {
+          margin-left: 12px;
+
+          &_name {
+            color: $main-color;
+          }
+          &_specs {
+            font-size: 12px;
+          }
+        }
+
+      }
+      &__content {
+        font-style: italic;
+        font-variation-settings: 'slnt' -1;
+      }
+    }
+    &__steps-block {
+      &__step {
+        border-radius: 15px;
+        display: flex;
+        flex-direction: row;
+        background-color: $fields-blue-color;
+        padding: 8px;
+        margin-bottom: 16px;
+        & * {
+          margin: 0;
+        }
+        &__counter{
+          margin-right: $margin-2;
+          font-size: 14px;
+          display: block;
+          counter-increment: section 1;
+          content: counter(section) " этап";
+          background-color: $fields-dark-blue-color;
+          padding: 0 8px;
+          border-radius: 15px;
+          font-style: italic;
+          letter-spacing: 0.0025em;
+          color: #ffffff;
+          font-stretch: 251%;
+          white-space: nowrap;
+          &-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+      }
+
+    }
+  }
+
+}
+.content {
+  &__numeric-list {
+    margin-bottom: 24px;
+    &__wrapper {
+      gap: 18px;
+      display: flex;
+      &.first {
+        margin-top: 24px;
+      }
+    }
+    &__number {
+      display: inline-flex;
+      font-size: 20px;
+      justify-content: center;
+      align-items: center;
+      margin-right: 8px;
+      color: #fff;
+      background-color: $main-color;
+      width: 40px;
+      height: 40px;
+      border-radius: 40px;
+      @media (max-width: $screen-md) {
+        width: 32px;
+        height: 32px;
+      }
+    }
+    &__head {
+      font-size: 20px;
+      @media (max-width: $screen-md) {
+        font-size: 18px;
+      }
+    }
+    &__header {
+      margin-bottom: 16px;
+    }
+  }
+  &__divider {
+    height: 40px;
+    @media (max-width: $screen-md) {
+      height: 30px;
+    }
+  }
+}
+.v-input input {
+  color: $text-secondary-color !important;
+
+}
+.v-input--is-focused input,  .text-color-main input{
+  color: $text-main-color !important;
+}

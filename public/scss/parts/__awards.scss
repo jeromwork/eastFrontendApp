@@ -1,0 +1,161 @@
+.doctor-awards {
+  margin-top: $margin-4;
+
+  &__wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: $margin-8;
+    @media (max-width: $b-screen-lg) {
+      margin-bottom: 0;
+    }
+  }
+  .doctor-info &__wrapper {
+    @media (max-width: $screen-md) {
+      width: 70%;
+    }
+  }
+  &__popup {
+    width: 100%;
+    & div {
+      white-space: normal;
+    }
+    &-header {
+      margin: 10px 0 16px;
+      padding-left: 8px;
+      display: grid;
+      grid-template-columns: 20px 1fr;
+      align-items: center;
+      width: 100%;
+      &__head {
+        transform: translateX(-10px);
+      }
+    }
+
+
+  }
+  &__item {
+    display: grid;
+    background: white;
+    padding: 10px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 375px;
+    grid-template-columns: 40px 1fr 15px;
+    align-items: center;
+    font-size: 12px;
+    @for $i from 1 through 3 {
+      &.awards-#{$i} {
+        grid-template-columns: 40px + 8 * $i 1fr 15px;
+      }
+    }
+    &.list {
+      cursor: pointer;
+      padding: 8px;
+      width: 100%;
+      grid-template-columns: 40px 1fr 62px;
+      min-width: 275px;
+      max-width: inherit;
+      @include transition;
+      &.mobile {
+        max-width: 680px;
+      }
+      &:hover {
+        background-color: $fields-back-color;
+        @include transition;
+      }
+    }
+    $k: 3;
+    &_icon {
+      justify-self: flex-start;
+      transform: translateY(4px);
+      &.multiple {
+        display: flex;
+        height: 100%;
+        & span {
+          position: absolute;
+          top: 0;
+
+          @for $i from 1 through 3 {
+            &:nth-child(#{$i}) {
+              z-index: $k - $i;
+              left: 14px * ($i - 1); // задаем отступ от верхнего края, равный i * 5px
+            }
+          }
+        }
+      }
+    }
+    &_button {
+      justify-self: flex-end;
+      display: flex;
+      align-items: center;
+    }
+    &_img {
+      width: 56px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    &_text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      &.dropdown {
+        overflow: visible;
+        & div {
+          white-space: normal;
+        }
+      }
+    }
+  }
+  &__dropdown {
+    width: 100%;
+    max-width: 450px;
+    padding: 8px;
+    margin-top: 4px;
+    position: absolute;
+    display: inline-table;
+    flex-direction: column;
+    box-shadow: 0 12px 24px rgba(135, 143, 162, 0.35);
+    border-radius: 15px;
+    background: #fff;
+    z-index: 2;
+  }
+
+}
+.doctor-awards__item_text_name, .doctor-awards__item_text_portal {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: inherit;
+}
+.doctor-info {
+  & .doctor-awards__item.wrapper {
+    height: 45px;
+    background-color: $fields-back-color;
+    border-radius: 10px;
+    width: 232px;
+    padding: 0 8px;
+    @media (max-width: $screen-xss) {
+      width: 100%;
+    }
+    & .doctor-awards__item_icon.multiple .icons {
+      top: 4px
+    }
+  }
+
+  & .doctor-awards__item_icon .icons {
+    width: 32px;
+    height: 32px;
+    &.medal1 {
+      height: 31px;
+    }
+  }
+
+  & .doctor-awards__item_text {
+    font-size: 12px;
+    white-space: nowrap;
+    &_portal {
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+}
