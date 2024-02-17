@@ -1,7 +1,10 @@
 
 
 <script setup>
+import {ref} from "vue";
+import SingleDoctorController from '../../components/SingleDoctor/Controller'
 
+const isSingleDoctor = ref(true);
 // const route = useRoute();
 
 import { onMounted } from 'vue';
@@ -16,7 +19,12 @@ onMounted(() => {
 
 <template>
     <NuxtLayout name="doctors">
-        <NuxtPage />
+        <div v-if="isSingleDoctor">
+            <SingleDoctorController/>
+        </div>
+
+
+
     </NuxtLayout>
 </template>
 

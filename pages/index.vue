@@ -1,10 +1,16 @@
+
+
+<script setup>
+import Gallery from '~/UI/Gallery'
+const name = "index.vue";
+</script>
 <template>
     <NuxtLayout name="default">
     <div class="white" style="height: 100%;">
 
 <!--        <MainPageSearch />-->
 
-
+        <Gallery/>
 
         <div class="main_page main-container mt-10">
             <div class="scroll-container main_page__awards-container">
@@ -28,12 +34,6 @@
     </NuxtLayout >
 </template>
 
-<script setup>
-const name = "index.vue";
-definePageMeta({
-    layout: 'index'
-})
-</script>
 
 <style scoped>
 

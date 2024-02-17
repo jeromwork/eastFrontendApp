@@ -1,5 +1,4 @@
-<script >
-import Vue from "vue";
+<script setup>
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -8,13 +7,6 @@ import Footer from "../components/Footer";
 
     <Header/>
     <slot />
-    <div class="v-application--wrap">
-
-        <div class="white-container">
-            <div class="main-container">
-            </div>
-        </div>
-    </div>
     <Footer/>
 </template>
 
