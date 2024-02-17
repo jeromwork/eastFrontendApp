@@ -1,10 +1,9 @@
 <template>
+    <NuxtLayout name="default">
     <div class="white" style="height: 100%;">
-        <MainPageSearch />
-        <PlateLinks />
-        <div class="main-container">
-            <InstaSlider />
-        </div>
+
+<!--        <MainPageSearch />-->
+
 
 
         <div class="main_page main-container mt-10">
@@ -26,11 +25,14 @@
             </div>
         </div>
     </div>
+    </NuxtLayout >
 </template>
 
 <script setup>
 const name = "index.vue";
-
+definePageMeta({
+    layout: 'index'
+})
 </script>
 
 <style scoped>
