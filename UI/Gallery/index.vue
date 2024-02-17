@@ -1,8 +1,13 @@
 
+
 <script setup>
 
 </script>
 
 <template>
-        <NuxtPage />
+<span>Gallery</span>
 </template>
+
+<style scoped>
+
+</style>
