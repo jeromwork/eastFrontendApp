@@ -3,6 +3,12 @@ import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw } from 
 
 
 const raiting = computed(()=>    4.5)
+const reviewsList = [
+    { id:1, body:'Отзыв 1'},
+    { id:3, body:'Отзыв 3'}
+];
+
+
 
 const props = defineProps({
     target:{type:String},
@@ -22,7 +28,10 @@ const slotProps = {isOnline:isOnline, fullName:de, doctor_id:1};
 </script>
 
 <template>
-<span>Reviewsssss</span>
+
+    <div v-for="(review, key) in reviewsList">
+        <slot name="review" v-bind="review"></slot>
+    </div>
 
 </template>
 

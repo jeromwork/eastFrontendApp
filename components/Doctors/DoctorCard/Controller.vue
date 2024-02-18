@@ -15,6 +15,11 @@ import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw } from 
  * Данные по рейтингу приходят с данными доктора*/
 const raiting = computed(()=>    4.5)
 
+const props = defineProps({
+    id:{type:Number},
+    fullname:{type:String},
+
+});
 
 
 
@@ -29,9 +34,9 @@ const slotProps = {isOnline:isOnline, fullName:de, doctor_id:1};
 </script>
 
 <template>
-<span>Single doctor controller</span>
+
   <slot
-          v-bind="slotProps"
+          v-bind="props"
 
   ></slot>
 </template>

@@ -12,7 +12,9 @@ import DoctorCardController from "./DoctorCard/views/SingleDoctor.vue";
 //в этой view ничего не обрабатываем - только отобржаем/
 //а так же прокидывам данные дальше по вложенным компонентам
 
-
+const props = defineProps({
+    isSingleDoctor:{type:Boolean}
+})
 
 
 const isOnline = ref(true);
@@ -28,8 +30,6 @@ const slotProps = {isOnline:isOnline, fullName:de, doctor_id:1};
 </script>
 
 <template>
-
-<span>doctors list controller</span>
 
 <div v-for="(doctor, key) in doctors">
     <slot name="doctor" v-bind="doctor"></slot>
