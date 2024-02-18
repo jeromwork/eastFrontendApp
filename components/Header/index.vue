@@ -27,8 +27,8 @@ const openModal = () => {
 <!--                        <span style="color: #4372ea" class="phone no-wrap text-semibold">{{this.$store.getters['pageInfo/getFormattedMainPhone']}}</span>-->
 <!--                        <span class="hours annotation text-right">08:00 - 21:00</span>-->
 <!--                    </a>-->
-                    <Whatsapp/>
-                    <PhoneButton/>
+<!--                    <Whatsapp/>-->
+<!--                    <PhoneButton/>-->
                     <button @click="openModal"
                             class="button primary medium contact write hidden-md" type="button">Записаться</button>
                     <!-- перенести drawer в app -->

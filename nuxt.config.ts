@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+const path = require('path');
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
@@ -13,5 +15,10 @@ export default defineNuxtConfig({
       // Run after the main build
 
     },
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src')
+    }
   },
 })
