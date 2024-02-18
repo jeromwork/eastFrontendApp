@@ -2,8 +2,9 @@
 
 <script setup>
 import {ref} from "vue";
+import Doctors from "../../components/Doctors/Controller";
 import DoctorCardController from '../../components/Doctors/DoctorCard/Controller'
-import DoctorCardSingleDoctor from '../../components/Doctors/DoctorCard/Views/SingleDoctor.vue'
+import DoctorCardSingleDoctor from '../../components/Doctors/DoctorCard/views/SingleDoctor.vue'
 
 const isSingleDoctor = ref(true);
 // const route = useRoute();
@@ -20,12 +21,16 @@ onMounted(() => {
 
 <template>
     <NuxtLayout name="doctors">
-        <div v-if="isSingleDoctor">
+        <Doctors>
+            <template #doctor="doctorInfo" v-if="isSingleDoctor">
+                <DoctorCardController :doctor="doctorInfo" v-slot="slotProps">
+                    <DoctorCardSingleDoctor v-bind="slotProps"/>
+                </DoctorCardController>
+            </template>
+        </Doctors>
 
-            <DoctorCardController v-slot="slotProps">
-                <DoctorCardSingleDoctor v-bind="slotProps"/>
-            </DoctorCardController>
-        </div>
+
+
 
 
 
