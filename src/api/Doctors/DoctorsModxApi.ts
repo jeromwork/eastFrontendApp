@@ -26,4 +26,9 @@ export default class DoctorsApi {
         this._url = url;
         return this;
     }
+    // protected isApiResponse(obj: any): obj is ApiResponseInterface {
+    //     // Implement your logic to check if 'obj' conforms to ApiResponseInterface
+    //     // Return true if it does, false otherwise
+    //     return /* your implementation */;
+    // }
 }

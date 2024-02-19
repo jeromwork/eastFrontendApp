@@ -3,8 +3,10 @@ import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, onBefo
 import {doctorsList} from "./mockData/doctorsList";
 import DoctorsService from "../../server/services/Doctors/DoctorsService";
 import DoctorsRequest from "../../api/Doctors/DoctorsRequest";
+import DoctorsModxRequest from "../../api/Doctors/DoctorsModxRequest";
 
 const doctorsService = new DoctorsService();
+
 
 //В этом компоненте обращаемся к сервису за данными по докторам
 //кроме сервиса Doctors ничего более не знаем (СЕО? Клиники?)
@@ -16,15 +18,29 @@ const doctorsService = new DoctorsService();
 
 const props = defineProps({
     //isSingleDoctor:{type:Boolean}
+    isModxApi:{
+        type:Boolean,
+        default:true
+    }
 })
 
+if(props.isModxApi){
+    doctorsService.useModxApi();
+}
 const buildRequest = () => {
 
     const currentRoute = (useRouter())?.currentRoute?.value?.path;
-    const request = new DoctorsRequest;
-    request.forCurrentUrl(currentRoute)
+    let request
+    if(props.isModxApi){
 
-    return request;
+        return (new DoctorsModxRequest)
+            .forUrl(currentRoute)
+            .forAction('doctors/getDoctorsMultiList')
+            .forComponent('health')
+    }else {
+        return (new DoctorsRequest).forCurrentUrl(currentRoute)
+    }
+
 }
 
 
@@ -38,14 +54,8 @@ onBeforeMount(async ()=>{
 //
 // }
 
-const isOnline = ref(true);
-const fullName = ref('Клюев Борис Борисович');
-
 const doctors = ref(doctorsList)
 const count = ref(0);
-
-let de = computed(()=>    fullName.value+count.value)
-const slotProps = {isOnline:isOnline, fullName:de, doctor_id:1};
 
 
 </script>

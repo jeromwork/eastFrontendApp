@@ -1,32 +1,12 @@
 import type RequestAdapterInterface from "../../api/RequestAdapterInterface";
 
 
-export default class DoctorsRequest implements RequestAdapterInterface
+export default class DoctorsModxRequest implements RequestAdapterInterface
 {
     private _requestData: { [key: string]: any } = {};
-    onUploadProgressCallback:Function = function (){};
-    onSuccessCallback:Function = function (){};
-    onErrorCallback:Function = function (){};
 
 
     //setters
-
-
-
-    // withUploadProgressCallback(callback){
-    //     onUploadProgressCallback = callback;
-    //     return this;
-    // }
-
-    withSuccessCallback(callback:Function):this{
-        this.onSuccessCallback = callback;
-        return this;
-    }
-    withErrorCallback(callback:Function):this{
-        this.onErrorCallback = callback;
-        return this;
-    }
-
 
 
     with(field: string, value: any):this {
@@ -35,7 +15,7 @@ export default class DoctorsRequest implements RequestAdapterInterface
         return this;
     }
 
-    forCurrentUrl(url:string):this{
+    forUrl(url:string):this{
         this._requestData['url'] = url;
         return this;
     }
@@ -49,6 +29,18 @@ export default class DoctorsRequest implements RequestAdapterInterface
         this._requestData['perPage'] = page;
         return this;
     }
+
+    public forAction( action:string ):this{
+        this._requestData['action'] = action;
+        return this;
+    }
+
+    public forComponent( component:string ):this{
+        this._requestData['component'] = component;
+        return this;
+    }
+
+
 
     //getters
 
