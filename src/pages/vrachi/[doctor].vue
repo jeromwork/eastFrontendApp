@@ -29,8 +29,8 @@ onMounted(() => {
                     <DoctorCardSingleDoctor v-bind="doctorInfoPrepared"/>
                 </DoctorCardController>
 
-                <DoctorCardController v-else :doctor="doctorInfo" v-slot="doctorInfo" >
-                    <DoctorCardXL v-bind="doctorInfo"/>
+                <DoctorCardController v-else v-bind="doctorInfo" #default="doctorInfoPrepared" >
+                    <DoctorCardXL v-bind="{doctor:doctorInfoPrepared}"/>
                 </DoctorCardController>
 
             </template>

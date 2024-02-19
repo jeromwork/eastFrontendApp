@@ -10,7 +10,6 @@ export default class DoctorsApi {
         try {
             const res = await postToServer(API_MODX_URL, { ...requestData });
             // Assuming postToServer returns a Promise, you should await it
-            console.log(res)
             //todo create useHandleAndSaveErrorFromServer class
 
             // Add a return statement here

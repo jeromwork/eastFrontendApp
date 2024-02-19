@@ -46,6 +46,7 @@ const buildRequest = () => {
 
 onBeforeMount(async ()=>{
     await doctorsService.getItemsFromServer( buildRequest().forPage(1) );
+    // doctors.value = computed(doctorsService.items)
 });
 
 // const getDoctorsFromServer = async () =>{
@@ -53,16 +54,15 @@ onBeforeMount(async ()=>{
 //
 //
 // }
-
-const doctors = ref(doctorsList)
+const doctors = computed(()=> doctorsService.items())
+// const doctors = ref(doctorsList)
 const count = ref(0);
 
 
 </script>
 
 <template>
-
-<div v-for="(doctor, key) in doctors">
+<div v-for="(doctor, key) in doctors" v-if="doctors">
     <slot name="doctor" v-bind="doctor"></slot>
 </div>
 

@@ -5,6 +5,7 @@ import DoctorsModxApi from '../../../api/Doctors/DoctorsModxApi';
 import MultiStateManager from "../util/MultiStateManager";//probably to use one state manage for many services - its global state
 import type RequestAdapterInterface from "../../../api/RequestAdapterInterface";
 import StateManager from "../util/StateManager";
+import ApiDoctorsResponseInterface from "../../../api/Doctors/ResponceInterfaces/ApiDoctorsResponseInterface";
 
 const globalMultiState = new MultiStateManager();
 export default class DoctorsService{
@@ -24,18 +25,16 @@ export default class DoctorsService{
 
         let response;
         if(this.isModxApi){
-            console.log(request)
-            response = await (new DoctorsModxApi).get(request.getRequestData())
-
+            response = await (new DoctorsModxApi).get(request.getRequestData()) as ApiDoctorsResponseInterface;
         }else {
-            response = await (new DoctorsModxApi).get(request.getRequestData())
+            response = await (new DoctorsModxApi).get(request.getRequestData()) as ApiDoctorsResponseInterface;
         }
-
-        console.log(response)
-
+        //todo set response doctors data to state
+        this.state.setItems(response.doctors);
     }
-    items(condition:any) {
+    items(condition?:any) {
         return this.state.getItems();
+        return [];
     };
 
     count() {

@@ -3,7 +3,7 @@ import StateManager from "./StateManager";
 
 
 export default class MultiStateManager extends StateManager{
-    _stateName = 'default';
+
     _requestData = {};
 
     constructor( name = 'default') {
@@ -31,6 +31,7 @@ export default class MultiStateManager extends StateManager{
             this._state[this._stateName].itemsIds = {};
             return this;
         }
+        console.log(this._state)
         return this;
     }
 }
