@@ -9,6 +9,7 @@ export default defineNuxtConfig({
   css:[
       '~/public/scss/main.scss'
   ],
+  srcDir : './src',
   hooks: {
     // Run when Nuxt is in development mode
     build: {

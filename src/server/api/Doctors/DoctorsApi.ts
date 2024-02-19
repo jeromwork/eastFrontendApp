@@ -1,6 +1,6 @@
-import {BASE_URL, API_URL} from '@/api/config.js';
-import UseRequestAdapters from '@/services/util/UseRequestAdapters.js';
-import buildGetURL from '@/services/util/UseGetParametersBuilder.js';
+import {BASE_URL, API_URL} from '../config';
+import UseRequestAdapters from '~/server/services/util/UseRequestAdapters';
+// import buildGetURL from '~/services/util/UseGetParametersBuilder';
 import {getToServer} from '../../services/util/UseFetchToServer';
 
 
@@ -11,7 +11,7 @@ export default (() => {
         _requestData : {},
 
         async get(requestData){
-            return await getToServer(BASE_URL + API_URL + _url, {...requestData, ...this._requestData});
+            return await getToServer(BASE_URL + API_URL + _url, {...requestData });
         },
 
 

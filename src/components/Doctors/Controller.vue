@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw } from "vue";
+import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, onBeforeMount } from "vue";
 import {doctorsList} from "./mockData/doctorsList";
-import DoctorsService from "../../server/services/DoctorsService";
+import DoctorsService from "../../server/services/Doctors/DoctorsService";
+// import DoctorsRequest from "../../server/api/Doctors/DoctorsRequest";
 
+const doctorsService = new DoctorsService();
 
 
 //В этом компоненте обращаемся к сервису за данными по докторам
@@ -17,9 +19,28 @@ const props = defineProps({
     //isSingleDoctor:{type:Boolean}
 })
 
+const getRequest = () => {
+    const router = useRouter();
+
+    const currentRoute = router.currentRoute;
+    // const request = new DoctorsRequest;
+    // request.forCurrentUrl(currentRoute)
+    //
+    // console.log(currentRoute)
+    //
+    // return request;
+    return '';
+}
+
+
+onBeforeMount(()=>{
+    getDoctorsFromServer();
+});
 
 const getDoctorsFromServer = async () =>{
-    await this.$store.dispatch('Doctors/getDoctors', {storeName: storeName});
+    //get builded request
+
+    await doctorsService.getItemsFromServer(getRequest());
 }
 
 const isOnline = ref(true);

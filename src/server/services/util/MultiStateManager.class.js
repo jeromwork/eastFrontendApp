@@ -47,6 +47,3 @@ export default class MultiStateManager {
         return toRef(this._state[this._stateName], 'count');
         }
 }
-
-
-// export const GlobalMultiStateManager = new MultiStateManager();
