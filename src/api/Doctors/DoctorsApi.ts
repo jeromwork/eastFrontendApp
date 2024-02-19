@@ -1,25 +1,17 @@
 import {BASE_URL, API_URL} from '../config';
 import UseRequestAdapters from '~/server/services/util/UseRequestAdapters';
-// import buildGetURL from '~/services/util/UseGetParametersBuilder';
-import {getToServer} from '../../services/util/UseFetchToServer';
+import {postToServer} from '~/server/services/util/UseFetchToServer';
+import type RequestAdapterInterface from "../../api/RequestAdapterInterface";
 
 
-export default (() => {
-    let _url = '/doctors';
-    return {
-        ...UseRequestAdapters,
-        _requestData : {},
-
-        async get(requestData){
-            return await getToServer(BASE_URL + API_URL + _url, {...requestData });
-        },
-
-
-        withUrl(url){
-            if(url) _url = url;
-            return this;
-        },
-
-
+export default class DoctorsApi {
+    protected _url:string = '/doctors';
+    public async get(requestData:Object){
+        return await postToServer(BASE_URL + API_URL + this._url, {...requestData });
     }
-})();
+
+    withUrl(url:string):this{
+        this._url = url;
+        return this;
+    }
+}

@@ -18,30 +18,25 @@ const props = defineProps({
     //isSingleDoctor:{type:Boolean}
 })
 
-const getRequest = () => {
-    const router = useRouter();
+const buildRequest = () => {
 
-    const currentRoute = (useRouter()).currentRoute.value.path;
-
+    const currentRoute = (useRouter())?.currentRoute?.value?.path;
     const request = new DoctorsRequest;
     request.forCurrentUrl(currentRoute)
-    //
-    console.log(currentRoute)
-    //
-    // return request;
-    return '';
+
+    return request;
 }
 
 
-onBeforeMount(()=>{
-    getDoctorsFromServer();
+onBeforeMount(async ()=>{
+    await doctorsService.getItemsFromServer( buildRequest().forPage(1) );
 });
 
-const getDoctorsFromServer = async () =>{
-    //get builded request
-
-    await doctorsService.getItemsFromServer(getRequest());
-}
+// const getDoctorsFromServer = async () =>{
+//     //get builded request
+//
+//
+// }
 
 const isOnline = ref(true);
 const fullName = ref('Клюев Борис Борисович');
