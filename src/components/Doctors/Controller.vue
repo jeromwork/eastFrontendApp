@@ -2,10 +2,9 @@
 import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, onBeforeMount } from "vue";
 import {doctorsList} from "./mockData/doctorsList";
 import DoctorsService from "../../server/services/Doctors/DoctorsService";
-// import DoctorsRequest from "../../server/api/Doctors/DoctorsRequest";
+import DoctorsRequest from "../../api/Doctors/DoctorsRequest";
 
 const doctorsService = new DoctorsService();
-
 
 //В этом компоненте обращаемся к сервису за данными по докторам
 //кроме сервиса Doctors ничего более не знаем (СЕО? Клиники?)
@@ -22,11 +21,12 @@ const props = defineProps({
 const getRequest = () => {
     const router = useRouter();
 
-    const currentRoute = router.currentRoute;
-    // const request = new DoctorsRequest;
-    // request.forCurrentUrl(currentRoute)
+    const currentRoute = (useRouter()).currentRoute.value.path;
+
+    const request = new DoctorsRequest;
+    request.forCurrentUrl(currentRoute)
     //
-    // console.log(currentRoute)
+    console.log(currentRoute)
     //
     // return request;
     return '';

@@ -1,12 +1,13 @@
 
-import {computed, reactive, ref, toRaw} from "vue";
+// import {computed, reactive, ref, toRaw} from "vue";
 // import DoctorsApi from '../api/DoctorsApi';
-import MultiStateManager from "~/server/services/util/MultiStateManager";//probably to use one state manage for many services - its global state
-
+import MultiStateManager from "../util/MultiStateManager";//probably to use one state manage for many services - its global state
 
 export default class DoctorsService{
-    private state = new MultiStateManager();
+    private state: MultiStateManager;
+
     constructor() {
+        this.state = new MultiStateManager();
     }
     async getItemsFromServer(request:Object){
         console.log(request)

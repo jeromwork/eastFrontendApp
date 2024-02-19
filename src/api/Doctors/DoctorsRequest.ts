@@ -1,7 +1,7 @@
-import RequestAdapterInterface from "~/server/api/RequestAdapterInterface";
+import type RequestAdapterInterface from "../../api/RequestAdapterInterface";
 
 
-class DoctorsRequest implements RequestAdapterInterface
+export default class DoctorsRequest implements RequestAdapterInterface
 {
     private _requestData: { [key: string]: any } = {};
     onUploadProgressCallback:Function = function (){};
@@ -46,6 +46,4 @@ class DoctorsRequest implements RequestAdapterInterface
 
 
 }
-
-export default DoctorsRequest
 
