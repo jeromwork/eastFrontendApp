@@ -17,24 +17,24 @@ onMounted(() => {
 
 });
 
-
+//todo doctorInfo.isSingleDoctor we can define and use in props DoctorCardController, or use special props doctors and other props, including isSingleDoctor
 </script>
 
 <template>
     <NuxtLayout name="doctors">
         <Doctors>
-            <template #doctor="doctorInfo" v-if="isSingleDoctor">
+            <template #doctor="doctorInfo">
 
-                <DoctorCardController v-bind="doctorInfo" #default="doctorInfoPrepared">
+                <DoctorCardController v-if="doctorInfo.isSingleDoctor" v-bind="doctorInfo" #default="doctorInfoPrepared">
                     <DoctorCardSingleDoctor v-bind="doctorInfoPrepared"/>
                 </DoctorCardController>
-            </template>
 
-            <template #doctor="doctorInfo" v-else>
-                <DoctorCardController :doctor="doctorInfo" v-slot="doctorInfo">
+                <DoctorCardController v-else :doctor="doctorInfo" v-slot="doctorInfo" >
                     <DoctorCardXL v-bind="doctorInfo"/>
                 </DoctorCardController>
+
             </template>
+
         </Doctors>
 
 

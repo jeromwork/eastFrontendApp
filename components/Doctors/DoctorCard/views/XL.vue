@@ -2,13 +2,15 @@
 //в этом компоненте только прием пропсов, проверка, и их отображение
 //в том числе во вложенных компонентах
 
-import { defineProps, withDefaults, reactive, ref, toRef, defineEmits, computed, toRaw } from "vue";
+import {defineProps, withDefaults, reactive, ref, toRef, defineEmits, computed, toRaw, defineOptions} from "vue";
 import type { Ref } from 'vue'
 interface DoctorCardViewProps {
     doctor: Object;
 }
 
-
+defineOptions({
+    inheritAttrs: false
+})
 const props = withDefaults(defineProps<DoctorCardViewProps>(), {
     doctor: {},
 });

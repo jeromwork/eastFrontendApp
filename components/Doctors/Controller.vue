@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw } from "vue";
 import {doctorsList} from "./mockData/doctorsList";
-import DoctorCardSingleDoctor from "./DoctorCard/views/SingleDoctor.vue";
-import DoctorCardController from "./DoctorCard/views/SingleDoctor.vue";
+import DoctorsService from "../../server/services/DoctorsService";
+
 
 
 //В этом компоненте обращаемся к сервису за данными по докторам
@@ -12,10 +12,15 @@ import DoctorCardController from "./DoctorCard/views/SingleDoctor.vue";
 //в этой view ничего не обрабатываем - только отобржаем/
 //а так же прокидывам данные дальше по вложенным компонентам
 
+
 const props = defineProps({
-    isSingleDoctor:{type:Boolean}
+    //isSingleDoctor:{type:Boolean}
 })
 
+
+const getDoctorsFromServer = async () =>{
+    await this.$store.dispatch('Doctors/getDoctors', {storeName: storeName});
+}
 
 const isOnline = ref(true);
 const fullName = ref('Клюев Борис Борисович');
