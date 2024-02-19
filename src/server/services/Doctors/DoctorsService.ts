@@ -21,18 +21,17 @@ export default class DoctorsService{
 
     }
     async getItemsFromServer(request:RequestAdapterInterface){
+
+        let response;
         if(this.isModxApi){
-            const response = await (new DoctorsModxApi).get(request.getRequestData())
+            console.log(request)
+            response = await (new DoctorsModxApi).get(request.getRequestData())
 
         }else {
-            const res = await (new DoctorsApi).get(request.getRequestData())
-            if( res.data ){
-
-                return res.data;
-            }else {
-                //     todo handle errors from server
-            }
+            response = await (new DoctorsModxApi).get(request.getRequestData())
         }
+
+        console.log(response)
 
     }
     items(condition:any) {

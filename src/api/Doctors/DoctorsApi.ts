@@ -15,6 +15,7 @@ export default class DoctorsApi {
             return res as ApiResponseInterface;
 
         } catch (error) {
+            console.log('error')
             // Handle the error if needed
 
             // You might want to return something in case of an error, or throw it again

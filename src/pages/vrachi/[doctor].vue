@@ -22,7 +22,7 @@ onMounted(() => {
 
 <template>
     <NuxtLayout name="doctors">
-        <Doctors>
+        <Doctors :is-modx-api="true">
             <template #doctor="doctorInfo">
 
                 <DoctorCardController v-if="doctorInfo.isSingleDoctor" v-bind="doctorInfo" #default="doctorInfoPrepared">

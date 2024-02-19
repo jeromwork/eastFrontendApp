@@ -1,22 +1,24 @@
-import {BASE_URL, API_URL} from '../config';
+import {BASE_URL, API_URL, API_MODX_URL} from '../config';
 import UseRequestAdapters from '~/server/services/util/UseRequestAdapters';
 import {postToServer} from '~/server/services/util/UseFetchToServer';
-import type ApiResponseInterface from "./ResponceInterfaces/ApiResponseInterface";
+import type ApiDoctorsResponseInterface from "./ResponceInterfaces/ApiDoctorsResponseInterface";
 
 
 export default class DoctorsApi {
     protected _url:string = '/doctors';
-    public async get(requestData: Object): Promise<ApiResponseInterface> {
+    public async get(requestData: Object): Promise<ApiDoctorsResponseInterface> {
         try {
-            const res = await postToServer(BASE_URL + API_URL + this._url, { ...requestData });
+            const res = await postToServer(API_MODX_URL, { ...requestData });
             // Assuming postToServer returns a Promise, you should await it
+            console.log(res)
+            //todo create useHandleAndSaveErrorFromServer class
 
             // Add a return statement here
-            return res as ApiResponseInterface;
+            return res as ApiDoctorsResponseInterface;
 
         } catch (error) {
             // Handle the error if needed
-
+            console.log('error')
             // You might want to return something in case of an error, or throw it again
             throw error;
         }
