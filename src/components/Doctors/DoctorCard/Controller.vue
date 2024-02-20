@@ -24,13 +24,6 @@ const props = defineProps<DoctorCardViewProps>();
 
 
 
-const isOnline = ref(true);
-const fullName = ref('Клюев Борис Борисович');
-const count = ref(0);
-
-let de = computed(()=>    fullName.value+count.value)
-const slotProps = {isOnline:isOnline, fullName:de, doctor_id:1};
-
 
 </script>
 

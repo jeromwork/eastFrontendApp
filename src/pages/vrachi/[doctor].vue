@@ -1,7 +1,6 @@
 
 
 <script setup>
-import {ref} from "vue";
 import Doctors from "../../components/Doctors/Controller";
 import DoctorCardController from '../../components/Doctors/DoctorCard/Controller'
 import DoctorCardSingleDoctor from '../../components/Doctors/DoctorCard/views/SingleDoctor.vue'
@@ -9,9 +8,16 @@ import DoctorCardXL from '../../components/Doctors/DoctorCard/views/XL.vue'
 
 // const route = useRoute();
 
-import { onMounted } from 'vue';
-console.log('index')
+import { onMounted, ref, defineAsyncComponent } from 'vue';
+
+// const Doctors = ref(null);
+
+
 onMounted(() => {
+    setTimeout(()=>{
+        // Doctors.value = defineAsyncComponent(async () => await import('../../components/Doctors/Controller'));
+        console.log('load doctors component')
+    }, 10000)
 
 
 });

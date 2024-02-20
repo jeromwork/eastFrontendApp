@@ -15,7 +15,7 @@ const doctorsService = new DoctorsService();
 //в этой view ничего не обрабатываем - только отобржаем/
 //а так же прокидывам данные дальше по вложенным компонентам
 
-console.log(111111111111)
+console.log('doctorsController.vue setup')
 const props = defineProps({
     //isSingleDoctor:{type:Boolean}
     isModxApi:{
@@ -34,7 +34,7 @@ const buildRequest = () => {
     if(props.isModxApi){
 
         return (new DoctorsModxRequest)
-            .forUrl(currentRoute)
+            .forCurrentUrl(currentRoute)
             .forAction('doctors/getDoctorsMultiList')
             .forComponent('health')
     }else {

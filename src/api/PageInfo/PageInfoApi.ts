@@ -1,18 +1,22 @@
-import {BASE_URL, API_URL} from '../config';
+
+//only one api for get page info, modx or laravel
+//
+
+import {API_MODX_URL} from '../config';
 import UseRequestAdapters from '~/server/services/util/UseRequestAdapters';
 import {postToServer} from '~/server/services/util/UseFetchToServer';
-import type ApiResponseInterface from "./ResponceInterfaces/ApiDoctorsResponseInterface";
+import type ApiGetPageInfoResponseInterface from "./ApiGetPageInfoResponseInterface";
 
 
-export default class DoctorsApi {
-    protected _url:string = '/doctors';
-    public async get(requestData: Object): Promise<ApiResponseInterface> {
+export default class PageInfoApi {
+
+    public async get(requestData: Object): Promise<ApiGetPageInfoResponseInterface> {
         try {
-            const res = await postToServer(BASE_URL + API_URL + this._url, { ...requestData });
+            const res = await postToServer(API_MODX_URL, { ...requestData });
             // Assuming postToServer returns a Promise, you should await it
 
             // Add a return statement here
-            return res as ApiResponseInterface;
+            return res as ApiGetPageInfoResponseInterface;
 
         } catch (error) {
             console.log('error')
@@ -23,8 +27,4 @@ export default class DoctorsApi {
         }
     }
 
-    withUrl(url:string):this{
-        this._url = url;
-        return this;
-    }
 }

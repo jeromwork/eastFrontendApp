@@ -18,6 +18,8 @@ export default defineNuxtConfig({
 
     },
   },
+
+
   router: {
     // Customize the Vue Router options
     // For example, you can set the 'history' mode to true or false

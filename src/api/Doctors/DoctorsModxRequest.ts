@@ -15,7 +15,7 @@ export default class DoctorsModxRequest implements RequestAdapterInterface
         return this;
     }
 
-    forUrl(url:string):this{
+    forCurrentUrl(url:string):this{
         this._requestData['url'] = url;
         return this;
     }
