@@ -1,8 +1,12 @@
 import { ref, reactive, computed, toRef } from 'vue';
 import StateManager from "./StateManager";
 
-
-export default class MultiStateManager extends StateManager{
+interface StateObject {
+    count: number;
+    itemsIds: {};
+    items: any[];
+}
+export default class MultiStateManager extends StateManager<StateObject>{
 
     _requestData = {};
 
@@ -20,6 +24,7 @@ export default class MultiStateManager extends StateManager{
     };
 
 
+
     //getters
     // public getItems(){        return toRef(this._state[this._stateName], 'items'); };
     public count() {
@@ -31,7 +36,6 @@ export default class MultiStateManager extends StateManager{
             this._state[this._stateName].itemsIds = {};
             return this;
         }
-        console.log(this._state)
         return this;
     }
 }

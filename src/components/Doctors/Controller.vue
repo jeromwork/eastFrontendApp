@@ -55,6 +55,7 @@ onBeforeMount(async ()=>{
 //
 // }
 const doctors = computed(()=> doctorsService.items())
+const typeDoctorPage = doctorsService.typeDoctorPage()
 // const doctors = ref(doctorsList)
 const count = ref(0);
 
@@ -63,7 +64,10 @@ const count = ref(0);
 
 <template>
 <div v-for="(doctor, key) in doctors" v-if="doctors">
-    <slot name="doctor" v-bind="doctor"></slot>
+{{typeDoctorPage}}
+
+    <slot v-if="typeDoctorPage==='list'" name="doctor" v-bind="doctor"></slot>
+    <slot v-if="typeDoctorPage==='single'" name="singleDoctor" v-bind="doctor"></slot>
 </div>
 
 </template>

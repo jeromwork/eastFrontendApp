@@ -25,14 +25,15 @@ onMounted(() => {
         <Doctors :is-modx-api="true">
             <template #doctor="doctorInfo">
 
-                <DoctorCardController v-if="doctorInfo.isSingleDoctor" v-bind="doctorInfo" #default="doctorInfoPrepared">
-                    <DoctorCardSingleDoctor v-bind="doctorInfoPrepared"/>
-                </DoctorCardController>
-
-                <DoctorCardController v-else v-bind="doctorInfo" #default="doctorInfoPrepared" >
+                <DoctorCardController v-bind="doctorInfo" #default="doctorInfoPrepared" >
                     <DoctorCardXL v-bind="{doctor:doctorInfoPrepared}"/>
                 </DoctorCardController>
 
+            </template>
+            <template #singleDoctor="doctorInfo">
+                <DoctorCardController v-bind="doctorInfo" #default="doctorInfoPrepared">
+                    <DoctorCardSingleDoctor v-bind="doctorInfoPrepared"/>
+                </DoctorCardController>
             </template>
 
         </Doctors>

@@ -18,8 +18,7 @@ const props = withDefaults(defineProps<DoctorCardViewProps>(), {
 
 
 <template>
-    <span>Single doctor index</span>
-  {{props.doctor}}
+
     <h1>!!{{doctor.fullname}}</h1>
     <div
             v-if="doctor.isOnline"

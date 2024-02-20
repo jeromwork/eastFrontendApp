@@ -10,15 +10,17 @@ import ApiDoctorsResponseInterface from "../../../api/Doctors/ResponceInterfaces
 const globalMultiState = new MultiStateManager();
 export default class DoctorsService{
     private state: StateManager;
+    private stateName: string = 'default';
     private modxApiUrl:string = '';
     protected isModxApi:boolean = false;
 
-    constructor(state?: StateManager) {
+    constructor(stateName:string = 'default', state?: StateManager) {
         if(state){
             this.state = state;
         }else{
             this.state = globalMultiState;
         }
+        this.stateName = stateName;
 
     }
     async getItemsFromServer(request:RequestAdapterInterface){
@@ -29,18 +31,26 @@ export default class DoctorsService{
         }else {
             response = await (new DoctorsModxApi).get(request.getRequestData()) as ApiDoctorsResponseInterface;
         }
-        //todo set response doctors data to state
+
+        if(response.doctors && response.doctors.length === 1){
+            this.state.set('typeDoctorPage', 'single');
+        }else {
+            this.state.set('typeDoctorPage', 'list');
+        }
+        //todo add to state info type doctor page: list, single doctor, dismiss doctor from server
         this.state.setItems(response.doctors);
     }
     items(condition?:any) {
         return this.state.getItems();
-        return [];
     };
 
     count() {
         // return this.state.count();
     };
 
+    typeDoctorPage(){
+        return this.state.get('typeDoctorPage');
+    }
     public useModxApiUrl( url:string ):this{
         this.modxApiUrl = url;
         return this;
