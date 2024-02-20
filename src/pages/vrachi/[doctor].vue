@@ -7,41 +7,36 @@ import DoctorCardController from '../../components/Doctors/DoctorCard/Controller
 import DoctorCardSingleDoctor from '../../components/Doctors/DoctorCard/views/SingleDoctor.vue'
 import DoctorCardXL from '../../components/Doctors/DoctorCard/views/XL.vue'
 
-const isSingleDoctor = ref(true);
 // const route = useRoute();
 
 import { onMounted } from 'vue';
-
+console.log('index')
 onMounted(() => {
 
 
 });
 
-//todo doctorInfo.isSingleDoctor we can define and use in props DoctorCardController, or use special props doctors and other props, including isSingleDoctor
 </script>
 
 <template>
+    <div>
     <NuxtLayout name="doctors">
         <Doctors :is-modx-api="true">
             <template #doctorsList="doctorInfo">
                 <DoctorCardController v-bind="doctorInfo" #default="doctorInfoPrepared" >
-                    <DoctorCardXL v-bind="{doctor:doctorInfoPrepared}"/>
+                    <DoctorCardXL v-bind="doctorInfoPrepared"/>
                 </DoctorCardController>
             </template>
             <template #singleDoctor="doctorInfo">
                 <DoctorCardController v-bind="doctorInfo" #default="doctorInfoPrepared">
-                    <DoctorCardSingleDoctor v-bind="{doctor:doctorInfoPrepared}"/>
+                    <DoctorCardSingleDoctor v-bind="doctorInfoPrepared"/>
                 </DoctorCardController>
             </template>
 
         </Doctors>
 
-
-
-
-
-
     </NuxtLayout>
+    </div>
 </template>
 
 <style scoped>

@@ -15,7 +15,7 @@ const doctorsService = new DoctorsService();
 //в этой view ничего не обрабатываем - только отобржаем/
 //а так же прокидывам данные дальше по вложенным компонентам
 
-
+console.log(111111111111)
 const props = defineProps({
     //isSingleDoctor:{type:Boolean}
     isModxApi:{
@@ -66,8 +66,8 @@ const count = ref(0);
 <div v-for="(doctor, key) in doctors" v-if="doctors">
 {{typeDoctorPage}}
 
-    <slot v-if="typeDoctorPage==='list'" name="doctorsList" v-bind="doctor"></slot>
-    <slot v-if="typeDoctorPage==='single'" name="singleDoctor" v-bind="doctor"></slot>
+    <slot v-if="typeDoctorPage==='list'" name="doctorsList" v-bind="{doctor}"></slot>
+    <slot v-if="typeDoctorPage==='single'" name="singleDoctor" v-bind="{doctor}"></slot>
 </div>
 
 </template>

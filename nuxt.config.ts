@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@vueuse/nuxt',
+
   ],
   css:[
       '~/public/scss/main.scss'
@@ -16,6 +17,19 @@ export default defineNuxtConfig({
       // Run after the main build
 
     },
+  },
+  router: {
+    // Customize the Vue Router options
+    // For example, you can set the 'history' mode to true or false
+    // to enable or disable HTML5 history mode
+    // More options: https://router.vuejs.org/api/#options
+    // options: {
+    //   history:{createRouter({
+    //                           history: createWebHistory(),
+    // })}
+    // },
+
+    // Additional router options...
   },
   resolve: {
     alias: {

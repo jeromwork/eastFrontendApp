@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw } from "vue";
 
-
+import type DoctorInterface from "../../../Interfaces/Doctors/DoctorInterface";
 //В этом компоненте обращаемся к сервису за данными по доктору
 //Возможно доктора уже загружены - в списке докторов, тогда просто отображаем данные доктора
 //кроме сервиса Doctors ничего более не знаем (СЕО? Клиники?)
@@ -15,11 +15,12 @@ import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw } from 
  * Данные по рейтингу приходят с данными доктора*/
 const raiting = computed(()=>    4.5)
 
-const props = defineProps({
-    id:{type:Number},
-    fullname:{type:String},
+interface DoctorCardViewProps {
+    doctor: DoctorInterface;
+}
 
-});
+
+const props = defineProps<DoctorCardViewProps>();
 
 
 
