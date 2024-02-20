@@ -31,13 +31,13 @@ export default class DoctorsService{
         }else {
             response = await (new DoctorsModxApi).get(request.getRequestData()) as ApiDoctorsResponseInterface;
         }
-
+//todo add to state info type doctor page: list, single doctor, dismiss doctor from server
         if(response.doctors && response.doctors.length === 1){
             this.state.set('typeDoctorPage', 'single');
         }else {
             this.state.set('typeDoctorPage', 'list');
         }
-        //todo add to state info type doctor page: list, single doctor, dismiss doctor from server
+
         this.state.setItems(response.doctors);
     }
     items(condition?:any) {

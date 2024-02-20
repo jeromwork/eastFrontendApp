@@ -23,16 +23,14 @@ onMounted(() => {
 <template>
     <NuxtLayout name="doctors">
         <Doctors :is-modx-api="true">
-            <template #doctor="doctorInfo">
-
+            <template #doctorsList="doctorInfo">
                 <DoctorCardController v-bind="doctorInfo" #default="doctorInfoPrepared" >
                     <DoctorCardXL v-bind="{doctor:doctorInfoPrepared}"/>
                 </DoctorCardController>
-
             </template>
             <template #singleDoctor="doctorInfo">
                 <DoctorCardController v-bind="doctorInfo" #default="doctorInfoPrepared">
-                    <DoctorCardSingleDoctor v-bind="doctorInfoPrepared"/>
+                    <DoctorCardSingleDoctor v-bind="{doctor:doctorInfoPrepared}"/>
                 </DoctorCardController>
             </template>
 
