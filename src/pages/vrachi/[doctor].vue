@@ -11,7 +11,11 @@ import DoctorCardXL from '../../components/Doctors/DoctorCard/views/XL.vue'
 import { onMounted, ref, defineAsyncComponent } from 'vue';
 
 // const Doctors = ref(null);
+// console.log(process)
 
+if (process.server) { // [!code  focus]
+    console.log('process.server')
+}
 
 onMounted(() => {
     setTimeout(()=>{

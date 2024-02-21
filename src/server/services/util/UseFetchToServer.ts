@@ -2,7 +2,7 @@
 import buildGetURL from './UseGetParametersBuilder';
 
 function addJwtTokenToRequest(options?: RequestInit){
-    if(localStorage.getItem('jwtToken')){
+    if(typeof localStorage !== 'undefined' && localStorage && localStorage.getItem('jwtToken')){
         const headers = options?.headers ? new Headers(options.headers) : new Headers();
         headers.set('Authorization','Bearer ' + localStorage.getItem('jwtToken'));
         options.headers = headers;
@@ -12,7 +12,7 @@ function addJwtTokenToRequest(options?: RequestInit){
 
 function saveJWTToken(data){
     //todo fill right jwt token string from server response format
-    if(data?.jwtToken){
+    if(data?.jwtToken && localStorage){
         localStorage.setItem('jwtToken', data.jwtToken);
     }
 }
@@ -57,7 +57,7 @@ export async function fetchToServer<T>(url: string, options?: RequestInit) {
         }
 
         const data = await response.json();
-        saveJWTToken(data);
+        //saveJWTToken(data);
         return data as T;
     } catch (error) {
         throw new Error(`Fetch error: ${error.message}`);

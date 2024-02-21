@@ -18,7 +18,9 @@ export default defineNuxtConfig({
 
     },
   },
+  // asyncContext:true,
 
+ssr:true,
 
   router: {
     // Customize the Vue Router options

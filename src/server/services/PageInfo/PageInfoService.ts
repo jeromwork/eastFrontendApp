@@ -8,6 +8,7 @@ import ApiGetPageInfoResponseInterface from "../../../api/PageInfo/ApiGetPageInf
 
 export default class PageInfoService{
     private state: StateManager;
+    protected fetch = null;
 
     constructor() {
         this.state = new StateManager();
@@ -15,18 +16,19 @@ export default class PageInfoService{
     public async getPageInfoFromServer( request:Object = {} ){
 
 
-        // const previousUrl = (createWebHistory()?.state?.back) ? createWebHistory().state.back : '/';
-        // const currentUrl = (useRouter())?.currentRoute?.value?.path;
-
         const requestData = {...request,
             component:'east',
             action:'getPageInfo',
 
         };
-        const {data, sessionId} = await (new PageInfoApi).get(requestData) as ApiGetPageInfoResponseInterface;
 
-        this.state.set('pageInfo', data.resource);
-        this.state.set('sessionId', sessionId);
+        // useFetchEastApi()
+
+
+        const {data, sessionId} = await (new PageInfoApi).get(requestData) as ApiGetPageInfoResponseInterface;
+        //
+        // this.state.set('pageInfo', data.resource);
+        // this.state.set('sessionId', sessionId);
     }
 
 
@@ -40,6 +42,11 @@ export default class PageInfoService{
 
     typeDoctorPage(){
         return this.state.get('typeDoctorPage');
+    }
+
+    withFetch(f):this{
+        this.fetch = f
+        return this;
     }
 
 }
