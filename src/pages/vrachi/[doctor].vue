@@ -1,47 +1,50 @@
 
 
 <script setup>
-import {ref} from "vue";
 import Doctors from "../../components/Doctors/Controller";
 import DoctorCardController from '../../components/Doctors/DoctorCard/Controller'
 import DoctorCardSingleDoctor from '../../components/Doctors/DoctorCard/views/SingleDoctor.vue'
 import DoctorCardXL from '../../components/Doctors/DoctorCard/views/XL.vue'
 
-const isSingleDoctor = ref(true);
 // const route = useRoute();
 
-import { onMounted } from 'vue';
+import { onMounted, ref, defineAsyncComponent } from 'vue';
+
+// const Doctors = ref(null);
+// console.log(process)
+
+
 
 onMounted(() => {
+    // setTimeout(()=>{
+    //     Doctors.value = defineAsyncComponent(async () => await import('../../components/Doctors/Controller'));
+    //     console.log('load doctors component')
+    // }, 10000)
 
 
 });
 
-//todo doctorInfo.isSingleDoctor we can define and use in props DoctorCardController, or use special props doctors and other props, including isSingleDoctor
 </script>
 
 <template>
+    <div>
     <NuxtLayout name="doctors">
         <Doctors :is-modx-api="true">
             <template #doctorsList="doctorInfo">
                 <DoctorCardController v-bind="doctorInfo" #default="doctorInfoPrepared" >
-                    <DoctorCardXL v-bind="{doctor:doctorInfoPrepared}"/>
+                    <DoctorCardXL v-bind="doctorInfoPrepared"/>
                 </DoctorCardController>
             </template>
             <template #singleDoctor="doctorInfo">
                 <DoctorCardController v-bind="doctorInfo" #default="doctorInfoPrepared">
-                    <DoctorCardSingleDoctor v-bind="{doctor:doctorInfoPrepared}"/>
+                    <DoctorCardSingleDoctor v-bind="doctorInfoPrepared"/>
                 </DoctorCardController>
             </template>
 
         </Doctors>
 
-
-
-
-
-
     </NuxtLayout>
+    </div>
 </template>
 
 <style scoped>

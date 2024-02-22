@@ -1,7 +1,7 @@
 import {BASE_URL, API_URL} from '../config';
 import UseRequestAdapters from '~/server/services/util/UseRequestAdapters';
 import {postToServer} from '~/server/services/util/UseFetchToServer';
-import type ApiResponseInterface from "./ResponceInterfaces/ApiResponseInterface";
+import type ApiResponseInterface from "./ResponceInterfaces/ApiDoctorsResponseInterface";
 
 
 export default class DoctorsApi {

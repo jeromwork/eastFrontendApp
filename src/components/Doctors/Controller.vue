@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, onBeforeMount } from "vue";
+import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, onBeforeMount , onMounted} from "vue";
 import {doctorsList} from "./mockData/doctorsList";
 import DoctorsService from "../../server/services/Doctors/DoctorsService";
 import DoctorsRequest from "../../api/Doctors/DoctorsRequest";
@@ -15,7 +15,7 @@ const doctorsService = new DoctorsService();
 //в этой view ничего не обрабатываем - только отобржаем/
 //а так же прокидывам данные дальше по вложенным компонентам
 
-
+console.log('doctorsController.vue setup')
 const props = defineProps({
     //isSingleDoctor:{type:Boolean}
     isModxApi:{
@@ -34,7 +34,7 @@ const buildRequest = () => {
     if(props.isModxApi){
 
         return (new DoctorsModxRequest)
-            .forUrl(currentRoute)
+            .forCurrentUrl(currentRoute)
             .forAction('doctors/getDoctorsMultiList')
             .forComponent('health')
     }else {
@@ -42,10 +42,11 @@ const buildRequest = () => {
     }
 
 }
+await doctorsService.getItemsFromServer( buildRequest().forPage(1) );
+
+onMounted(async ()=>{
 
 
-onBeforeMount(async ()=>{
-    await doctorsService.getItemsFromServer( buildRequest().forPage(1) );
     // doctors.value = computed(doctorsService.items)
 });
 
@@ -64,10 +65,9 @@ const count = ref(0);
 
 <template>
 <div v-for="(doctor, key) in doctors" v-if="doctors">
-{{typeDoctorPage}}
 
-    <slot v-if="typeDoctorPage==='list'" name="doctorsList" v-bind="doctor"></slot>
-    <slot v-if="typeDoctorPage==='single'" name="singleDoctor" v-bind="doctor"></slot>
+    <slot v-if="typeDoctorPage==='list'" name="doctorsList" v-bind="{doctor}"></slot>
+    <slot v-if="typeDoctorPage==='single'" name="singleDoctor" v-bind="{doctor}"></slot>
 </div>
 
 </template>
