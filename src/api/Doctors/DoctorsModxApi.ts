@@ -11,17 +11,26 @@ export default class DoctorsApi {
             const res = await postToServer(API_MODX_URL, { ...requestData });
             // Assuming postToServer returns a Promise, you should await it
             //todo create useHandleAndSaveErrorFromServer class
-            console.log(11111111111)
 
-
-            const res2 = await $fetch(API_MODX_URL, {
-                method: 'POST',
-                body: { ...requestData }
-
-
-            })
-            // Add a return statement here
+            // const res2 = await useFetch(API_MODX_URL)
+            //
+            // const { data } = await useFetch(API_MODX_URL, {
+            //     method: 'POST',
+            //     body: JSON.stringify(requestData),
+            //     server: true,
+            // })
+            // if(process.server){
+            //     console.log('-------------------------------')
+            // }
+            //
+            //
+            // const res = await $fetch(API_MODX_URL, {
+            //     method: 'POST',
+            //     body: { ...requestData }
+            // })
             return res as ApiDoctorsResponseInterface;
+            // Add a return statement here
+            return JSON.parse(res as string) as ApiDoctorsResponseInterface;
 
         } catch (error) {
             // Handle the error if needed

@@ -13,15 +13,13 @@ import { onMounted, ref, defineAsyncComponent } from 'vue';
 // const Doctors = ref(null);
 // console.log(process)
 
-if (process.server) { // [!code  focus]
-    console.log('process.server')
-}
+
 
 onMounted(() => {
-    setTimeout(()=>{
-        // Doctors.value = defineAsyncComponent(async () => await import('../../components/Doctors/Controller'));
-        console.log('load doctors component')
-    }, 10000)
+    // setTimeout(()=>{
+    //     Doctors.value = defineAsyncComponent(async () => await import('../../components/Doctors/Controller'));
+    //     console.log('load doctors component')
+    // }, 10000)
 
 
 });

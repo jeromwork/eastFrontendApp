@@ -27,7 +27,7 @@ export default class PageInfoApi {
             //
             // console.log(res)
             return {data:{resource:{}}}
-             //const res = await postToServer(API_MODX_URL, { ...requestData });
+             const res = await postToServer(API_MODX_URL, { ...requestData });
 
             // // Assuming postToServer returns a Promise, you should await it
             //

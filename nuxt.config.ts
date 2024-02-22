@@ -20,8 +20,10 @@ export default defineNuxtConfig({
   },
   // asyncContext:true,
 
-ssr:true,
-
+  sourcemap: {
+    server: true,
+    client: true
+  },
   router: {
     // Customize the Vue Router options
     // For example, you can set the 'history' mode to true or false
