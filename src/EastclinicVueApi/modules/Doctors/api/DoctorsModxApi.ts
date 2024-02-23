@@ -1,6 +1,5 @@
-import {BASE_URL, API_URL, API_MODX_URL} from '../config';
-import UseRequestAdapters from '~/server/services/util/UseRequestAdapters';
-import {postToServer} from '~/server/services/util/UseFetchToServer';
+import {BASE_URL, API_URL, API_MODX_URL} from '../../../config';
+import {postToServer} from '../../../util/UseFetchToServer';
 import type ApiDoctorsResponseInterface from "./ResponceInterfaces/ApiDoctorsResponseInterface";
 
 

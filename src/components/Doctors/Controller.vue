@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, onBeforeMount , onMounted} from "vue";
 import {doctorsList} from "./mockData/doctorsList";
-import DoctorsService from "../../server/services/Doctors/DoctorsService";
-import DoctorsRequest from "../../api/Doctors/DoctorsRequest";
-import DoctorsModxRequest from "../../api/Doctors/DoctorsModxRequest";
+import {DoctorsService, DoctorsRequest, DoctorsModxRequest} from "../../EastclinicVueApi";
 
 const doctorsService = new DoctorsService();
 

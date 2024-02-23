@@ -1,9 +1,9 @@
 
 // import {computed, reactive, ref, toRaw} from "vue";
 import DoctorsApi from './api/DoctorsApi';
-import DoctorsModxApi from '../../../api/Doctors/DoctorsModxApi';
+import DoctorsModxApi from './api/DoctorsModxApi';
 import MultiStateManager from "../../util/MultiStateManager";//probably to use one state manage for many services - its global state
-import type RequestAdapterInterface from "../../../api/RequestAdapterInterface";
+import type ModxRequestAdapterInterface from "../../interfaces/ModxRequestAdapterInterface";
 import StateManager from "../../util/StateManager";
 import type ApiDoctorsResponseInterface from "./api/ResponceInterfaces/ApiDoctorsResponseInterface";
 
@@ -11,8 +11,6 @@ const globalMultiState = new MultiStateManager();
 export default class DoctorsService{
     private state: StateManager;
     private stateName: string = 'default';
-    private modxApiUrl:string = '';
-    protected isModxApi:boolean = false;
 
     constructor(stateName:string = 'default', state?: StateManager) {
         if(state){
@@ -23,14 +21,12 @@ export default class DoctorsService{
         this.stateName = stateName;
 
     }
-    async getItemsFromServer(request:RequestAdapterInterface){
+    async getItemsFromServer(request:ModxRequestAdapterInterface){
 
         let response;
-        if(this.isModxApi){
-            response = await (new DoctorsModxApi).get(request.getRequestData()) as ApiDoctorsResponseInterface;
-        }else {
-            response = await (new DoctorsModxApi).get(request.getRequestData()) as ApiDoctorsResponseInterface;
-        }
+        response = await (new DoctorsModxApi).get(request.getRequestData()) as ApiDoctorsResponseInterface;
+        // response = await (new DoctorsApi).get(request.getRequestData()) as ApiDoctorsResponseInterface;
+
 //todo add to state info type doctor page: list, single doctor, dismiss doctor from server
         if(response.doctors && response.doctors.length === 1){
             this.state.set('typeDoctorPage', 'single');
@@ -51,14 +47,7 @@ export default class DoctorsService{
     typeDoctorPage(){
         return this.state.get('typeDoctorPage');
     }
-    public useModxApiUrl( url:string ):this{
-        this.modxApiUrl = url;
-        return this;
-    }
 
-    public useModxApi():this{
-        this.isModxApi = true;
-        return this;
-    }
+
 
 }

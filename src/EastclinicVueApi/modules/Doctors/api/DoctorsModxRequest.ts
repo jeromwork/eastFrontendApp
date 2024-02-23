@@ -1,4 +1,4 @@
-import type RequestAdapterInterface from "../../api/RequestAdapterInterface";
+import type RequestAdapterInterface from "../../../interfaces/RequestAdapterInterface";
 
 
 export default class DoctorsModxRequest implements RequestAdapterInterface
