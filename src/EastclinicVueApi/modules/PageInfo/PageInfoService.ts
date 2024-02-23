@@ -2,8 +2,8 @@
 // import {computed, reactive, ref, toRaw} from "vue";
 import PageInfoApi from '../../../api/PageInfo/PageInfoApi';
 import type RequestAdapterInterface from "../../../api/RequestAdapterInterface";
-import StateManager from "../util/StateManager";
-import ApiGetPageInfoResponseInterface from "../../../api/PageInfo/ApiGetPageInfoResponseInterface";
+import StateManager from "../../util/StateManager";
+import type ApiGetPageInfoResponseInterface from "./api/ApiGetPageInfoResponseInterface";
 // import {createWebHistory, useRouter} from "vue-router";
 
 export default class PageInfoService{
@@ -44,7 +44,7 @@ export default class PageInfoService{
         return this.state.get('typeDoctorPage');
     }
 
-    withFetch(f):this{
+    withFetch(f:any):this{
         this.fetch = f
         return this;
     }

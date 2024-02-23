@@ -1,11 +1,11 @@
 
 // import {computed, reactive, ref, toRaw} from "vue";
-import DoctorsApi from '../../../api/Doctors/DoctorsApi';
+import DoctorsApi from './api/DoctorsApi';
 import DoctorsModxApi from '../../../api/Doctors/DoctorsModxApi';
-import MultiStateManager from "../util/MultiStateManager";//probably to use one state manage for many services - its global state
+import MultiStateManager from "../../util/MultiStateManager";//probably to use one state manage for many services - its global state
 import type RequestAdapterInterface from "../../../api/RequestAdapterInterface";
-import StateManager from "../util/StateManager";
-import ApiDoctorsResponseInterface from "../../../api/Doctors/ResponceInterfaces/ApiDoctorsResponseInterface";
+import StateManager from "../../util/StateManager";
+import type ApiDoctorsResponseInterface from "./api/ResponceInterfaces/ApiDoctorsResponseInterface";
 
 const globalMultiState = new MultiStateManager();
 export default class DoctorsService{
