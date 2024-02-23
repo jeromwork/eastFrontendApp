@@ -1,22 +1,22 @@
 import { ref, reactive, computed, toRef } from 'vue';
-import StateManager from "./StateManager";
 
-interface StateObject {
-    count: number;
-    itemsIds: {};
-    items: any[];
+interface DefaultStateObject {
+    [key: string]: any;
 }
-export default class MultiStateManager extends StateManager<StateObject>{
-
+export default class MultiStateManager implements DefaultStateObject{
+    protected _state: { [key: string]: T } = {};
+    protected _stateName = 'default'
     _requestData = {};
 
     constructor( name = 'default') {
-        super();
         this._stateName = name;
         this._state[name] = reactive({ count: 0, itemsIds: {}, items: [] });
     }
     //mutations
-
+    public set<K extends keyof T>(name: string, value: T[K]): this {
+        this._state[this._stateName][name] = value;
+        return this;
+    }
 
     public setCount(count:number){
         this._state[this._stateName].count = count;
@@ -31,6 +31,7 @@ export default class MultiStateManager extends StateManager<StateObject>{
         return toRef(this._state[this._stateName], 'count');
         }
     public setItems (items:any):this {
+        console.log(items)
         this._state[this._stateName].items = items;
         if(items.length === 0){
             this._state[this._stateName].itemsIds = {};
@@ -38,6 +39,15 @@ export default class MultiStateManager extends StateManager<StateObject>{
         }
         return this;
     }
+
+    public getItems(){
+        return computed(()=>this._state[this._stateName]).value.items;
+    };
+    public get<K extends keyof T>(key: string) {
+        return toRef(this._state[this._stateName], key);
+    }
+
+
 }
 
 

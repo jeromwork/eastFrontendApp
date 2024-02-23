@@ -1,5 +1,8 @@
 import type RequestAdapterInterface from "../../../interfaces/RequestAdapterInterface";
 
+export interface DoctorsRequestInterface {
+    component:string,
+    action:string }
 
 export default class DoctorsRequest implements RequestAdapterInterface
 {
@@ -52,7 +55,7 @@ export default class DoctorsRequest implements RequestAdapterInterface
 
     //getters
 
-    getRequestData() { return this._requestData; }
+    getRequestData():DoctorsRequestInterface { return this._requestData as DoctorsRequestInterface; }
 
 
 }

@@ -3,10 +3,15 @@ import {postToServer} from '../../../util/UseFetchToServer';
 import type ApiDoctorsResponseInterface from "./ResponceInterfaces/ApiDoctorsResponseInterface";
 
 
+
 export default class DoctorsApi {
     protected _url:string = '/doctors';
-    public async get(requestData: Object): Promise<ApiDoctorsResponseInterface> {
+    public async get(requestData: { component:string, action:string }): Promise<ApiDoctorsResponseInterface> {
         try {
+            //check request data for working modx api
+            if(!requestData.component || !requestData.action ){
+                throw new Error('Error modx request data for get doctors');
+            }
             const res = await postToServer(API_MODX_URL, { ...requestData });
             // Assuming postToServer returns a Promise, you should await it
             //todo create useHandleAndSaveErrorFromServer class

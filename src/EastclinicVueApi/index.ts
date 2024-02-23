@@ -2,9 +2,9 @@
 
 
 // import DoctorsRequest from './modules/Doctors/api/DoctorsRequest'
-import DoctorsRequest from './modules/Doctors/api/DoctorsModxRequest'
+import DoctorsRequest from './modules/Doctors/api/DoctorsRequest'
 
-import {baseUrl, API_URL, BASE_URL, API_MODX_URL} from './config'
+// import {baseUrl, API_URL, BASE_URL, API_MODX_URL} from './config'
 
 
 import DoctorsService from './modules/Doctors/DoctorsService';
@@ -27,7 +27,8 @@ export {
 
 
     // ClinicsService,
+    // ClinicsRequest,
 
-    baseUrl, API_URL, BASE_URL, API_MODX_URL,
+
 
 };

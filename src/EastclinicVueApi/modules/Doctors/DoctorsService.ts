@@ -3,7 +3,8 @@
 import DoctorsApi from './api/DoctorsApi';
 import DoctorsModxApi from './api/DoctorsModxApi';
 import MultiStateManager from "../../util/MultiStateManager";//probably to use one state manage for many services - its global state
-import type ModxRequestAdapterInterface from "../../interfaces/ModxRequestAdapterInterface";
+import type DoctorsRequestInterface from "./api/DoctorsRequest";
+import  DoctorsRequest from "./api/DoctorsRequest";
 import StateManager from "../../util/StateManager";
 import type ApiDoctorsResponseInterface from "./api/ResponceInterfaces/ApiDoctorsResponseInterface";
 
@@ -21,10 +22,14 @@ export default class DoctorsService{
         this.stateName = stateName;
 
     }
-    async getItemsFromServer(request:ModxRequestAdapterInterface){
+    async getItemsFromServer(request:DoctorsRequest){
 
         let response;
-        response = await (new DoctorsModxApi).get(request.getRequestData()) as ApiDoctorsResponseInterface;
+        //use modx, add modx request data
+        request.with('action', 'doctors/getDoctorsMultiList').with('component', 'health')
+
+
+        response = await (new DoctorsModxApi).get(request.getRequestData() as DoctorsRequestInterface) as ApiDoctorsResponseInterface;
         // response = await (new DoctorsApi).get(request.getRequestData()) as ApiDoctorsResponseInterface;
 
 //todo add to state info type doctor page: list, single doctor, dismiss doctor from server
