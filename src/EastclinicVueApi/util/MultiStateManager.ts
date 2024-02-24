@@ -29,7 +29,6 @@ export default class MultiStateManager <T extends DefaultState = DefaultState>{
         return toRef(this._state[this._stateName], 'count');
         }
     public setItems (items:any):this {
-        console.log(items)
         this._state[this._stateName].items = items;
         if(items.length === 0){
             this._state[this._stateName].itemsIds = {};
@@ -42,7 +41,8 @@ export default class MultiStateManager <T extends DefaultState = DefaultState>{
         return computed(()=>this._state[this._stateName]).value.items;
     };
     public get<K extends keyof T>(key: string) {
-        return toRef(this._state[this._stateName], key);
+        return computed(()=>this._state[this._stateName][key]);
+        // return toRef(this._state[this._stateName], key);
     }
 
 

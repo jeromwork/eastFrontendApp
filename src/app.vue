@@ -1,23 +1,18 @@
-
 <script setup lang="ts">
-import {onBeforeRouteUpdate} from "vue-router";
-useSeoMeta({
-        title: 'My Amazing Site',
-        ogTitle: 'My Amazing Site',
-        description: 'This is my amazing site, let me tell you all about it.',
-        ogDescription: 'This is my amazing site, let me tell you all about it.',
-        ogImage: 'https://example.com/image.png',
-        twitterCard: 'summary_large_image',
-})
+import {PageInfoService} from "./EastclinicVueApi";
+// import type {PageInfoInterface} from "./EastclinicVueApi";
+import {ref, toRef} from 'vue'
 
-console.log('99909990')
+const pageInfo = PageInfoService.getPageInfo
 
-// await callOnce(async () => {
-//         websiteConfig.value = await $fetch('https://my-cms.com/api/website-config')
-// })
+useSeoMeta(    {
+        title: () => pageInfo.value.title,
+        articleAuthor: () => pageInfo.value.authorArticle,
+    }
+
+)
+
 </script>
 <template>
-
-
         <NuxtPage />
 </template>

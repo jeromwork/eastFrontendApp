@@ -11,8 +11,7 @@ import DoctorsService from './modules/Doctors/DoctorsService';
 
 import PageInfoService from './modules/PageInfo/PageInfoService';
 import PageInfoRequest from './modules/PageInfo/api/PageInfoRequest';
-
-
+import type PageInfoInterface from './interfaces/PageInfoInterface'
 // import ClinicsService from './modules/Clinics/ClinicsService';
 
 export {
@@ -25,10 +24,13 @@ export {
     PageInfoService,
     PageInfoRequest,
 
-
     // ClinicsService,
     // ClinicsRequest,
 
 
 
 };
+
+export type {
+    PageInfoInterface,
+}

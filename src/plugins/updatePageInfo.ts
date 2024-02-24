@@ -7,15 +7,14 @@ export default defineNuxtPlugin((_nuxtApp) => {
 
 
     router.beforeEach(async (to, _from, next) => {
-
-        const pageInfoService = new PageInfoService()
+        // const pageInfoService = new PageInfoService()
 
         const request = (new PageInfoRequest).withResourceUrl(to.path).withPreviousUrl(_from.path);
         if( !sessionId && to.path === _from.path){
             request.withNewSession();
         }
 
-        await pageInfoService.refreshPageInfoFromServer(request)//its all!
+        await PageInfoService.refreshPageInfoFromServer(request)//its all!
 
         //after fetch to server, in pageInfoService global contains reactive page info data
 
