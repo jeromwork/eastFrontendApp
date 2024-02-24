@@ -5,12 +5,12 @@ function addJwtTokenToRequest(options?: RequestInit){
     if(typeof localStorage !== 'undefined' && localStorage && localStorage.getItem('jwtToken')){
         const headers = options?.headers ? new Headers(options.headers) : new Headers();
         headers.set('Authorization','Bearer ' + localStorage.getItem('jwtToken'));
-        options.headers = headers;
+        if(options) options.headers = headers;
     }
     return options;
 }
 
-function saveJWTToken(data){
+function saveJWTToken(data:any){
     //todo fill right jwt token string from server response format
     if(data?.jwtToken && localStorage){
         localStorage.setItem('jwtToken', data.jwtToken);
@@ -59,7 +59,7 @@ export async function fetchToServer<T>(url: string, options?: RequestInit) {
         const data = await response.json();
         //saveJWTToken(data);
         return data as T;
-    } catch (error) {
+    } catch ( error:any ) {
         throw new Error(`Fetch error: ${error.message}`);
     }
 }

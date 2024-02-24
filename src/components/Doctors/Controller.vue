@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, onBeforeMount , onMounted} from "vue";
 import {doctorsList} from "./mockData/doctorsList";
-import DoctorsService from "../../server/services/Doctors/DoctorsService";
-import DoctorsRequest from "../../api/Doctors/DoctorsRequest";
-import DoctorsModxRequest from "../../api/Doctors/DoctorsModxRequest";
+import {DoctorsService, DoctorsRequest} from "../../EastclinicVueApi";
 
 const doctorsService = new DoctorsService();
 
@@ -25,7 +23,7 @@ const props = defineProps({
 })
 
 if(props.isModxApi){
-    doctorsService.useModxApi();
+    doctorsService;
 }
 const buildRequest = () => {
 
@@ -33,10 +31,8 @@ const buildRequest = () => {
     let request
     if(props.isModxApi){
 
-        return (new DoctorsModxRequest)
+        return (new DoctorsRequest)
             .forCurrentUrl(currentRoute)
-            .forAction('doctors/getDoctorsMultiList')
-            .forComponent('health')
     }else {
         return (new DoctorsRequest).forCurrentUrl(currentRoute)
     }

@@ -8,7 +8,7 @@ import StateManager from "../util/StateManager";
 import ApiDoctorsResponseInterface from "../../../api/Doctors/ResponceInterfaces/ApiDoctorsResponseInterface";
 
 const globalMultiState = new MultiStateManager();
-export default class DoctorsService{
+export default class ClinicsService {
     private state: StateManager;
     private stateName: string = 'default';
     private modxApiUrl:string = '';
