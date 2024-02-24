@@ -5,13 +5,12 @@ import Doctors from "../../components/Doctors/Controller";
 import DoctorCardController from '../../components/Doctors/DoctorCard/Controller'
 import DoctorCardSingleDoctor from '../../components/Doctors/DoctorCard/views/SingleDoctor.vue'
 import DoctorCardXL from '../../components/Doctors/DoctorCard/views/XL.vue'
+import {PageInfoService} from "~/EastclinicVueApi";
 
+const pageInfo = PageInfoService.getPageInfo
 // const route = useRoute();
 
 import { onMounted, ref, defineAsyncComponent } from 'vue';
-
-// const Doctors = ref(null);
-// console.log(process)
 
 
 

@@ -1,6 +1,5 @@
-import {BASE_URL, API_URL} from '../config';
-import UseRequestAdapters from '~/server/services/util/UseRequestAdapters';
-import {postToServer} from '~/server/services/util/UseFetchToServer';
+import {BASE_URL, API_URL} from '../../../config';
+import {postToServer} from '../../../util/UseFetchToServer';
 import type ApiResponseInterface from "./ResponceInterfaces/ApiDoctorsResponseInterface";
 
 
@@ -8,6 +7,7 @@ export default class DoctorsApi {
     protected _url:string = '/doctors';
     public async get(requestData: Object): Promise<ApiResponseInterface> {
         try {
+            console.log(BASE_URL + API_URL + this._url)
             const res = await postToServer(BASE_URL + API_URL + this._url, { ...requestData });
             // Assuming postToServer returns a Promise, you should await it
 

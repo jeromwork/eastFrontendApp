@@ -1,4 +1,3 @@
-
 export default interface ApiGetPageInfoResponseInterface {
     data: {
         resource: {
