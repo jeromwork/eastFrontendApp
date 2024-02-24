@@ -1,10 +1,8 @@
 import { ref, reactive, computed, toRef } from 'vue';
+import type DefaultState from "./DefaultState";
 
-interface DefaultStateObject {
-    [key: string]: any;
-}
-export default class MultiStateManager implements DefaultStateObject{
-    protected _state: { [key: string]: T } = {};
+export default class MultiStateManager <T extends DefaultState = DefaultState>{
+    protected _state: { [key: string]: any } = { };
     protected _stateName = 'default'
     _requestData = {};
 

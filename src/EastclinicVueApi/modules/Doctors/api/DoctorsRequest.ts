@@ -56,7 +56,13 @@ export default class DoctorsRequest implements RequestAdapterInterface
     //getters
 
     getRequestData():DoctorsRequestInterface { return this._requestData as DoctorsRequestInterface; }
+    get component(): string {
+        return this._requestData['component'];
+    }
 
+    get action(): string {
+        return this._requestData['action'];
+    }
 
 }
 

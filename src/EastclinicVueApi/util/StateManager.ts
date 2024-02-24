@@ -1,10 +1,8 @@
 import {toRef, computed} from "vue";
 
-interface DefaultStateObject {
-    [key: string]: any;
-}
+import type DefaultState from "./DefaultState";
 
-export default class StateManager<T extends DefaultStateObject = DefaultStateObject> {
+export default class StateManager<T extends DefaultState = DefaultState> {
     // protected _state: { [key: string]: { count: number; itemsIds: {}; items: any[] } } = {};
     protected _state: { [key: string]: T } = {};
 

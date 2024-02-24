@@ -6,35 +6,13 @@ import type ApiDoctorsResponseInterface from "./ResponceInterfaces/ApiDoctorsRes
 
 export default class DoctorsApi {
     protected _url:string = '/doctors';
-    public async get(requestData: { component:string, action:string }): Promise<ApiDoctorsResponseInterface> {
+    public async get(requestData: Object): Promise<ApiDoctorsResponseInterface> {
         try {
             //check request data for working modx api
-            if(!requestData.component || !requestData.action ){
-                throw new Error('Error modx request data for get doctors');
-            }
             const res = await postToServer(API_MODX_URL, { ...requestData });
-            // Assuming postToServer returns a Promise, you should await it
             //todo create useHandleAndSaveErrorFromServer class
 
-            // const res2 = await useFetch(API_MODX_URL)
-            //
-            // const { data } = await useFetch(API_MODX_URL, {
-            //     method: 'POST',
-            //     body: JSON.stringify(requestData),
-            //     server: true,
-            // })
-            // if(process.server){
-            //     console.log('-------------------------------')
-            // }
-            //
-            //
-            // const res = await $fetch(API_MODX_URL, {
-            //     method: 'POST',
-            //     body: { ...requestData }
-            // })
             return res as ApiDoctorsResponseInterface;
-            // Add a return statement here
-            return JSON.parse(res as string) as ApiDoctorsResponseInterface;
 
         } catch (error) {
             // Handle the error if needed
