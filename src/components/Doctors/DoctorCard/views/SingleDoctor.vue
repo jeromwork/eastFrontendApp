@@ -4,8 +4,10 @@
 
 import { defineProps, withDefaults, reactive, ref, toRef, defineEmits, computed, toRaw, defineOptions } from "vue";
 import type { Ref } from 'vue'
-import BackLink from "../../../../UI/BackLink.vue";
+import BackLink from "../../../../UI/BackLink/BackLink.vue";
+import BackLinkMobile from "../../../../UI/BackLink/BackLinkMobile.vue";
 import Chevrons from '../../../../UI/Chevrons'
+import StickyBlock from '../../../../UI/StickyBlock'
 import Reviews from '../../../Reviews/Controller.vue'
 import ReviewCardController from '../../../Reviews/ReviewCard/Controller.vue'
 import ReviewCardXL from '../../../Reviews/ReviewCard/views/XL.vue'
@@ -64,11 +66,30 @@ const doctor = ref(props.doctor) as Ref<DoctorInterface>;
             </div>
             <hr class="single-doctor-hr">
             <div class="single-doctor__main-info">
-
                 <AwardCardWithIcon  v-if="doctor.awards"  :award-info="doctor.awards[0]"  />
                 <Chevrons :chevrons="doctor.chevrons"  />
 
             </div>
+            <StickyBlock :hide-default="true">
+                <div class="main-container">
+                    <div class="single-doctor__top-toolbar">
+                        <div class="single-doctor__top-toolbar__left">
+                            <BackLinkMobile/>
+                            <div class="single-doctor__top-toolbar__doctor">
+                                <div class="single-doctor__top-toolbar__doctor-photo">
+                                    <img :src="doctor.photo120x120?.url" :alt="doctor.fullname">
+                                </div>
+                                <div class="single-doctor__top-toolbar__doctor-info">
+                                    <div class="text-semibold single-doctor__top-toolbar__doctor-name">{{doctor.fullname}}</div>
+                                    <div class="single-doctor__top-toolbar__doctor-desc">{{doctor.specials}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </StickyBlock>
         </div>
     </div>
 

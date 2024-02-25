@@ -17,6 +17,7 @@ import type PageInfoInterface from './interfaces/PageInfoInterface'
 import type ChevronInterface from "./interfaces/ChevronInterface";
 import type AwardInterface from "./interfaces/AwardInterface";
 import type DoctorInterface from "./interfaces/DoctorInterface";
+import type ContentInterface from "./interfaces/ContentInterface";
 
 // import ClinicsService from './modules/Clinics/ClinicsService';
 
@@ -44,4 +45,5 @@ export type {
 
     AwardInterface,
     ChevronInterface,
+    ContentInterface,
 }

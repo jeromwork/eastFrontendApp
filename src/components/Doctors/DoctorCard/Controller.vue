@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw } from "vue";
+import type { Ref } from "vue";
 
 import type DoctorInterface from "../../../EastclinicVueApi/interfaces/DoctorInterface";
+import type ContentInterface from "../../../EastclinicVueApi/interfaces/ContentInterface";
 //В этом компоненте обращаемся к сервису за данными по доктору
 //Возможно доктора уже загружены - в списке докторов, тогда просто отображаем данные доктора
 //кроме сервиса Doctors ничего более не знаем (СЕО? Клиники?)
@@ -40,6 +42,19 @@ const specials = computed(() => {
 });
 doctorInfo.value.specials = specials.value;
 
+
+const photo120x120 = computed(() => {
+    if ( doctorInfo.value?.content ){
+        for (const i in doctorInfo.value.content){
+            const img = doctorInfo.value.content[i]
+            if(img.type === '120x120' && img.typeFile === 'image') return img;
+        }
+        return doctorInfo.value.photos['120x120'][0]
+    } else {
+        return { id : null, type:'120x120', typeFile:"image", url:'/images/photo_soon.png' };
+    }
+});
+doctorInfo.value.photo120x120 = photo120x120.value as ContentInterface;
 
 
 </script>

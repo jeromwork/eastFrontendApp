@@ -1,5 +1,6 @@
 import type ChevronInterface from './ChevronInterface'
 import type AwardInterface from './AwardInterface'
+import type ContentInterface from './ContentInterface'
 interface Research {
     question: string;
     answer: string;
@@ -158,12 +159,12 @@ export default interface DoctorInterface {
     tv__doc_photo: string;
     tv__dop_info_vrach: string;
     tv__det: null; // Replace 'null' with the appropriate type if known
-    content: { type: string; id: null; typeFile: string; url: string }[];
+    content?: ContentInterface[];
     photos: { [key: string]: string[] };
     diploms: { image: string; title: null }[];
     awards?: AwardInterface[];
     chevrons?: ChevronInterface[];
-
+    photo120x120? : ContentInterface;
 
     appointmentOnline:boolean,
     specials?:string,
