@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw } from "vue";
 
-import type DoctorInterface from "../../../Interfaces/Doctors/DoctorInterface";
+import type DoctorInterface from "../../../EastclinicVueApi/interfaces/DoctorInterface";
 //В этом компоненте обращаемся к сервису за данными по доктору
 //Возможно доктора уже загружены - в списке докторов, тогда просто отображаем данные доктора
 //кроме сервиса Doctors ничего более не знаем (СЕО? Клиники?)
@@ -15,6 +15,11 @@ import type DoctorInterface from "../../../Interfaces/Doctors/DoctorInterface";
  * Данные по рейтингу приходят с данными доктора*/
 const raiting = computed(()=>    4.5)
 
+
+
+
+
+
 interface DoctorCardViewProps {
     doctor: DoctorInterface;
 }
@@ -22,6 +27,19 @@ interface DoctorCardViewProps {
 
 const props = defineProps<DoctorCardViewProps>();
 
+const doctorInfo = toRef(props, 'doctor');
+const specials = computed(() => {
+    let specs = '';
+    if (doctorInfo.value?.main_specials) {
+        specs +=  doctorInfo.value.main_specials.map(special => special.name).join(' · ');
+    }
+    if (doctorInfo.value?.specials_of_service) {
+        specs += doctorInfo.value.specials_of_service.map(special => special.name).join(' · ');
+    }
+    return specs;
+});
+
+doctorInfo.value.specials = specials.value;
 
 
 
@@ -30,7 +48,7 @@ const props = defineProps<DoctorCardViewProps>();
 <template>
 
   <slot
-          v-bind="props"
+          v-bind="{doctor:doctorInfo}"
 
   ></slot>
 </template>

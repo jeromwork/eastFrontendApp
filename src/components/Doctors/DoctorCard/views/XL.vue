@@ -3,7 +3,7 @@
 //в том числе во вложенных компонентах
 
 import {defineProps, withDefaults, reactive, ref, toRef, defineEmits, computed, toRaw, defineOptions} from "vue";
-import type DoctorInterface from "../../../../Interfaces/Doctors/DoctorInterface";
+import type DoctorInterface from "../../../../EastclinicVueApi/interfaces/DoctorInterface";
 import type { Ref } from 'vue'
 defineOptions({
     inheritAttrs: false

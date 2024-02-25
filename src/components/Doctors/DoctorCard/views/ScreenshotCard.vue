@@ -20,7 +20,7 @@ const Rating = ref('Rating')
 
 
 const props = defineProps<DoctorCardViewProps>();
-const doctor = ref(props.doctor) as Ref<DoctorInterface>;
+const doctor = ref(props.doctor);
 
 </script>
 
@@ -37,7 +37,7 @@ const doctor = ref(props.doctor) as Ref<DoctorInterface>;
             <div class="single-doctor__info">
                 <div class="doctor__top__info__desc desc">
                     <h1 class="doctor__top__info__desc_fio" itemprop="name">{{doctor.fullname}}</h1>
-                    <div class="doctor__top__info__desc_specials" v-if="!isDoctorScreenshot" itemprop="medicalSpecialty">{{doctor.specials}}</div>
+                    <div class="doctor__top__info__desc_specials" v-if="!isDoctorScreenshot" itemprop="medicalSpecialty">{{specials}}</div>
                     <Rating/>
                 </div>
 

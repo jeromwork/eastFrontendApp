@@ -4,6 +4,11 @@ interface Research {
     answer: string;
 }
 
+interface Speciality {
+    id:number,
+    name:string,
+}
+
 interface ServiceData {
     id: string;
     serviceId: number;
@@ -127,7 +132,7 @@ export default interface DoctorInterface {
     telemedicine: number;
     service_data: ServiceData[];
     choosen_service_data: ServiceData[];
-    main_specials: string[];
+    main_specials?: Speciality[];
     research: {
         question: string;
         answer: string;
@@ -147,6 +152,13 @@ export default interface DoctorInterface {
     photos: { [key: string]: string[] };
     diploms: { image: string; title: null }[];
     awards: { [key: string]: { source: string; name: string; portal: string; place: number } };
+
+
+    appointmentOnline:boolean,
+    specials?:string,
+    specials_of_service?:Speciality[];
+
+
 }
 
 
