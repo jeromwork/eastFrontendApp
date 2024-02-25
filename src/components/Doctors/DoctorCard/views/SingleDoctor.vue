@@ -8,7 +8,8 @@ import BackLink from "../../../../UI/BackLink.vue";
 import Reviews from '../../../Reviews/Controller.vue'
 import ReviewCardController from '../../../Reviews/ReviewCard/Controller.vue'
 import ReviewCardXL from '../../../Reviews/ReviewCard/views/XL.vue'
-import type DoctorInterface from "../../../../EastclinicVueApi/interfaces/DoctorInterface";
+import AwardCardWithIcon from "../../../../UI/Awards/AwardCardWithIcon.vue";
+import type {DoctorInterface} from "../../../../EastclinicVueApi";
 defineOptions({
     inheritAttrs: false
 })
@@ -37,7 +38,7 @@ const doctor = ref(props.doctor) as Ref<DoctorInterface>;
             <div class="single-doctor__info">
                 <div class="doctor__top__info__desc desc">
                     <h1 class="doctor__top__info__desc_fio" itemprop="name">{{doctor.fullname}}</h1>
-                    <div class="doctor__top__info__desc_specials" v-if="!isDoctorScreenshot" itemprop="medicalSpecialty">{{doctor.specials}}</div>
+                    <div class="doctor__top__info__desc_specials" itemprop="medicalSpecialty">{{doctor.specials}}</div>
                     <Rating/>
                 </div>
 
@@ -49,7 +50,7 @@ const doctor = ref(props.doctor) as Ref<DoctorInterface>;
                         <span>{{doctor.tv__dop_info_vrach}}</span>
                     </div>
                     <div
-                        v-if="doctor.pregnant*1 === 1"
+                        v-if="doctor.pregnant=== 1"
                         class="single-doctor__add-info__item">
                         <span>Работает с беременными</span>
                     </div>
@@ -59,6 +60,19 @@ const doctor = ref(props.doctor) as Ref<DoctorInterface>;
                         <span>Доктор ведет приём только онлайн</span>
                     </div>
                 </div>
+            </div>
+            <hr class="single-doctor-hr">
+            <div class="single-doctor__main-info">
+
+                <AwardCardWithIcon  v-if="doctor.awards"
+                    :award-info="doctor.awards[0]"
+                />
+<!--                <Chevrons-->
+<!--                    :experience="getExp(doctor.experience)"-->
+<!--                    :chevrons="chevrons"-->
+<!--                    :age="doctor.tv__dop_info_vrach"-->
+<!--                />-->
+
             </div>
         </div>
     </div>

@@ -38,7 +38,6 @@ const specials = computed(() => {
     }
     return specs;
 });
-
 doctorInfo.value.specials = specials.value;
 
 

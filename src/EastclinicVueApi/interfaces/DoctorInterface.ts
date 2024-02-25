@@ -4,6 +4,15 @@ interface Research {
     answer: string;
 }
 
+interface Award {
+    source: string;
+    name: string;
+    portal: string;
+    place: number;
+}
+
+
+
 interface Speciality {
     id:number,
     name:string,
@@ -151,7 +160,7 @@ export default interface DoctorInterface {
     content: { type: string; id: null; typeFile: string; url: string }[];
     photos: { [key: string]: string[] };
     diploms: { image: string; title: null }[];
-    awards: { [key: string]: { source: string; name: string; portal: string; place: number } };
+    awards?: Award[];
 
 
     appointmentOnline:boolean,
