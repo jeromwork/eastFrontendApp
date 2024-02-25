@@ -15,8 +15,6 @@ import type ContentInterface from "../../../EastclinicVueApi/interfaces/ContentI
 /** рейтинг доктора относится к данным доктора
  * Рейтинг скорее всего кэшируется, что бы не нагружать систему
  * Данные по рейтингу приходят с данными доктора*/
-const raiting = computed(()=>    4.5)
-
 
 
 

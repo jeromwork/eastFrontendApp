@@ -4,6 +4,8 @@
 
 import { defineProps, withDefaults, reactive, ref, toRef, defineEmits, computed, toRaw, defineOptions } from "vue";
 import type { Ref } from 'vue'
+import type {DoctorInterface} from "../../../../EastclinicVueApi";
+
 import BackLink from "../../../../UI/BackLink/BackLink.vue";
 import BackLinkMobile from "../../../../UI/BackLink/BackLinkMobile.vue";
 import Chevrons from '../../../../UI/Chevrons'
@@ -12,7 +14,9 @@ import Reviews from '../../../Reviews/Controller.vue'
 import ReviewCardController from '../../../Reviews/ReviewCard/Controller.vue'
 import ReviewCardXL from '../../../Reviews/ReviewCard/views/XL.vue'
 import AwardCardWithIcon from "../../../../UI/Awards/AwardCardWithIcon.vue";
-import type {DoctorInterface} from "../../../../EastclinicVueApi";
+import Rating from '../../../../UI/Rating/Controller.vue'
+import RatingDetailView from '../../../../UI/Rating/RatingDetailView.vue'
+
 defineOptions({
     inheritAttrs: false
 })
@@ -20,12 +24,12 @@ interface DoctorCardViewProps {
     doctor?: DoctorInterface | Ref<DoctorInterface>
 }
 const Gallery = ref('Gallery')
-const Rating = ref('Rating')
 
 
 const props = defineProps<DoctorCardViewProps>();
 const doctor = ref(props.doctor) as Ref<DoctorInterface>;
 
+console.log(doctor.value)
 </script>
 
 <template>
@@ -42,7 +46,14 @@ const doctor = ref(props.doctor) as Ref<DoctorInterface>;
                 <div class="doctor__top__info__desc desc">
                     <h1 class="doctor__top__info__desc_fio" itemprop="name">{{doctor.fullname}}</h1>
                     <div class="doctor__top__info__desc_specials" itemprop="medicalSpecialty">{{doctor.specials}}</div>
-                    <Rating/>
+                    <Rating v-if="doctor.rating"
+                            :reviews-count="doctor.comments"
+                            :level="doctor.rating"
+                            :uri="'/'+doctor.uri"
+                            #default="ratingInfo"
+                    >
+                        <RatingDetailView v-bind="ratingInfo"></RatingDetailView>
+                    </Rating>
                 </div>
 
                 <div
