@@ -5,6 +5,7 @@
 import { defineProps, withDefaults, reactive, ref, toRef, defineEmits, computed, toRaw, defineOptions } from "vue";
 import type { Ref } from 'vue'
 import BackLink from "../../../../UI/BackLink.vue";
+import Chevrons from '../../../../UI/Chevrons'
 import Reviews from '../../../Reviews/Controller.vue'
 import ReviewCardController from '../../../Reviews/ReviewCard/Controller.vue'
 import ReviewCardXL from '../../../Reviews/ReviewCard/views/XL.vue'
@@ -64,14 +65,8 @@ const doctor = ref(props.doctor) as Ref<DoctorInterface>;
             <hr class="single-doctor-hr">
             <div class="single-doctor__main-info">
 
-                <AwardCardWithIcon  v-if="doctor.awards"
-                    :award-info="doctor.awards[0]"
-                />
-<!--                <Chevrons-->
-<!--                    :experience="getExp(doctor.experience)"-->
-<!--                    :chevrons="chevrons"-->
-<!--                    :age="doctor.tv__dop_info_vrach"-->
-<!--                />-->
+                <AwardCardWithIcon  v-if="doctor.awards"  :award-info="doctor.awards[0]"  />
+                <Chevrons :chevrons="doctor.chevrons"  />
 
             </div>
         </div>

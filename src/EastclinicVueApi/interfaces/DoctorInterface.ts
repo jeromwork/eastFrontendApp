@@ -1,4 +1,5 @@
-
+import type ChevronInterface from './ChevronInterface'
+import type AwardInterface from './AwardInterface'
 interface Research {
     question: string;
     answer: string;
@@ -160,7 +161,8 @@ export default interface DoctorInterface {
     content: { type: string; id: null; typeFile: string; url: string }[];
     photos: { [key: string]: string[] };
     diploms: { image: string; title: null }[];
-    awards?: Award[];
+    awards?: AwardInterface[];
+    chevrons?: ChevronInterface[];
 
 
     appointmentOnline:boolean,
