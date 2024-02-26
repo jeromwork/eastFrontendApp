@@ -1,8 +1,8 @@
 import { inject, ref, h, reactive } from 'vue'
 
-import { defaultConfigs } from '@/partials/defaults'
+import { defaultConfigs } from '../partials/defaults'
 
-import { CarouselNav, CarouselConfig } from '../types'
+import type { CarouselNav, CarouselConfig } from '../types'
 
 import Icon from './Icon'
 

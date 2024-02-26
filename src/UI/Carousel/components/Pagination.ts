@@ -1,10 +1,11 @@
-import { inject, ref, h, VNode, reactive } from 'vue'
+import { inject, ref, h, reactive } from 'vue'
+import type { VNode } from 'vue'
 
-import { defaultConfigs } from '@/partials/defaults'
-import { mapNumberToRange } from '@/utils'
-import { i18nFormatter } from '@/utils/i18nFormater'
+import { defaultConfigs } from '../partials/defaults'
+import { mapNumberToRange } from '../utils'
+import { i18nFormatter } from '../utils/i18nFormater'
 
-import { CarouselConfig, CarouselNav } from '../types'
+import type { CarouselConfig, CarouselNav } from '../types'
 
 const Pagination = () => {
   const config: CarouselConfig = inject('config', reactive({ ...defaultConfigs }))

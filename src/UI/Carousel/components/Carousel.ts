@@ -1,33 +1,9 @@
-import {
-  defineComponent,
-  onMounted,
-  onUnmounted,
-  ref,
-  reactive,
-  provide,
-  computed,
-  h,
-  watch,
-  nextTick,
-  cloneVNode,
-  VNode,
-  SetupContext,
-  Ref,
-} from 'vue'
-
-import { defaultConfigs } from '@/partials/defaults'
-import { carouselProps } from '@/partials/props'
-import { CarouselConfig, CarouselNav, ElementStyleObject, Breakpoints } from '@/types'
-import {
-  debounce,
-  throttle,
-  getSlidesVNodes,
-  getNumberInRange,
-  getMaxSlideIndex,
-  getMinSlideIndex,
-  getSlidesToScroll,
-  mapNumberToRange,
-} from '@/utils'
+import {  defineComponent,  onMounted,  onUnmounted,  ref,  reactive,  provide,  computed,  h,  watch,  nextTick,  cloneVNode} from 'vue'
+import type {  VNode,  SetupContext,  Ref,} from 'vue'
+import { defaultConfigs } from '../partials/defaults'
+import { carouselProps } from '../partials/props'
+import type { CarouselConfig, CarouselNav, ElementStyleObject, Breakpoints } from '../types'
+import {  debounce,  throttle,  getSlidesVNodes,  getNumberInRange,  getMaxSlideIndex,  getMinSlideIndex,  getSlidesToScroll,  mapNumberToRange,} from '../utils'
 
 import ARIAComponent from './ARIA'
 import SlideComponent from './Slide'

@@ -1,9 +1,9 @@
 import { h, inject, reactive } from 'vue'
 
-import { defaultConfigs } from '@/partials/defaults'
+import { defaultConfigs } from '../partials/defaults'
 
 import icons, { IconName } from '../partials/icons'
-import { CarouselConfig, Data, I18nKeys } from '../types'
+import type { CarouselConfig, Data, I18nKeys } from '../types'
 
 function isIconName(candidate: string): candidate is IconName {
   return candidate in IconName

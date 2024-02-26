@@ -1,4 +1,4 @@
-import { defaultConfigs } from '@/partials/defaults'
+import { defaultConfigs } from '../partials/defaults'
 
 export const carouselProps = {
   // count of items to showed per view

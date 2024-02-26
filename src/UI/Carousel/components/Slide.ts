@@ -1,7 +1,8 @@
-import { defineComponent, inject, ref, h, reactive, SetupContext, computed, ComputedRef } from 'vue'
+import { defineComponent, inject, ref, h, reactive, computed } from 'vue'
+import type { SetupContext, ComputedRef } from 'vue'
 
-import { defaultConfigs } from '@/partials/defaults'
-import { CarouselConfig } from '@/types'
+import { defaultConfigs } from '../partials/defaults'
+import type { CarouselConfig } from '../types'
 
 export default defineComponent({
   name: 'CarouselSlide',

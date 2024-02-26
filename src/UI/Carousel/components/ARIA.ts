@@ -1,9 +1,9 @@
 import { defineComponent, inject, ref, h, reactive } from 'vue'
 
-import { defaultConfigs } from '@/partials/defaults'
-import { i18nFormatter } from '@/utils/i18nFormater'
+import { defaultConfigs } from '../partials/defaults'
+import { i18nFormatter } from '../utils/i18nFormater'
 
-import { CarouselConfig } from '../types'
+import type { CarouselConfig } from '../types'
 
 export default defineComponent({
   name: 'ARIA',

@@ -1,6 +1,5 @@
 <script setup>
-import 'vue3-carousel/dist/carousel.css'
-import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+import { Carousel, Slide, Pagination, Navigation } from '../../UI/Carousel'
 </script>
 
 <template>
@@ -25,6 +24,7 @@ import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 
 
 <style scoped>
+@import '../../UI/Carousel/styles';
 .carousel__item {
     min-height: 200px;
     width: 100%;
