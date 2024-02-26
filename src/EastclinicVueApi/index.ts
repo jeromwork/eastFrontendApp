@@ -11,7 +11,14 @@ import DoctorsService from './modules/Doctors/DoctorsService';
 
 import PageInfoService from './modules/PageInfo/PageInfoService';
 import PageInfoRequest from './modules/PageInfo/api/PageInfoRequest';
+
+
 import type PageInfoInterface from './interfaces/PageInfoInterface'
+import type ChevronInterface from "./interfaces/ChevronInterface";
+import type AwardInterface from "./interfaces/AwardInterface";
+import type DoctorInterface from "./interfaces/DoctorInterface";
+import type ContentInterface from "./interfaces/ContentInterface";
+
 // import ClinicsService from './modules/Clinics/ClinicsService';
 
 export {
@@ -33,4 +40,10 @@ export {
 
 export type {
     PageInfoInterface,
+    DoctorInterface,
+
+
+    AwardInterface,
+    ChevronInterface,
+    ContentInterface,
 }

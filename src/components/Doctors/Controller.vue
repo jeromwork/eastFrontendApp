@@ -38,7 +38,7 @@ const buildRequest = () => {
     }
 
 }
-await doctorsService.getItemsFromServer( buildRequest().forPage(1) );
+await doctorsService.getItemsFromServer( buildRequest().forPage(1).perPage(50));
 
 onMounted(async ()=>{
 

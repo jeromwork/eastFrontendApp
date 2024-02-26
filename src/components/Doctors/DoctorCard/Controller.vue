@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw } from "vue";
+import type { Ref } from "vue";
 
-import type DoctorInterface from "../../../Interfaces/Doctors/DoctorInterface";
+import type DoctorInterface from "../../../EastclinicVueApi/interfaces/DoctorInterface";
+import type ContentInterface from "../../../EastclinicVueApi/interfaces/ContentInterface";
 //В этом компоненте обращаемся к сервису за данными по доктору
 //Возможно доктора уже загружены - в списке докторов, тогда просто отображаем данные доктора
 //кроме сервиса Doctors ничего более не знаем (СЕО? Клиники?)
@@ -13,7 +15,10 @@ import type DoctorInterface from "../../../Interfaces/Doctors/DoctorInterface";
 /** рейтинг доктора относится к данным доктора
  * Рейтинг скорее всего кэшируется, что бы не нагружать систему
  * Данные по рейтингу приходят с данными доктора*/
-const raiting = computed(()=>    4.5)
+
+
+
+
 
 interface DoctorCardViewProps {
     doctor: DoctorInterface;
@@ -22,7 +27,32 @@ interface DoctorCardViewProps {
 
 const props = defineProps<DoctorCardViewProps>();
 
+const doctorInfo = toRef(props, 'doctor');
+const specials = computed(() => {
+    let specs = '';
+    if (doctorInfo.value?.main_specials) {
+        specs +=  doctorInfo.value.main_specials.map(special => special.name).join(' · ');
+    }
+    if (doctorInfo.value?.specials_of_service) {
+        specs += doctorInfo.value.specials_of_service.map(special => special.name).join(' · ');
+    }
+    return specs;
+});
+doctorInfo.value.specials = specials.value;
 
+
+const photo120x120 = computed(() => {
+    if ( doctorInfo.value?.content ){
+        for (const i in doctorInfo.value.content){
+            const img = doctorInfo.value.content[i]
+            if(img.type === '120x120' && img.typeFile === 'image') return img;
+        }
+        return doctorInfo.value.photos['120x120'][0]
+    } else {
+        return { id : null, type:'120x120', typeFile:"image", url:'/images/photo_soon.png' };
+    }
+});
+doctorInfo.value.photo120x120 = photo120x120.value as ContentInterface;
 
 
 </script>
@@ -30,7 +60,7 @@ const props = defineProps<DoctorCardViewProps>();
 <template>
 
   <slot
-          v-bind="props"
+          v-bind="{doctor:doctorInfo}"
 
   ></slot>
 </template>

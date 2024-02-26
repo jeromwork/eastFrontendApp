@@ -48,7 +48,7 @@ export default class DoctorsRequest implements RequestAdapterInterface
         return this;
     }
 
-    withCountPerPage( page:Number):this{
+    perPage( page:Number):this{
         this._requestData['perPage'] = page;
         return this;
     }
