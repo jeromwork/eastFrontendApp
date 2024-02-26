@@ -16,6 +16,8 @@ import ReviewCardXL from '../../../Reviews/ReviewCard/views/XL.vue'
 import AwardCardWithIcon from "../../../../UI/Awards/AwardCardWithIcon.vue";
 import Rating from '../../../../UI/Rating/Controller.vue'
 import RatingDetailView from '../../../../UI/Rating/RatingDetailView.vue'
+import type RatingViewProps from "../../../../UI/Rating/RatingViewProps";
+import Gallery from "../../Gallery.vue";
 
 defineOptions({
     inheritAttrs: false
@@ -23,13 +25,11 @@ defineOptions({
 interface DoctorCardViewProps {
     doctor?: DoctorInterface | Ref<DoctorInterface>
 }
-const Gallery = ref('Gallery')
-
 
 const props = defineProps<DoctorCardViewProps>();
 const doctor = ref(props.doctor) as Ref<DoctorInterface>;
 
-console.log(doctor.value)
+
 </script>
 
 <template>
@@ -52,7 +52,7 @@ console.log(doctor.value)
                             :uri="'/'+doctor.uri"
                             #default="ratingInfo"
                     >
-                        <RatingDetailView v-bind="ratingInfo"></RatingDetailView>
+                        <RatingDetailView v-bind="ratingInfo as RatingViewProps"></RatingDetailView>
                     </Rating>
                 </div>
 

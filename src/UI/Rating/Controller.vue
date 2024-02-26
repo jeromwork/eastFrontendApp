@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type RatingViewProps from '../../interfaces/RatingViewProps'
+import type RatingViewProps from './RatingViewProps'
 import {ref} from 'vue'
 
 const props =  defineProps<RatingViewProps>()

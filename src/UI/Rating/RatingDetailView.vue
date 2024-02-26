@@ -3,7 +3,7 @@
 <script setup lang="ts">
 import type {AwardInterface} from '../../EastclinicVueApi'
 import type {Ref} from "vue";
-import type RatingViewProps from "../../interfaces/RatingViewProps";
+import type RatingViewProps from "./RatingViewProps";
 
 const  reviewTitle = (number) => {
     let titles = ['отзыв', 'отзыва', 'отзывов'],
