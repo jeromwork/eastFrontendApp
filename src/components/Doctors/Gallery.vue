@@ -1,9 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import { Carousel, Slide, Pagination, Navigation } from '../../UI/Carousel'
+import {ref} from 'vue'
+const slideTo = (val) => {
+    currentSlide.value = val
+};
+const currentSlide = ref(0)
+
 </script>
 
 <template>
-    <Carousel id="gallery" :items-to-show="1" :wrap-around="false" v-model="currentSlide">
+    <Carousel id="gallery" :items-to-show="1.2" :wrap-around="false" v-model="currentSlide">
         <Slide v-for="slide in 10" :key="slide">
             <div class="carousel__item">{{ slide }}</div>
         </Slide>
@@ -24,7 +30,7 @@ import { Carousel, Slide, Pagination, Navigation } from '../../UI/Carousel'
 
 
 <style scoped>
-@import '../../UI/Carousel/styles';
+/*@import '../../UI/Carousel/styles';*/
 .carousel__item {
     min-height: 200px;
     width: 100%;
