@@ -1,15 +1,31 @@
 <script setup lang="ts">
-import {ref} from 'vue'
+import { useCycleList } from '@vueuse/core'
+import { ref } from 'vue'
 
-const props =  defineProps({})
+const list = ref([
+    'Dog',
+    'Cat',
+    'Lizard',
+    'Shark',
+    'Whale',
+    'Dolphin',
+    'Octopus',
+    'Seal',
+])
 
-
-
-
+const { state, next, prev } = useCycleList(list)
 </script>
 
 <template>
-
-
+    <div>
+        <div class="text-primary text-lg font-bold">
+            {{ state }}
+        </div>
+        <button @click="prev()">
+            Prev
+        </button>
+        <button @click="next()">
+            Next
+        </button>
+    </div>
 </template>
-

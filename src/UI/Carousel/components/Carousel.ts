@@ -4,6 +4,9 @@ import { defaultConfigs } from '../partials/defaults'
 import { carouselProps } from '../partials/props'
 import type { CarouselConfig, CarouselNav, ElementStyleObject, Breakpoints } from '../types'
 import {  debounce,  throttle,  getSlidesVNodes,  getNumberInRange,  getMaxSlideIndex,  getMinSlideIndex,  getSlidesToScroll,  mapNumberToRange,} from '../utils'
+import type { UseSwipeDirection } from '@vueuse/core'
+import { useSwipe } from '@vueuse/core'
+
 
 import ARIAComponent from './ARIA'
 import SlideComponent from './Slide'
@@ -13,6 +16,7 @@ export default defineComponent({
   props: carouselProps,
   setup(props: CarouselConfig, { slots, emit, expose }: SetupContext) {
     const root: Ref<Element | null> = ref(null)
+    const track: Ref<Element | null> = ref(null)
     const slides: Ref<any> = ref([])
     const slideWidth: Ref<number> = ref(0)
     const slidesCount: Ref<number> = ref(0)
@@ -124,6 +128,11 @@ export default defineComponent({
       updateBreakpointsConfigs()
       initAutoplay()
       window.addEventListener('resize', handleWindowResize, { passive: true })
+
+
+
+
+
       emit('init')
     })
 
@@ -157,30 +166,62 @@ export default defineComponent({
       isHover.value = false
     }
 
+
+
+    const { direction, isSwiping, lengthX, lengthY , coordsStart, coordsEnd} = useSwipe(
+        track,
+        {
+          passive: false,
+          onSwipe(e: TouchEvent) {
+            // isDragging.value = true
+            // endPosition.x = coordsEnd.x
+            // endPosition.y = coordsEnd.y
+            // const deltaX = lengthX
+            // const deltaY = endPosition.y - startPosition.y
+            //
+            // dragged.y = lengthY.value
+            // dragged.x = lengthX.value
+            // console.log('onSwipe')
+          },
+          onSwipeStart(e: TouchEvent, ) {
+            startPosition.x = coordsStart.x
+            startPosition.y = coordsStart.y
+
+          },
+          onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection) {
+
+            console.log('onSwipeEnd')
+          },
+
+        },)
+
+
+
+
+
     function handleDragStart(event: MouseEvent & TouchEvent): void {
-      if (
-        ['INPUT', 'TEXTAREA', 'SELECT'].includes((event.target as HTMLElement).tagName)
-      ) {
-        return
-      }
-      isTouch = event.type === 'touchstart'
-      if (!isTouch) {
-        event.preventDefault()
-      }
-      if ((!isTouch && event.button !== 0) || isSliding.value) {
-        return
-      }
-
-      startPosition.x = isTouch ? event.touches[0].clientX : event.clientX
-      startPosition.y = isTouch ? event.touches[0].clientY : event.clientY
-
+      // if (
+      //   ['INPUT', 'TEXTAREA', 'SELECT'].includes((event.target as HTMLElement).tagName)
+      // ) {
+      //   return
+      // }
+      // isTouch = event.type === 'touchstart'
+      // if (!isTouch) {
+      //   event.preventDefault()
+      // }
+      // if ((!isTouch && event.button !== 0) || isSliding.value) {
+      //   return
+      // }
+      //
+      // // startPosition.x = isTouch ? event.touches[0].clientX : event.clientX
+      // // startPosition.y = isTouch ? event.touches[0].clientY : event.clientY
       document.addEventListener(isTouch ? 'touchmove' : 'mousemove', handleDragging, true)
       document.addEventListener(isTouch ? 'touchend' : 'mouseup', handleDragEnd, true)
     }
 
     const handleDragging = throttle((event: MouseEvent & TouchEvent): void => {
-      isDragging.value = true
 
+      isDragging.value = true
       endPosition.x = isTouch ? event.touches[0].clientX : event.clientX
       endPosition.y = isTouch ? event.touches[0].clientY : event.clientY
       const deltaX = endPosition.x - startPosition.x
@@ -192,7 +233,7 @@ export default defineComponent({
 
     function handleDragEnd(): void {
       const direction = config.dir === 'rtl' ? -1 : 1
-      const tolerance = Math.sign(dragged.x) * 0.4
+      const tolerance = Math.sign(dragged.x) * 0.2
       const draggedSlides =
         Math.round(dragged.x / slideWidth.value + tolerance) * direction
 
@@ -218,6 +259,10 @@ export default defineComponent({
       )
       document.removeEventListener(isTouch ? 'touchend' : 'mouseup', handleDragEnd, true)
     }
+
+
+
+
 
     /**
      * Autoplay
@@ -428,6 +473,7 @@ export default defineComponent({
       const trackEl = h(
         'ol',
         {
+          ref: track,
           class: 'carousel__track',
           style: trackStyle.value,
           onMousedownCapture: config.mouseDrag ? handleDragStart : null,
