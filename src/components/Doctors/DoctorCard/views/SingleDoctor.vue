@@ -20,7 +20,8 @@ import type RatingViewProps from "../../../../UI/Rating/RatingViewProps";
 import Gallery from "../../Gallery.vue";
 import FixedBlock from "../../../../UI/FixedBlock.vue";
 import FavoriteServiceCard from '../../../../UI/ServiceCard/FavoriteView.vue'
-import type ServiceData from "#build/src/EastclinicVueApi/interfaces/ServiceData";
+import type ServiceData from "../../../../EastclinicVueApi/interfaces/ServiceData";
+import Modal from '../../../../UI/Modal.vue'
 
 defineOptions({
     inheritAttrs: false
@@ -32,6 +33,7 @@ interface DoctorCardViewProps {
 const props = defineProps<DoctorCardViewProps>();
 const doctor = ref(props.doctor) as Ref<DoctorInterface>;
 const mobileScreen = ref(false)
+const showModal = ref(false);
 
 
 
@@ -39,7 +41,14 @@ const mobileScreen = ref(false)
 
 <template>
     <BackLink/>
+    <button @click="showModal=true">111111111111</button>
 
+    {{showModal}}
+    <Modal v-model:visible="showModal">
+        <template #default>
+            asdfwefpwjpf
+        </template>
+    </Modal>
     <slot name="body">
 
     </slot>
@@ -120,6 +129,9 @@ const mobileScreen = ref(false)
                     <FavoriteServiceCard
                         :service="doctor.favoriteService as ServiceData"
                     />
+                    butt
+
+
 <!--                    <ServicesDialog-->
 <!--                        :doctor="doctor"-->
 <!--                        :all-services="servicesList"-->
@@ -139,9 +151,6 @@ const mobileScreen = ref(false)
 
         </div>
     </div>
-
-
-
 
 
 
