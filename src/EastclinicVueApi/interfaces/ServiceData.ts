@@ -4,11 +4,10 @@ export default interface ServiceData {
     variationId: number;
     name: string;
     variationName: string;
-    variationOfficialCode: string;
     price: number;
     custom_price: number;
-    default_option: string;
     option: string;
     discount?: number;
-    weight: number;
+    favorite?:boolean;
+    selected?:boolean;
 }

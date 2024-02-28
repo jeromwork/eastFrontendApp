@@ -15,10 +15,12 @@ const closeModal = () => {
 onMounted(() => {
 
 });
+
+//todo debug click outside
 </script>
 
 <template>
-    <div v-if="visible" @mousedown.prevent="closeModal" class="modal">
+    <div v-if="visible" @mousedown.stop="closeModal" class="modal">
         <div class="modal-content" @click.stop>
             <slot name="default"></slot>
             <slot name="close">

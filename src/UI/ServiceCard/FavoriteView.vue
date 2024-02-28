@@ -13,7 +13,7 @@ const props = defineProps<{service: ServiceData}>()
         <div class="annotation font-12">Приём в клинике</div>
         <div class="doctor-card-2__price__title">
             <span>{{service.name}} </span>
-            <span class="secondary-text"> {{service.default_option}}</span>
+            <span class="secondary-text"> {{service.option}}</span>
         </div>
         <div
             v-if="!service.discount"

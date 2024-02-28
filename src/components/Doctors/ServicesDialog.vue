@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import {ref, defineProps, defineEmits, defineModel} from 'vue';
-import ListWithSelect from "./ListWithSelect.vue";
+import SelectList from "../../UI/SelectList";
 import Modal from "../../UI/Modal.vue";
+import SelectOptionView from "../../UI/ServiceCard/SelectOptionView.vue";
+import type ServiceData from "../../EastclinicVueApi/interfaces/ServiceData";
 
 const props = defineProps({
     services:{type:[Object, Array], required:true },
-    // visible:{type:Boolean, required:true }
 })
-
-
-const emits = defineEmits(['update:visible']);
 const visible = defineModel('visible') as boolean
 
 </script>
@@ -18,11 +16,11 @@ const visible = defineModel('visible') as boolean
 
     <Modal v-model:visible="visible">
         <template #default>
-<!--            <ListWithSelect :options="services"/>-->
+            <SelectList :options="services" #default="service">
+                <SelectOptionView :service="service as ServiceData"></SelectOptionView>
+            </SelectList>
         </template>
     </Modal>
-  ----------------------------
-  {{visible}}
 </template>
 
 <style scoped>
