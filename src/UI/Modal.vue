@@ -5,11 +5,8 @@ import { ref, onMounted, onBeforeUnmount, watch, defineProps, defineEmits, defin
 const props = defineProps({visible:{type:Boolean}});
 const emits = defineEmits(['update:visible']);
 const visible = defineModel('visible')
-const isVisible = ref(visible);
-
 
 const closeModal = () => {
-    isVisible.value = false;
     emits('update:visible', false);
 };
 
@@ -21,7 +18,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div v-if="isVisible" @mousedown.prevent="closeModal" class="modal">
+    <div v-if="visible" @mousedown.prevent="closeModal" class="modal">
         <div class="modal-content" @click.stop>
             <slot name="default"></slot>
             <slot name="close">

@@ -22,6 +22,7 @@ import FixedBlock from "../../../../UI/FixedBlock.vue";
 import FavoriteServiceCard from '../../../../UI/ServiceCard/FavoriteView.vue'
 import type ServiceData from "../../../../EastclinicVueApi/interfaces/ServiceData";
 import Modal from '../../../../UI/Modal.vue'
+import ServicesDialog from '../../ServicesDialog.vue'
 
 defineOptions({
     inheritAttrs: false
@@ -40,15 +41,9 @@ const showModal = ref(false);
 </script>
 
 <template>
-    <BackLink/>
-    <button @click="showModal=true">111111111111</button>
 
-    {{showModal}}
-    <Modal v-model:visible="showModal">
-        <template #default>
-            asdfwefpwjpf
-        </template>
-    </Modal>
+    <BackLink/>
+
     <slot name="body">
 
     </slot>
@@ -129,13 +124,12 @@ const showModal = ref(false);
                     <FavoriteServiceCard
                         :service="doctor.favoriteService as ServiceData"
                     />
-                    butt
+                    <span
+                        @click="showModal=true"
+                        class="font-12 main-color pointer text-semibold">Другие услуги
+                    </span>
 
-
-<!--                    <ServicesDialog-->
-<!--                        :doctor="doctor"-->
-<!--                        :all-services="servicesList"-->
-<!--                    />-->
+                    <ServicesDialog v-model:visible="showModal" :services="doctor.service_data"/>
 <!--                    <div class="slots mt-6">-->
 
 <!--                        <div class="doctor-card-2__slots">-->
