@@ -19,7 +19,7 @@ export default defineNuxtConfig({
     },
   },
   // asyncContext:true,
-
+ssr:false,
   sourcemap: {
     server: true,
     client: true

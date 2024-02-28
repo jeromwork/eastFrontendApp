@@ -1,55 +1,63 @@
 <script setup lang="ts">
-import { Carousel, Slide, Pagination, Navigation } from '../../UI/Carousel'
-import {ref} from 'vue'
-const slideTo = (val) => {
-    currentSlide.value = val
-};
-const currentSlide = ref(0)
+// import { VWindow, VWindowItem } from '../../UI/Carousel'
+import Gallery from '../../UI/Gallery'
+
+import { ref } from 'vue'
+// const vuetify = createVuetify({
+
+// })
+const list = ref([
+    'https://tinyurl.com/2p8dav94',
+    'https://tinyurl.com/2p9yrrhs',
+    'https://tinyurl.com/ycxurpah',
+])
+onMounted(()=>{
+
+})
+const flickityOptions = ref({
+    pageDots: true,
+    wrapAround: true,
+});
+const window = ref(0)
 
 </script>
 
 <template>
-    <Carousel id="gallery" :items-to-show="1.2" :wrap-around="false" v-model="currentSlide">
-        <Slide v-for="slide in 10" :key="slide">
-            <div class="carousel__item">{{ slide }}</div>
-        </Slide>
-    </Carousel>
+    <div class="glry">
+        <Gallery :options="flickityOptions">
+            <div class="carousel-cell"></div>
+            <div class="carousel-cell"></div>
+            <div class="carousel-cell"></div>
+        </Gallery>
+    </div>
 
-    <Carousel
-            id="thumbnails"
-            :items-to-show="4"
-            :wrap-around="true"
-            v-model="currentSlide"
-            ref="carousel"
-    >
-        <Slide v-for="slide in 10" :key="slide">
-            <div class="carousel__item" @click="slideTo(slide - 1)">{{ slide }}</div>
-        </Slide>
-    </Carousel>
+
+
 </template>
 
 
 <style scoped>
-/*@import '../../UI/Carousel/styles';*/
-.carousel__item {
-    min-height: 200px;
-    width: 100%;
-    background-color: var(--vc-clr-primary);
-    color: var(--vc-clr-white);
-    font-size: 20px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.carousel {
+    background: #FAFAFA;
 }
 
-.carousel__slide {
-    padding: 10px;
+.carousel-cell {
+    display: block;
+    width: 66%;
+    height: 200px;
+    margin-right: 10px;
+    background: #8C8;
+    border-radius: 5px;
+    counter-increment: carousel-cell;
 }
 
-.carousel__prev,
-.carousel__next {
-    box-sizing: content-box;
-    border: 5px solid white;
+/* cell number */
+.carousel-cell:before {
+    display: block;
+    text-align: center;
+    content: counter(carousel-cell);
+    line-height: 200px;
+    font-size: 80px;
+    color: white;
 }
 </style>

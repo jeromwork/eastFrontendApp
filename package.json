@@ -10,8 +10,11 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@glidejs/glide": "^3.6.0",
+    "flickity": "^3.0.0",
     "nuxt": "^3.10.1",
     "vue": "^3.4.15",
+    "vue-flickity": "^1.2.1",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
