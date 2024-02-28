@@ -19,6 +19,8 @@ import RatingDetailView from '../../../../UI/Rating/RatingDetailView.vue'
 import type RatingViewProps from "../../../../UI/Rating/RatingViewProps";
 import Gallery from "../../Gallery.vue";
 import FixedBlock from "../../../../UI/FixedBlock.vue";
+import FavoriteServiceCard from '../../../../UI/ServiceCard/FavoriteView.vue'
+import type ServiceData from "#build/src/EastclinicVueApi/interfaces/ServiceData";
 
 defineOptions({
     inheritAttrs: false
@@ -44,7 +46,6 @@ const mobileScreen = ref(false)
 
     <div class="single-doctor" v-if="doctor">
         <div class="single-doctor__main">
-            <!--            <Gallery/>-->
             <div class="single-doctor__info">
                 <div class="doctor__top__info__desc desc">
                     <h1 class="doctor__top__info__desc_fio" itemprop="name">{{doctor.fullname}}</h1>
@@ -116,10 +117,9 @@ const mobileScreen = ref(false)
                     <div class="header-h3 text-semibold mb-6">
                         Записаться на приём:
                     </div>
-<!--                    <Price-->
-<!--                        :mainServices="mainServices"-->
-<!--                        :all-services="servicesList"-->
-<!--                    />-->
+                    <FavoriteServiceCard
+                        :service="doctor.favoriteService as ServiceData"
+                    />
 <!--                    <ServicesDialog-->
 <!--                        :doctor="doctor"-->
 <!--                        :all-services="servicesList"-->

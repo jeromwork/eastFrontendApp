@@ -4,6 +4,7 @@ import type { Ref } from "vue";
 
 import type DoctorInterface from "../../../EastclinicVueApi/interfaces/DoctorInterface";
 import type ContentInterface from "../../../EastclinicVueApi/interfaces/ContentInterface";
+import type ServiceData from "../../../EastclinicVueApi/interfaces/ServiceData";
 //В этом компоненте обращаемся к сервису за данными по доктору
 //Возможно доктора уже загружены - в списке докторов, тогда просто отображаем данные доктора
 //кроме сервиса Doctors ничего более не знаем (СЕО? Клиники?)
@@ -47,12 +48,19 @@ const photo120x120 = computed(() => {
             const img = doctorInfo.value.content[i]
             if(img.type === '120x120' && img.typeFile === 'image') return img;
         }
-        return doctorInfo.value.photos['120x120'][0]
+        return doctorInfo.value.photos['120x120'][0] as ContentInterface
     } else {
-        return { id : null, type:'120x120', typeFile:"image", url:'/images/photo_soon.png' };
+        return { id : null, type:'120x120', typeFile:"image", url:'/images/photo_soon.png' } as ContentInterface;
     }
 });
-doctorInfo.value.photo120x120 = photo120x120.value as ContentInterface;
+doctorInfo.value.photo120x120 = photo120x120.value;
+
+const favoriteService = computed(() => {
+    let mainService = (doctorInfo.value?.choosen_service_data?.[0]) ?? null
+    if(!mainService && doctorInfo.value?.service_data?.[0]) mainService = doctorInfo.value.service_data[0];
+    return mainService as ServiceData;
+});
+doctorInfo.value.favoriteService = favoriteService.value;
 
 
 </script>

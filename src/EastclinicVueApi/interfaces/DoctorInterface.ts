@@ -1,6 +1,7 @@
 import type ChevronInterface from './ChevronInterface'
 import type AwardInterface from './AwardInterface'
 import type ContentInterface from './ContentInterface'
+import type ServiceData from './ServiceData'
 interface Research {
     question: string;
     answer: string;
@@ -18,21 +19,6 @@ interface Award {
 interface Speciality {
     id:number,
     name:string,
-}
-
-interface ServiceData {
-    id: string;
-    serviceId: number;
-    variationId: number;
-    name: string;
-    variationName: string;
-    variationOfficialCode: string;
-    price: number;
-    custom_price: number;
-    default_option: string;
-    option: string;
-    discount: number;
-    weight: number;
 }
 
 
@@ -143,6 +129,7 @@ export default interface DoctorInterface {
     telemedicine: number;
     service_data: ServiceData[];
     choosen_service_data: ServiceData[];
+    favoriteService?: ServiceData;
     main_specials?: Speciality[];
     research: {
         question: string;
