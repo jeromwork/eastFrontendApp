@@ -1,7 +1,7 @@
 
 
 <script setup>
-import Gallery from '~/UI/Gallery'
+import Gallery from '~/UI/Carousel'
 const name = "index.vue";
 </script>
 <template>
