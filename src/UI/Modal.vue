@@ -2,29 +2,25 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch, defineProps, defineEmits, defineModel } from 'vue';
 
-const props = defineProps({visible:{type:Boolean}});
-const emits = defineEmits(['update:visible']);
+const props = defineProps();
+
 const visible = defineModel('visible')
-
-const closeModal = () => {
-    emits('update:visible', false);
-};
-
-
 
 onMounted(() => {
 
 });
 
+
+
 //todo debug click outside
 </script>
 
 <template>
-    <div v-if="visible" @mousedown.stop="closeModal" class="modal">
-        <div class="modal-content" @click.stop>
+    <div v-if="visible" @mousedown.stop="visible=false" class="modal">
+        <div class="modal-content" @mousedown.stop>
             <slot name="default"></slot>
             <slot name="close">
-                <button @click="closeModal">Close</button>
+                <button @click="visible=false">Close</button>
             </slot>
 
 

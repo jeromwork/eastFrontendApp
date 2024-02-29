@@ -19,7 +19,7 @@ const toggleServiceChoose = (service) => {
 
 
 <template>
-    <div class="scroll">
+    <div class="scroll" >
         <div class="services-list">
             <div
                     v-for="(option, i) in options"
@@ -32,3 +32,14 @@ const toggleServiceChoose = (service) => {
     </div>
 </template>
 
+<style scoped>
+div.scroll {
+    margin: 4px, 4px;
+    padding: 4px;
+    width: 650px;
+    height: 600px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: justify;
+}
+</style>
