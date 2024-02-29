@@ -73,7 +73,7 @@ const handleInputEvent = (data) => {
 <template>
 
   <slot
-          v-bind="{doctor:doctorInfo}" v-on="$attrs"
+          v-bind="{doctor:doctorInfo}"
 
   ></slot>
 </template>

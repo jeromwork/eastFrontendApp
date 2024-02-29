@@ -32,20 +32,13 @@ const props = defineProps<DoctorCardViewProps>();
 const doctor = ref(props.doctor) as Ref<DoctorInterface>;
 const mobileScreen = ref(false)
 const showModal = ref(false);
-const servicesSelected = ref(false)
-const emits = defineEmits(['inputEvent'])
+const servicesSelected = ref([])
 
-const emitInputEvent = (event) => {
-    // Emit an input event]
-    console.log(event.target.value)
-    emits('inputEvent', event.target.value);
-};
 
 
 </script>
 
 <template>
-    <input @input="emitInputEvent" />
     <BackLink/>
 
     <slot name="body">
@@ -133,7 +126,7 @@ const emitInputEvent = (event) => {
                         class="font-12 main-color pointer text-semibold">Другие услуги
                     </span>
 
-                    <ServicesDialog v-model:visible="showModal" :services="doctor.service_data" />
+                    <ServicesDialog v-model:visible="showModal" v-model:servicesSelected="servicesSelected" :services="doctor.service_data" />
 <!--                    <div class="slots mt-6">-->
 
 <!--                        <div class="doctor-card-2__slots">-->
