@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // import { VWindow, VWindowItem } from '../../UI/Carousel'
-import Gallery from '../../UI/Gallery'
+import Gallery from '../../UI/Carousel'
 
 import { ref } from 'vue'
 // const vuetify = createVuetify({

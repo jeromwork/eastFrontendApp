@@ -32,6 +32,22 @@ onMounted(() => {
 </template>
 
 
-<style scoped>
-
+<style scoped  lang="scss">
+.back-button {
+    display: flex;
+    align-items: center;
+    color: #878fa2 !important;
+    text-decoration: none;
+    &:hover, &:focus {
+        text-decoration: none;
+    }
+    & svg {
+        margin-right: 4px;
+        position: relative;
+        top: -1px;
+    }
+    &__container {
+        margin-bottom: 16px;
+    }
+}
 </style>

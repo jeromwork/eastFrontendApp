@@ -13,29 +13,13 @@ const doctorsService = new DoctorsService();
 //в этой view ничего не обрабатываем - только отобржаем/
 //а так же прокидывам данные дальше по вложенным компонентам
 
-console.log('doctorsController.vue setup')
-const props = defineProps({
-    //isSingleDoctor:{type:Boolean}
-    isModxApi:{
-        type:Boolean,
-        default:true
-    }
-})
+const props = defineProps()
 
-if(props.isModxApi){
-    doctorsService;
-}
+
 const buildRequest = () => {
 
     const currentRoute = (useRouter())?.currentRoute?.value?.path;
-    let request
-    if(props.isModxApi){
-
-        return (new DoctorsRequest)
-            .forCurrentUrl(currentRoute)
-    }else {
-        return (new DoctorsRequest).forCurrentUrl(currentRoute)
-    }
+    return (new DoctorsRequest).forCurrentUrl(currentRoute)
 
 }
 await doctorsService.getItemsFromServer( buildRequest().forPage(1).perPage(50));

@@ -26,11 +26,7 @@ export default class ClinicsService {
     async getItemsFromServer(request:RequestAdapterInterface){
 
         let response;
-        if(this.isModxApi){
-            response = await (new DoctorsModxApi).get(request.getRequestData()) as ApiDoctorsResponseInterface;
-        }else {
-            response = await (new DoctorsModxApi).get(request.getRequestData()) as ApiDoctorsResponseInterface;
-        }
+        response = await (new DoctorsModxApi).get(request.getRequestData()) as ApiDoctorsResponseInterface;
 //todo add to state info type doctor page: list, single doctor, dismiss doctor from server
         if(response.doctors && response.doctors.length === 1){
             this.state.set('typeDoctorPage', 'single');

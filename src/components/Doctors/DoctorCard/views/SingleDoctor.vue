@@ -18,21 +18,34 @@ import Rating from '../../../../UI/Rating/Controller.vue'
 import RatingDetailView from '../../../../UI/Rating/RatingDetailView.vue'
 import type RatingViewProps from "../../../../UI/Rating/RatingViewProps";
 import Gallery from "../../Gallery.vue";
+import FixedBlock from "../../../../UI/FixedBlock.vue";
+import FavoriteServiceCard from '../../../../UI/ServiceCard/FavoriteView.vue'
+import type ServiceData from "../../../../EastclinicVueApi/interfaces/ServiceData";
+import Modal from '../../../../UI/Modal.vue'
+import ServicesDialog from '../../ServicesDialog.vue'
 
-defineOptions({
-    inheritAttrs: false
-})
 interface DoctorCardViewProps {
     doctor?: DoctorInterface | Ref<DoctorInterface>
 }
 
 const props = defineProps<DoctorCardViewProps>();
 const doctor = ref(props.doctor) as Ref<DoctorInterface>;
+const mobileScreen = ref(false)
+const showModal = ref(false);
+const servicesSelected = ref(false)
+const emits = defineEmits(['inputEvent'])
+
+const emitInputEvent = (event) => {
+    // Emit an input event]
+    console.log(event.target.value)
+    emits('inputEvent', event.target.value);
+};
 
 
 </script>
 
 <template>
+    <input @input="emitInputEvent" />
     <BackLink/>
 
     <slot name="body">
@@ -41,7 +54,6 @@ const doctor = ref(props.doctor) as Ref<DoctorInterface>;
 
     <div class="single-doctor" v-if="doctor">
         <div class="single-doctor__main">
-            <Gallery/>
             <div class="single-doctor__info">
                 <div class="doctor__top__info__desc desc">
                     <h1 class="doctor__top__info__desc_fio" itemprop="name">{{doctor.fullname}}</h1>
@@ -102,197 +114,212 @@ const doctor = ref(props.doctor) as Ref<DoctorInterface>;
                 </div>
             </StickyBlock>
         </div>
+
+
+        <div
+            v-if="!mobileScreen"
+            class="single-doctor__aside"  id="info-tabs">
+            <FixedBlock>
+                <div class="single-doctor__booking">
+
+                    <div class="header-h3 text-semibold mb-6">
+                        Записаться на приём:
+                    </div>
+                    <FavoriteServiceCard
+                        :service="doctor.favoriteService as ServiceData"
+                    />
+                    <span
+                        @click="showModal=true"
+                        class="font-12 main-color pointer text-semibold">Другие услуги
+                    </span>
+
+                    <ServicesDialog v-model:visible="showModal" :services="doctor.service_data" />
+<!--                    <div class="slots mt-6">-->
+
+<!--                        <div class="doctor-card-2__slots">-->
+<!--                            <SlotsCalendar-->
+<!--                                :dissmissDoctor="dismissDoctor"-->
+<!--                                :doctor="doctor"-->
+<!--                            />-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                </div>
+            </FixedBlock>
+
+        </div>
     </div>
 
 
 
+</template>
 
-
-
-    </template>
-
-    <style lang="scss">
-        .single-doctor {
-            display: flex;
-            &__main {
-                max-width: 674px;
-                min-width: 566px;
-                margin-right: 56px;
-                @media (max-width: 1165px) {
-                    max-width: none;
-                    width: auto;
-                    flex-shrink: 1;
-                }
-                @media (max-width: 1024px) {
-                    width: 100%;
-                    max-width: 1100px;
-                    min-width: 280px;
-                    margin-right: 0;
-                }
+<style lang="scss">
+.single-doctor {
+    display: flex;
+    &__main {
+        max-width: 674px;
+        min-width: 566px;
+        margin-right: 56px;
+        @media (max-width: 1165px) {
+            max-width: none;
+            width: auto;
+            flex-shrink: 1;
+        }
+        @media (max-width: 1024px) {
+            width: 100%;
+            max-width: 1100px;
+            min-width: 280px;
+            margin-right: 0;
+        }
+    }
+    &__aside {
+        width: 35%;
+        position: relative;
+    }
+    &__booking {
+        box-shadow: 0px 4px 24px 0px rgba(135, 143, 162, 0.25);
+        border-radius: 20px;
+        border: 1px solid #E5E5E7;
+        padding: 24px;
+        max-width: 380px;
+        position: sticky;
+        top: 0;
+        &.no-shadow {
+            box-shadow: none;
+            border: none;
+            padding: 0;
+        }
+    }
+    &__info {
+        margin-top: 32px;
+        @media (max-width: 768px) {
+            margin-top: 0;
+        }
+    }
+    &__add-info {
+        margin-top: 18px;
+        &__item {
+            display: inline-flex;
+            padding: 8px 12px;
+            justify-content: center;
+            align-items: center;
+            border-radius: 27px;
+            border: 1px solid #D5D7D9;
+            @media (max-width: 768px) {
+                font-size: 14px;
+                white-space: nowrap;
+                padding: 6px 12px;
             }
-            &__aside {
-                width: 35%;
-                position: relative;
-            }
-            &__booking {
-                box-shadow: 0px 4px 24px 0px rgba(135, 143, 162, 0.25);
-                border-radius: 20px;
-                border: 1px solid #E5E5E7;
-                padding: 24px;
-                max-width: 380px;
-                position: sticky;
-                top: 0;
-                &.no-shadow {
-                    box-shadow: none;
-                    border: none;
-                    padding: 0;
-                }
-            }
-            &__info {
-                margin-top: 32px;
-                @media (max-width: 768px) {
-                    margin-top: 0;
-                }
-            }
-            &__add-info {
-                margin-top: 18px;
-                &__item {
-                    display: inline-flex;
-                    padding: 8px 12px;
-                    justify-content: center;
-                    align-items: center;
-                    border-radius: 27px;
-                    border: 1px solid #D5D7D9;
-                    @media (max-width: 768px) {
-                        font-size: 14px;
-                        white-space: nowrap;
-                        padding: 6px 12px;
-                    }
-                    &:not(:last-child) {
-                        margin-bottom: 10px;
-                        margin-right: 10px;
-                    }
-                }
-            }
-            &__main-info {
-                &__item {
-                    display: flex;
-                    align-items: start;
-                    line-height: 16px;
-                    &:not(:last-child) {
-                        margin-bottom: 24px;
-                    }
-                    & div {
-                        align-self: center;
-                    }
-                    & div:not(:last-child) {
-                        margin-bottom: 4px;
-                    }
-                    & img {
-                        padding-right: 24px;
-                    }
-                }
-
-            }
-            &__top-toolbar {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                height: 70px;
-                gap: 16px;
-                @media (max-width: 768px) {
-                    height: 48px;
-                }
-                &__left {
-                    display: flex;
-                    align-items: center;
-                    overflow: hidden;
-                }
-                &__back {
-                    display: none;
-                    @media (max-width: 768px) {
-                        display: inherit;
-                        margin-right: 20px;
-                    }
-                }
-                &__doctor {
-                    display: flex;
-                    align-items: center;
-                    overflow: hidden;
-                    &-photo {
-                        border-radius: 50%;
-                        overflow: hidden;
-                        flex-shrink: 0;
-                        width: 44px;
-                        height: 44px;
-                        margin-right: 16px;
-                        & img {
-                            width: 100%;
-                        }
-                        @media (max-width: 768px) {
-                            width: 32px;
-                            height: 32px;
-                            margin-right: 8px;
-                        }
-                    }
-                    &-phone {
-                        display: none;
-                        @media (max-width: 768px) {
-                            display: inherit;
-                        }
-                    }
-                    &-name {
-                        font-size: 18px;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        @media (max-width: 768px) {
-                            font-size: 14px;
-                        }
-                    }
-                    &-info {
-                        overflow: hidden;
-                    }
-                    &-desc {
-                        font-size: 14px;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        @media (max-width: 768px) {
-                            font-size: 12px;
-                        }
-                    }
-
-
-                }
-            }
-            &-hr {
-                margin: 32px 0;
-            }
-            &-ul {
-                list-style-type: circle;
-                list-style-position: inside;
-                margin: 24px 0;
-                & li:not(:last-child) {
-                    margin-bottom: 8px;
-                }
+            &:not(:last-child) {
+                margin-bottom: 10px;
+                margin-right: 10px;
             }
         }
-        .back-button {
+    }
+    &__main-info {
+        &__item {
+            display: flex;
+            align-items: start;
+            line-height: 16px;
+            &:not(:last-child) {
+                margin-bottom: 24px;
+            }
+            & div {
+                align-self: center;
+            }
+            & div:not(:last-child) {
+                margin-bottom: 4px;
+            }
+            & img {
+                padding-right: 24px;
+            }
+        }
+
+    }
+    &__top-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 70px;
+        gap: 16px;
+        @media (max-width: 768px) {
+            height: 48px;
+        }
+        &__left {
             display: flex;
             align-items: center;
-            color: #878fa2 !important;
-            text-decoration: none;
-            &:hover, &:focus {
-                text-decoration: none;
-            }
-            & svg {
-                margin-right: 4px;
-                position: relative;
-                top: -1px;
-            }
-            &__container {
-                margin-bottom: 16px;
+            overflow: hidden;
+        }
+        &__back {
+            display: none;
+            @media (max-width: 768px) {
+                display: inherit;
+                margin-right: 20px;
             }
         }
-    </style>
+        &__doctor {
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            &-photo {
+                border-radius: 50%;
+                overflow: hidden;
+                flex-shrink: 0;
+                width: 44px;
+                height: 44px;
+                margin-right: 16px;
+                & img {
+                    width: 100%;
+                }
+                @media (max-width: 768px) {
+                    width: 32px;
+                    height: 32px;
+                    margin-right: 8px;
+                }
+            }
+            &-phone {
+                display: none;
+                @media (max-width: 768px) {
+                    display: inherit;
+                }
+            }
+            &-name {
+                font-size: 18px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                @media (max-width: 768px) {
+                    font-size: 14px;
+                }
+            }
+            &-info {
+                overflow: hidden;
+            }
+            &-desc {
+                font-size: 14px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                @media (max-width: 768px) {
+                    font-size: 12px;
+                }
+            }
+
+
+        }
+    }
+    &-hr {
+        margin: 32px 0;
+    }
+    &-ul {
+        list-style-type: circle;
+        list-style-position: inside;
+        margin: 24px 0;
+        & li:not(:last-child) {
+            margin-bottom: 8px;
+        }
+    }
+}
+
+</style>
