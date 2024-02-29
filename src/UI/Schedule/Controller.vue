@@ -1,6 +1,7 @@
+
 <script setup lang="ts">
 import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, onBeforeMount , onMounted} from "vue";
-import {doctorsList} from "./mockData/doctorsList";
+
 import {DoctorsService, DoctorsRequest} from "../../EastclinicVueApi";
 
 const doctorsService = new DoctorsService();
@@ -39,11 +40,11 @@ const count = ref(0);
 </script>
 
 <template>
-<div v-for="(doctor, key) in doctors" v-if="doctors">
+    <div v-for="(doctor, key) in doctors" v-if="doctors">
 
-    <slot v-if="typeDoctorPage==='list'" name="doctorsList" v-bind="{doctor}"></slot>
-    <slot v-if="typeDoctorPage==='single'" name="singleDoctor" v-bind="{doctor}"></slot>
-</div>
+        <slot v-if="typeDoctorPage==='list'" name="doctorsList" v-bind="{doctor}"></slot>
+        <slot v-if="typeDoctorPage==='single'" name="singleDoctor" v-bind="{doctor}"></slot>
+    </div>
 
 </template>
 

@@ -127,15 +127,14 @@ const servicesSelected = ref([])
                     </span>
 
                     <ServicesDialog v-model:visible="showModal" v-model:servicesSelected="servicesSelected" :services="doctor.service_data" />
-<!--                    <div class="slots mt-6">-->
+                    <div class="slots mt-6">
 
-<!--                        <div class="doctor-card-2__slots">-->
-<!--                            <SlotsCalendar-->
-<!--                                :dissmissDoctor="dismissDoctor"-->
+                        <div class="doctor-card-2__slots">
+<!--                            <Schedule>-->
 <!--                                :doctor="doctor"-->
 <!--                            />-->
-<!--                        </div>-->
-<!--                    </div>-->
+                        </div>
+                    </div>
 
                 </div>
             </FixedBlock>

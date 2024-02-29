@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type ServiceData from "../../EastclinicVueApi/interfaces/ServiceData";
 import {ref, defineProps} from 'vue'
-import {usePriceFormat} from "../../composables/usePriceFormat";
 
 
 const props = defineProps<ServiceData>()
@@ -44,7 +43,6 @@ onMounted(()=>{
                 <path d="M6.00012 10.2003L2.50012 6.70031C2.11012 6.31031 1.49012 6.31031 1.10012 6.70031C0.710117 7.09031 0.710117 7.71031 1.10012 8.10031L5.29012 12.2903C5.68012 12.6803 6.31012 12.6803 6.70012 12.2903L17.3001 1.70031C17.6901 1.31031 17.6901 0.690312 17.3001 0.300312C16.9101 -0.0896875 16.2901 -0.0896875 15.9001 0.300312L6.00012 10.2003Z" fill="#58BA36"/>
             </svg>
         </div>
-        <div v-else> 2222</div>
 
     </div>
 
