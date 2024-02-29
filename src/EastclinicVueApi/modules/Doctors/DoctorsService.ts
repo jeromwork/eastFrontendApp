@@ -8,6 +8,8 @@ import  DoctorsRequest from "./api/DoctorsRequest";
 import StateManager from "../../util/StateManager";
 import type ApiDoctorsResponseInterface from "./api/ResponceInterfaces/ApiDoctorsResponseInterface";
 import type DefaultState from "../../util/DefaultState";
+import scheduleService from '../Schedule/ScheduleService'
+
 
 const globalMultiState = new MultiStateManager();
 export default class DoctorsService{
@@ -42,7 +44,15 @@ export default class DoctorsService{
             this.state.set('typeDoctorPage', 'list');
         }
 
+
+
         this.state.setItems(response.doctors);
+
+
+    // for legacy alg, schedules init in doctors request
+        scheduleService.setSchedules((response.schedule) ?? [] );
+
+
     }
     items(condition?:any) {
         return this.state.getItems();

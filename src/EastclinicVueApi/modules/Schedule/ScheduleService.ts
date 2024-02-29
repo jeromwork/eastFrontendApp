@@ -1,44 +1,44 @@
 import ScheduleApi from './api/ScheduleApi';
 import StateManager from "../../util/StateManager";
-import type ApiScheduleResponseInterface from "./api/ApiScheduleResponseInterface";
-import type PageInfoRequest from "./api/PageInfoRequest";
-import type ModxRequest from "./api/PageInfoRequest";
+import type ScheduleRequest from "./api/ScheduleRequest";
 import type {Ref} from "vue";
 import {toRef} from "vue";
 import type ScheduleInterface from "../../interfaces/ScheduleInterface";
 
 //singleton state
 const state = new StateManager();
-class PageInfoService{
+class ScheduleService{
     private state: StateManager;
 
     constructor() {
         this.state = state;
     }
 
-    public async refreshPageInfoFromServer( request:PageInfoRequest ){
+    public async getSchedulesFromServer( request:ScheduleRequest ){
+        //add modx api data
+        request.with('component', 'east_schedule').with('action', 'getSchedule')
 
-        request.with('component', 'east').with('action', 'getPageInfo')
+        const { schedules } = await (new ScheduleApi).get(request.with('component', 'east').getRequestData()) ;
 
-        const { schedules } = await (new ScheduleApi).get(request.with('component', 'east').getRequestData()) as ApiScheduleResponseInterface;
-
-        this.state.set('pageInfo', schedules);
+        this.setSchedules( schedules );
     }
 
 
-    public get getSchedule():Ref<ScheduleInterface>{
-        return this.state.get('pageInfo') as Ref<ScheduleInterface>;
+    public setSchedules(schedules: ScheduleInterface[]):this{
+        this.state.set('schedules', schedules);
+        return this;
     }
 
-    public getSessionId(){
-        return this.state.get('sessionId');
+    public get schedule():Ref<ScheduleInterface>{
+        return this.state.get('schedules') as Ref<ScheduleInterface>;
     }
 
-    typeDoctorPage(){
-        return this.state.get('typeDoctorPage');
-    }
+
+
 
 
 }
-// const pageInfoService = new PageInfoService()
-export default new PageInfoService()
+
+
+//schedule service is singleton of class ScheduleService
+export default new ScheduleService()

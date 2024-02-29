@@ -12,12 +12,19 @@ import DoctorsService from './modules/Doctors/DoctorsService';
 import PageInfoService from './modules/PageInfo/PageInfoService';
 import PageInfoRequest from './modules/PageInfo/api/PageInfoRequest';
 
+import ScheduleService from "./modules/Schedule/ScheduleService";
+import ScheduleRequest from "./modules/Schedule/api/ScheduleRequest";
+
+
+
+
 
 import type PageInfoInterface from './interfaces/PageInfoInterface'
 import type ChevronInterface from "./interfaces/ChevronInterface";
 import type AwardInterface from "./interfaces/AwardInterface";
 import type DoctorInterface from "./interfaces/DoctorInterface";
 import type ContentInterface from "./interfaces/ContentInterface";
+import type ScheduleInterface from "./interfaces/ScheduleInterface";
 
 // import ClinicsService from './modules/Clinics/ClinicsService';
 
@@ -34,7 +41,8 @@ export {
     // ClinicsService,
     // ClinicsRequest,
 
-
+    ScheduleService,
+    ScheduleRequest
 
 };
 
@@ -46,4 +54,6 @@ export type {
     AwardInterface,
     ChevronInterface,
     ContentInterface,
+
+    ScheduleInterface
 }
