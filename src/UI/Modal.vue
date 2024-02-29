@@ -20,7 +20,7 @@ onMounted(() => {
         <div class="modal-content" @mousedown.stop>
             <slot name="default"></slot>
             <slot name="close">
-                <button @click="visible=false">Close</button>
+<!--                <button @click="visible=false">Close</button>-->
             </slot>
 
 

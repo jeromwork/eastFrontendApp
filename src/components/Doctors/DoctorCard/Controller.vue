@@ -63,12 +63,17 @@ const favoriteService = computed(() => {
 doctorInfo.value.favoriteService = favoriteService.value;
 
 
+const handleInputEvent = (data) => {
+    // Handle the input event from DoctorCardSingleDoctor
+    console.log('Received input event data:', data);
+};
+
 </script>
 
 <template>
 
   <slot
-          v-bind="{doctor:doctorInfo}"
+          v-bind="{doctor:doctorInfo}" v-on="$attrs"
 
   ></slot>
 </template>

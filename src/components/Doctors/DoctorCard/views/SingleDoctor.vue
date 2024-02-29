@@ -24,9 +24,6 @@ import type ServiceData from "../../../../EastclinicVueApi/interfaces/ServiceDat
 import Modal from '../../../../UI/Modal.vue'
 import ServicesDialog from '../../ServicesDialog.vue'
 
-defineOptions({
-    inheritAttrs: false
-})
 interface DoctorCardViewProps {
     doctor?: DoctorInterface | Ref<DoctorInterface>
 }
@@ -35,13 +32,20 @@ const props = defineProps<DoctorCardViewProps>();
 const doctor = ref(props.doctor) as Ref<DoctorInterface>;
 const mobileScreen = ref(false)
 const showModal = ref(false);
+const servicesSelected = ref(false)
+const emits = defineEmits(['inputEvent'])
 
+const emitInputEvent = (event) => {
+    // Emit an input event]
+    console.log(event.target.value)
+    emits('inputEvent', event.target.value);
+};
 
 
 </script>
 
 <template>
-
+    <input @input="emitInputEvent" />
     <BackLink/>
 
     <slot name="body">
@@ -129,7 +133,7 @@ const showModal = ref(false);
                         class="font-12 main-color pointer text-semibold">Другие услуги
                     </span>
 
-                    <ServicesDialog v-model:visible="showModal" :services="doctor.service_data"/>
+                    <ServicesDialog v-model:visible="showModal" :services="doctor.service_data" />
 <!--                    <div class="slots mt-6">-->
 
 <!--                        <div class="doctor-card-2__slots">-->
@@ -317,21 +321,5 @@ const showModal = ref(false);
         }
     }
 }
-.back-button {
-    display: flex;
-    align-items: center;
-    color: #878fa2 !important;
-    text-decoration: none;
-    &:hover, &:focus {
-        text-decoration: none;
-    }
-    & svg {
-        margin-right: 4px;
-        position: relative;
-        top: -1px;
-    }
-    &__container {
-        margin-bottom: 16px;
-    }
-}
+
 </style>
