@@ -5,6 +5,15 @@ import type { Ref } from "vue";
 import type DoctorInterface from "../../../EastclinicVueApi/interfaces/DoctorInterface";
 import type ContentInterface from "../../../EastclinicVueApi/interfaces/ContentInterface";
 import type ServiceData from "../../../EastclinicVueApi/interfaces/ServiceData";
+import type {ClinicInterface} from "#build/src/EastclinicVueApi";
+import {ScheduleService,
+    // ClinicsService
+} from "../../../EastclinicVueApi";
+
+
+
+
+
 //В этом компоненте обращаемся к сервису за данными по доктору
 //Возможно доктора уже загружены - в списке докторов, тогда просто отображаем данные доктора
 //кроме сервиса Doctors ничего более не знаем (СЕО? Клиники?)
@@ -55,29 +64,44 @@ const photo120x120 = computed(() => {
 });
 doctorInfo.value.photo120x120 = photo120x120.value;
 
-const favoriteService = computed(() => {
+//add favorite service
+doctorInfo.value.favoriteService = computed(() => {
     let mainService = (doctorInfo.value?.choosen_service_data?.[0]) ?? null
     if(!mainService && doctorInfo.value?.service_data?.[0]) mainService = doctorInfo.value.service_data[0];
     return mainService as ServiceData;
-});
-doctorInfo.value.favoriteService = favoriteService.value;
+}).value;
 
+//add work days
+doctorInfo.value.workDays = computed(() => ScheduleService.workDaysForDoctor(doctorInfo.value.id)).value as number[];
+
+
+
+
+
+
+const servicesSelected = ref([])
+const clinicWorkingSelected:Ref<ClinicInterface | null> = ref(null)
+const dayScheduleSelected:Ref<number> = ref(0)
+const timeAppointment:Ref<number> = ref(0)
 
 const handleInputEvent = (data) => {
     // Handle the input event from DoctorCardSingleDoctor
     console.log('Received input event data:', data);
 };
-const sd = (e) => {
-    console.log(e)
-}
+
+
+watch(servicesSelected.value, () => {
+    console.log(servicesSelected.value)
+})
 
 </script>
 
 <template>
 
   <slot
-          v-bind="{doctor:doctorInfo}"
-          v-model:servicesSelected="sd"
+          v-bind="{doctor:doctorInfo, servicesSelected}"
+          @handleInputEvent="handleInputEvent"
+
   ></slot>
 </template>
 

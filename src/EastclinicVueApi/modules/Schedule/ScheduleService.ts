@@ -26,7 +26,23 @@ class ScheduleService{
 
     public setSchedules(schedules: ScheduleInterface[]):this{
         this.state.set('schedules', schedules);
+        this.setWorkDaysByDoctorsIds(schedules);
         return this;
+    }
+
+
+    protected setWorkDaysByDoctorsIds( schedules: ScheduleInterface[]):this{
+        const workDaysByDoctorsIds:any = {};
+        for (const s in schedules){
+            if(!workDaysByDoctorsIds[schedules[s]['doctorId']]) workDaysByDoctorsIds[schedules[s]['doctorId']] = {};
+            workDaysByDoctorsIds[schedules[s]['doctorId']][schedules[s]['date']] = schedules[s]['date'];
+        }
+        this.state.set('schedulesByDoctorsIds', workDaysByDoctorsIds);
+        return this;
+    }
+
+    public workDaysForDoctor( doctorId:number ):Ref<number[]>{
+        return this.state.get('schedulesByDoctorsIds').value[doctorId] ;
     }
 
     public get schedules():Ref<ScheduleInterface>{

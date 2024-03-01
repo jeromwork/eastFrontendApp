@@ -21,17 +21,13 @@ onMounted(async ()=>{
 </script>
 
 <template>
-
+    <!--                                    <Carousel>-->
     <div >
 
-        <slot name="calendar" v-bind="props">
 
-        </slot>
-        <slot name="slots" v-bind="props">
-
-        </slot>
     </div>
 
+    <!--                                    </Carousel>-->
 </template>
 
 

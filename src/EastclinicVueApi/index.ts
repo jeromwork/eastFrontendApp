@@ -19,12 +19,14 @@ import ScheduleRequest from "./modules/Schedule/api/ScheduleRequest";
 
 
 
+
 import type PageInfoInterface from './interfaces/PageInfoInterface'
 import type ChevronInterface from "./interfaces/ChevronInterface";
 import type AwardInterface from "./interfaces/AwardInterface";
 import type DoctorInterface from "./interfaces/DoctorInterface";
 import type ContentInterface from "./interfaces/ContentInterface";
 import type ScheduleInterface from "./interfaces/ScheduleInterface";
+import type ClinicInterface from "./interfaces/ClinicInterface";
 
 // import ClinicsService from './modules/Clinics/ClinicsService';
 
@@ -55,5 +57,6 @@ export type {
     ChevronInterface,
     ContentInterface,
 
-    ScheduleInterface
+    ScheduleInterface,
+    ClinicInterface,
 }

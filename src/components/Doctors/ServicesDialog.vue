@@ -9,6 +9,8 @@ const props = defineProps({
     services:{type:Array, required:true },
 })
 
+const emit = defineEmits(['handleInputEvent'])
+
 const visible = defineModel('visible') as boolean
 const servicesSelected =  defineModel('servicesSelected' )
 
@@ -19,7 +21,7 @@ const servicesSelected =  defineModel('servicesSelected' )
     <Modal v-model:visible="visible">
         <template #default>
             <SelectList :options="services" v-model="servicesSelected" #default="service" optionValue="id">
-                <ServiceSelectOptionView v-bind="service as ServiceData"></ServiceSelectOptionView>
+                <ServiceSelectOptionView v-bind="service as ServiceData" @click="emit('handleInputEvent', 12345)"></ServiceSelectOptionView>
             </SelectList>
         </template>
     </Modal>

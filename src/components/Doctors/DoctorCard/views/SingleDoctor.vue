@@ -2,7 +2,7 @@
 //в этом компоненте только прием пропсов, проверка, и их отображение
 //в том числе во вложенных компонентах
 
-import { defineProps, withDefaults, reactive, ref, toRef, defineEmits, computed, toRaw, defineOptions } from "vue";
+import { defineProps, withDefaults, reactive, ref, toRef, defineEmits, computed, toRaw, defineOptions, defineModel } from "vue";
 import type { Ref } from 'vue'
 import type {DoctorInterface} from "../../../../EastclinicVueApi";
 
@@ -53,19 +53,16 @@ interface DoctorCardViewProps {
     doctor?: DoctorInterface | Ref<DoctorInterface>
 }
 
-const emit = defineEmits(['servicesSelected'])
-
 const props = defineProps<DoctorCardViewProps>();
+const servicesSelected =  defineModel('servicesSelected' )
+
+
+
 const doctor = ref(props.doctor) as Ref<DoctorInterface>;
 const mobileScreen = ref(false)
 const showModalServices = ref(false);
-
-
-const servicesSelected = ref([])
 const workingDay = ref(0)
-watch(servicesSelected.value, () => {
-    emit('servicesSelected', servicesSelected.value)
-})
+
 
 </script>
 
@@ -157,26 +154,9 @@ watch(servicesSelected.value, () => {
                     </span>
 
                     <ServicesDialog v-model:visible="showModalServices" v-model:servicesSelected="servicesSelected" :services="doctor.service_data" />
-                    <div class="slots mt-6">
+                    <ScheduleCardView >
 
-                        <div class="doctor-card-2__slots">
-                            <ScheduleController>
-                                <template #calendar="" v-model="workingDay">
-<!--                                    <Carousel>-->
-                                    <Calendar :doctor-id="doctor.id" :clinic-id="1"></Calendar>
-
-
-
-<!--                                    </Carousel>-->
-
-                                </template>
-                                <template #slots>
-
-                                </template>
-
-                            </ScheduleController>
-                        </div>
-                    </div>
+                    </ScheduleCardView>
 
                 </div>
             </FixedBlock>

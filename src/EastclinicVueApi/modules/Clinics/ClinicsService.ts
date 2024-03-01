@@ -1,60 +1,46 @@
+import PageInfoApi from './api/PageInfoApi';
+import type RequestAdapterInterface from "../../interfaces/RequestAdapterInterface";
+import StateManager from "../../util/StateManager";
+import type ApiGetPageInfoResponseInterface from "./api/ApiGetPageInfoResponseInterface";
+import type PageInfoRequest from "./api/PageInfoRequest";
+import type ModxRequest from "./api/PageInfoRequest";
+import type {Ref} from "vue";
+import {toRef} from "vue";
+import type PageInfoInterface from "../../interfaces/PageInfoInterface";
+// import {createWebHistory, useRouter} from "vue-router";
 
-// import {computed, reactive, ref, toRaw} from "vue";
-import DoctorsApi from '../../../api/Doctors/DoctorsApi';
-import DoctorsModxApi from '../../../api/Doctors/DoctorsModxApi';
-import MultiStateManager from "../util/MultiStateManager";//probably to use one state manage for many services - its global state
-import type RequestAdapterInterface from "../../../api/RequestAdapterInterface";
-import StateManager from "../util/StateManager";
-import ApiDoctorsResponseInterface from "../../../api/Doctors/ResponceInterfaces/ApiDoctorsResponseInterface";
-
-const globalMultiState = new MultiStateManager();
-export default class ClinicsService {
+const state = new StateManager();
+class PageInfoService{
     private state: StateManager;
-    private stateName: string = 'default';
-    private modxApiUrl:string = '';
-    protected isModxApi:boolean = false;
 
-    constructor(stateName:string = 'default', state?: StateManager) {
-        if(state){
-            this.state = state;
-        }else{
-            this.state = globalMultiState;
-        }
-        this.stateName = stateName;
-
+    constructor() {
+        this.state = state;
     }
-    async getItemsFromServer(request:RequestAdapterInterface){
 
-        let response;
-        response = await (new DoctorsModxApi).get(request.getRequestData()) as ApiDoctorsResponseInterface;
-//todo add to state info type doctor page: list, single doctor, dismiss doctor from server
-        if(response.doctors && response.doctors.length === 1){
-            this.state.set('typeDoctorPage', 'single');
-        }else {
-            this.state.set('typeDoctorPage', 'list');
-        }
+    public async refreshPageInfoFromServer( request:PageInfoRequest ){
 
-        this.state.setItems(response.doctors);
+        request.with('component', 'east').with('action', 'getPageInfo')
+
+        const {data, sessionId} = await (new PageInfoApi).get(request.with('component', 'east').getRequestData()) as ApiGetPageInfoResponseInterface;
+
+        this.state.set('pageInfo', data.resource);
+        this.state.set('sessionId', sessionId);
     }
-    items(condition?:any) {
-        return this.state.getItems();
-    };
 
-    count() {
-        // return this.state.count();
-    };
+
+    public get getPageInfo():Ref<PageInfoInterface>{
+        return this.state.get('pageInfo') as Ref<PageInfoInterface>;
+    }
+
+    public getSessionId(){
+        return this.state.get('sessionId');
+    }
 
     typeDoctorPage(){
         return this.state.get('typeDoctorPage');
     }
-    public useModxApiUrl( url:string ):this{
-        this.modxApiUrl = url;
-        return this;
-    }
 
-    public useModxApi():this{
-        this.isModxApi = true;
-        return this;
-    }
 
 }
+// const pageInfoService = new PageInfoService()
+export default new PageInfoService()
