@@ -29,7 +29,7 @@ class ScheduleService{
         return this;
     }
 
-    public get schedule():Ref<ScheduleInterface>{
+    public get schedules():Ref<ScheduleInterface>{
         return this.state.get('schedules') as Ref<ScheduleInterface>;
     }
 

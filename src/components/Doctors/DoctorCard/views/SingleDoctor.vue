@@ -23,24 +23,54 @@ import FavoriteServiceCard from '../../../../UI/ServiceCard/FavoriteView.vue'
 import type ServiceData from "../../../../EastclinicVueApi/interfaces/ServiceData";
 import Modal from '../../../../UI/Modal.vue'
 import ServicesDialog from '../../ServicesDialog.vue'
+import ScheduleController from '../../../../UI/Schedule/Controller.vue'
+import Calendar from '../../../../UI/Schedule/Calendar/Controller.vue'
+
+//календарь это не зависимый от доктора компонент
+//он может принимать массив или объект disables days, что бы дни были неактивны
+//календарей может быть несколько видов
+//для начала вид с прокруткой
+//v-model календаря может возвращать один день или период дней
+//это обрабатывается  в контроллере календаря
+//для календаря с каруселью будут вьюшка одного дня,
+//вьюшка группы дней
+//значки вперед назад
+
+
+//слот не имеет смысла без расписания.
+//это маленькая вьюшка с форматированным временм
+//кроме этого есть вьюшки групп слотов, управление read more
+
+
+
+
+
+
+
+
 
 interface DoctorCardViewProps {
     doctor?: DoctorInterface | Ref<DoctorInterface>
 }
 
+const emit = defineEmits(['servicesSelected'])
+
 const props = defineProps<DoctorCardViewProps>();
 const doctor = ref(props.doctor) as Ref<DoctorInterface>;
 const mobileScreen = ref(false)
-const showModal = ref(false);
+const showModalServices = ref(false);
+
+
 const servicesSelected = ref([])
-
-
+const workingDay = ref(0)
+watch(servicesSelected.value, () => {
+    emit('servicesSelected', servicesSelected.value)
+})
 
 </script>
 
 <template>
     <BackLink/>
-
     <slot name="body">
 
     </slot>
@@ -122,17 +152,29 @@ const servicesSelected = ref([])
                         :service="doctor.favoriteService as ServiceData"
                     />
                     <span
-                        @click="showModal=true"
+                        @click="showModalServices=true"
                         class="font-12 main-color pointer text-semibold">Другие услуги
                     </span>
 
-                    <ServicesDialog v-model:visible="showModal" v-model:servicesSelected="servicesSelected" :services="doctor.service_data" />
+                    <ServicesDialog v-model:visible="showModalServices" v-model:servicesSelected="servicesSelected" :services="doctor.service_data" />
                     <div class="slots mt-6">
 
                         <div class="doctor-card-2__slots">
-<!--                            <Schedule>-->
-<!--                                :doctor="doctor"-->
-<!--                            />-->
+                            <ScheduleController>
+                                <template #calendar="" v-model="workingDay">
+<!--                                    <Carousel>-->
+                                    <Calendar :doctor-id="doctor.id" :clinic-id="1"></Calendar>
+
+
+
+<!--                                    </Carousel>-->
+
+                                </template>
+                                <template #slots>
+
+                                </template>
+
+                            </ScheduleController>
                         </div>
                     </div>
 

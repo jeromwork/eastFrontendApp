@@ -67,6 +67,9 @@ const handleInputEvent = (data) => {
     // Handle the input event from DoctorCardSingleDoctor
     console.log('Received input event data:', data);
 };
+const sd = (e) => {
+    console.log(e)
+}
 
 </script>
 
@@ -74,7 +77,7 @@ const handleInputEvent = (data) => {
 
   <slot
           v-bind="{doctor:doctorInfo}"
-
+          v-model:servicesSelected="sd"
   ></slot>
 </template>
 

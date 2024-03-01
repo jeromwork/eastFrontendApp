@@ -4,13 +4,13 @@ import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, onBefo
 
 import { ScheduleService } from "../../EastclinicVueApi";
 
-// const props = defineProps({
-//     doctorId : Number,
-//     clinicId : Number
-//
-// })
+const props = defineProps({
+    doctorId : Number,
+    clinicId : Number
 
-const slot = defineModel({ type: Number })
+})
+
+const workingDay = defineModel({ type: Number })
 
 onMounted(async ()=>{
 });
@@ -24,10 +24,10 @@ onMounted(async ()=>{
 
     <div >
 
-        <slot name="calendar" >
+        <slot name="calendar" v-bind="props">
 
         </slot>
-        <slot name="slots">
+        <slot name="slots" v-bind="props">
 
         </slot>
     </div>
