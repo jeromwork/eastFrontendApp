@@ -158,7 +158,7 @@ export default interface DoctorInterface {
     specials_of_service?:Speciality[];
 
 
-    workDays?:number[];
+    workDays?:number[]|Ref<number[]>;
 
 }
 

@@ -72,8 +72,11 @@ doctorInfo.value.favoriteService = computed(() => {
 }).value;
 
 //add work days
-doctorInfo.value.workDays = computed(() => ScheduleService.workDaysForDoctor(doctorInfo.value.id)).value as number[];
+const workDays = ScheduleService.workDaysForDoctor(doctorInfo.value.id);
 
+const currentWorkingDayModel:Ref<number>|null = ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id)
+
+const slots:Ref<number>|null = (currentWorkingDayModel?.value) ? ScheduleService.getSlots(doctorInfo.value.id, currentWorkingDayModel.value) : null;
 
 
 
@@ -81,8 +84,11 @@ doctorInfo.value.workDays = computed(() => ScheduleService.workDaysForDoctor(doc
 
 const servicesSelected = ref([])
 const clinicWorkingSelected:Ref<ClinicInterface | null> = ref(null)
-const dayScheduleSelected:Ref<number> = ref(0)
+
 const timeAppointment:Ref<number> = ref(0)
+
+onMounted(()=>{
+})
 
 const handleInputEvent = (data) => {
     // Handle the input event from DoctorCardSingleDoctor
@@ -99,7 +105,7 @@ watch(servicesSelected.value, () => {
 <template>
 
   <slot
-          v-bind="{doctor:doctorInfo, servicesSelected}"
+          v-bind="{doctor:doctorInfo, servicesSelected, currentWorkingDayModel, workDays, slots}"
           @handleInputEvent="handleInputEvent"
 
   ></slot>

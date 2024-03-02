@@ -23,8 +23,7 @@ import FavoriteServiceCard from '../../../../UI/ServiceCard/FavoriteView.vue'
 import type ServiceData from "../../../../EastclinicVueApi/interfaces/ServiceData";
 import Modal from '../../../../UI/Modal.vue'
 import ServicesDialog from '../../ServicesDialog.vue'
-import ScheduleController from '../../../../UI/Schedule/Controller.vue'
-import Calendar from '../../../../UI/Schedule/Calendar/Controller.vue'
+import ScheduleCardView from '../../../../UI/Schedule/views/ScheduleCardView.vue'
 
 //календарь это не зависимый от доктора компонент
 //он может принимать массив или объект disables days, что бы дни были неактивны
@@ -51,6 +50,9 @@ import Calendar from '../../../../UI/Schedule/Calendar/Controller.vue'
 
 interface DoctorCardViewProps {
     doctor?: DoctorInterface | Ref<DoctorInterface>
+    workDays: number[]|Ref<number[]>|null
+    slots: number[]|Ref<number[]>|null,
+
 }
 
 const props = defineProps<DoctorCardViewProps>();
@@ -61,7 +63,9 @@ const servicesSelected =  defineModel('servicesSelected' )
 const doctor = ref(props.doctor) as Ref<DoctorInterface>;
 const mobileScreen = ref(false)
 const showModalServices = ref(false);
-const workingDay = ref(0)
+
+const currentDayModel = defineModel('currentDayModel',{ type: Number })
+const currentSlotModel = defineModel('currentSlotModel',{ type: Number })
 
 
 </script>
@@ -154,7 +158,7 @@ const workingDay = ref(0)
                     </span>
 
                     <ServicesDialog v-model:visible="showModalServices" v-model:servicesSelected="servicesSelected" :services="doctor.service_data" />
-                    <ScheduleCardView >
+                    <ScheduleCardView v-bind="{workDays, currentDayModel, currentSlotModel}">
 
                     </ScheduleCardView>
 

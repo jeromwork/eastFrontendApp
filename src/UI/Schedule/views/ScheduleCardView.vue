@@ -1,17 +1,23 @@
 
 <script setup lang="ts">
 import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, onBeforeMount , onMounted, defineModel} from "vue";
-import Calendar from "#build/src/UI/Schedule/Calendar/Controller.vue";
-import ScheduleController from "#build/src/UI/Schedule/Controller.vue";
+import type {Ref} from 'vue'
+import CalendarCarouselView from "../Calendar/CalendarCarouselView.vue";
+import SlotsListView from "../Slots/SlotsListView.vue";
 
-const props = defineProps({
-    workDays : Array as () => number[],
-    slots : Array as () => number[],
 
-})
+interface ScheduleCardViewProps {
+    workDays: number[]|Ref<number[]>|null;
+    slots: number[]|Ref<number[]>|null;
 
-const currentDay = defineModel('currentDay',{ type: Number })
-const currentSlot = defineModel('currentSlot',{ type: Number })
+}
+
+
+
+const props = defineProps<ScheduleCardViewProps>();
+
+const currentDayModel = defineModel('currentDayModel',{ type: Number })
+const currentSlotModel = defineModel('currentSlotModel',{ type: Number })
 
 const emit = defineEmits(['slotSelected'])
 
@@ -29,9 +35,11 @@ onMounted(async ()=>{
 
         <div class="doctor-card-2__slots">
 
-            <Calendar :doctor-id="doctor.id" :clinic-id="1"></Calendar>
+            <CalendarCarouselView :workDays="workDays" v-model="currentDayModel">
 
-            <SlotView></SlotView>
+            </CalendarCarouselView>
+
+            <SlotsListView :slots="slots" v-model="currentSlotModel"></SlotsListView>
         </div>
     </div>
 

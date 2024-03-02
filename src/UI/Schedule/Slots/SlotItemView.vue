@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, onBeforeMount , onMounted, defineModel} from "vue";
 
-import { ScheduleService } from "../../../EastclinicVueApi";
+import { ScheduleService } from "../../EastclinicVueApi";
 
 const props = defineProps({
     doctorId : Number,
@@ -21,13 +21,11 @@ onMounted(async ()=>{
 </script>
 
 <template>
-    <!--                                    <Carousel>-->
-    <div >
 
+    <div >
 
     </div>
 
-    <!--                                    </Carousel>-->
 </template>
 
 

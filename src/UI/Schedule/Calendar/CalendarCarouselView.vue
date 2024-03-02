@@ -2,16 +2,15 @@
 <script setup lang="ts">
 import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, onBeforeMount , onMounted, defineModel} from "vue";
 
-import { ScheduleService } from "../../EastclinicVueApi";
+import { ScheduleService } from "../../../EastclinicVueApi";
+import type {Ref} from "vue";
 
 const props = defineProps({
-    doctorId : Number,
-    clinicId : Number
+    workDays : Array as () => number[] | Ref<number[]>|null,
 
 })
 
-const workingDay = defineModel({ type: Number })
-
+const currentDayModel = defineModel({ type: Number })
 onMounted(async ()=>{
 });
 
@@ -21,17 +20,13 @@ onMounted(async ()=>{
 </script>
 
 <template>
+    <!--                                    <Carousel>-->
+    <div v-if="workDays">
 
-    <div >
 
-        <slot name="calendar" v-bind="props">
-
-        </slot>
-        <slot name="slots" v-bind="props">
-
-        </slot>
     </div>
 
+    <!--                                    </Carousel>-->
 </template>
 
 
