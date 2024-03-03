@@ -15,7 +15,8 @@ import PageInfoRequest from './modules/PageInfo/api/PageInfoRequest';
 import ScheduleService from "./modules/Schedule/ScheduleService";
 import ScheduleRequest from "./modules/Schedule/api/ScheduleRequest";
 
-
+import ClinicsService from './modules/Clinics/ClinicsService';
+import ClinicsRequest from './modules/Clinics/api/ClinicsRequest';
 
 
 
@@ -28,7 +29,7 @@ import type ContentInterface from "./interfaces/ContentInterface";
 import type ScheduleInterface from "./interfaces/ScheduleInterface";
 import type ClinicInterface from "./interfaces/ClinicInterface";
 
-import ClinicsService from './modules/Clinics/ClinicsService';
+
 
 export {
 
@@ -41,7 +42,7 @@ export {
     PageInfoRequest,
 
     ClinicsService,
-    // ClinicsRequest,
+    ClinicsRequest,
 
     ScheduleService,
     ScheduleRequest

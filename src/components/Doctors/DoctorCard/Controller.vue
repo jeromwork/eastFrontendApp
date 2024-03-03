@@ -12,7 +12,6 @@ import {ScheduleService,
 
 import { useEventBus } from '@vueuse/core'
 import { EventClinicMapOpen } from '../../../composables/useEvents'
-import clinicsService from "#build/src/EastclinicVueApi/modules/Clinics/ClinicsService";
 
 
 
@@ -75,7 +74,7 @@ doctorInfo.value.favoriteService = computed(() => {
 }).value;
 
 
-doctorInfo.value.clinics = computed(() => clinicsService.getClinicByIds(Object.values(doctorInfo.value.filials))).value;
+doctorInfo.value.clinics = computed(() => ClinicsService.getClinicByIds(Object.values(doctorInfo.value.filials))).value;
 
 
 
@@ -110,7 +109,7 @@ useEventBus(EventClinicMapOpen).on((e) => {
 </script>
 
 <template>
-
+{{doctorInfo.clinics}}
   <slot
           v-bind="{doctor:doctorInfo, servicesSelected, currentWorkingDayModel, workDays, slots}"
 

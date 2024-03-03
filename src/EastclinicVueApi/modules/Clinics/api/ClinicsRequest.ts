@@ -1,4 +1,4 @@
-import type RequestAdapterInterface from "../../api/RequestAdapterInterface";
+import type RequestAdapterInterface from "../../../interfaces/RequestAdapterInterface";
 
 
 export default class ClinicsRequest implements RequestAdapterInterface
@@ -52,7 +52,10 @@ export default class ClinicsRequest implements RequestAdapterInterface
 
     //getters
 
-    getRequestData() { return this._requestData; }
+    getRequestData() {
+        this.with('component', 'east').with('action', 'getPageInfo')
+        return this._requestData;
+    }
 
 
 }

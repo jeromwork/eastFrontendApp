@@ -8,7 +8,7 @@ import ClinicsApi from "./api/ClinicsApi";
 import type ClinicInterface from "../../interfaces/ClinicInterface";
 
 const state = new StateManager();
-class PageInfoService{
+class ClinicsService{
     private state: StateManager;
 
     constructor() {
@@ -49,5 +49,4 @@ class PageInfoService{
     }
 
 }
-// const pageInfoService = new PageInfoService()
-export default new PageInfoService()
+export default new ClinicsService()
