@@ -11,6 +11,9 @@ import {ScheduleService,
 } from "../../../EastclinicVueApi";
 
 
+import useEventBus from '../../../composables/useEventBus'
+import { EventClinicMapOpen } from '../../../composables/useEventBus'
+
 
 
 
@@ -72,6 +75,10 @@ doctorInfo.value.favoriteService = computed(() => {
 }).value;
 
 
+useEventBus(EventClinicMapOpen).on((e) => {
+    console.log('hohoho!!')
+    // `e` will be `{ name: foo }`
+})
 
 
 //add work days

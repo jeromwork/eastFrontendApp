@@ -1,9 +1,14 @@
 <script setup lang="ts">
 
 import { defineProps } from 'vue'
-import ClinicCardSelectedView from 'ClinicCardSelectedView.vue'
+import ClinicCardSelectedView from './ClinicCardSelectedView.vue'
 import type { ClinicInterface } from '../../../EastclinicVueApi'
 import type {Ref} from "/vue";
+import useEventBus from '../../../composables/useEventBus'
+import { EventClinicMapOpen } from '../../../composables/useEventBus'
+
+
+
 
 const props = defineProps<{
     clinics : ClinicInterface[] | Ref<ClinicInterface[]>,
@@ -38,8 +43,10 @@ const currentClinicPrepared = computed(() => {
 
             </div>
         </div>
+
+        <button @click="useEventBus(EventClinicMapOpen).emit({str:'sdfwefwefsdf'})"> sdfwefwefsdf</button>
         <div v-if="currentClinicPrepared"
-                @click="mapOpen"
+                @click="useEventBus(EventClinicMapOpen)"
                 class="slots__address">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path d="M10 1.6665C6.3181 1.6665 3.33333 5.00199 3.33333 8.74984C3.33333 12.4683 5.4611 16.5102 8.78089 18.0619C9.55478 18.4236 10.4452 18.4236 11.2191 18.0619C14.5389 16.5102 16.6667 12.4683 16.6667 8.74984C16.6667 5.00199 13.6819 1.6665 10 1.6665Z" fill="#1C274C"/>

@@ -25,7 +25,7 @@ import Modal from '../../../../UI/Modal.vue'
 import ServicesDialog from '../../ServicesDialog.vue'
 import ScheduleCardView from '../../../../UI/Schedule/views/ScheduleCardView.vue'
 import ClinicCardSelectedView from "../../../../UI/Clinics/views/ClinicCardSelectedView.vue";
-import ClinicsSelectView from "#build/src/UI/Clinics/views/ClinicsSelectView.vue";
+import ClinicsSelectView from "../../../../UI/Clinics/views/ClinicsSelectView.vue";
 
 //календарь это не зависимый от доктора компонент
 //он может принимать массив или объект disables days, что бы дни были неактивны
