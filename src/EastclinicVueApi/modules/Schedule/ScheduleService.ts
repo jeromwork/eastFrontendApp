@@ -26,47 +26,45 @@ class ScheduleService{
 
     public setSchedules(schedules: ScheduleInterface[]):this{
         this.state.set('schedules', schedules);
-        this.setSchedulesByDoctorsIds(schedules);
+        this.setSchedulesByDoctorsDays(schedules);
         return this;
     }
 
 
-    protected setSchedulesByDoctorsIds( schedules: ScheduleInterface[]):this{
-        const workDaysByDoctorsIds:any = {};
+    protected setSchedulesByDoctorsDays( schedules: ScheduleInterface[]):this{
+        const workDaysByDoctorsDaysClinics:any = {};
         for (const s in schedules.sort(this.sortAsc)){
-            if(!workDaysByDoctorsIds[schedules[s]['doctorId']]) workDaysByDoctorsIds[schedules[s]['doctorId']] = {};
-            if(!workDaysByDoctorsIds[schedules[s]['doctorId']][schedules[s]['date']]) workDaysByDoctorsIds[schedules[s]['doctorId']][schedules[s]['date']] = {};
-            workDaysByDoctorsIds[schedules[s]['doctorId']][schedules[s]['date']][schedules[s]['date']] = schedules[s]['date'];
+            const schedule = schedules[s];
+            workDaysByDoctorsDaysClinics['doctorId'] ??= {};
+            workDaysByDoctorsDaysClinics['doctorId']['date'] ??= {};
+            workDaysByDoctorsDaysClinics['doctorId']['date']['clinicId'] = schedule;
         }
-        this.state.set('schedulesByDoctorsIds', workDaysByDoctorsIds);
+        this.state.set('schedulesByDoctorsIds', workDaysByDoctorsDaysClinics);
         return this;
     }
 
-    public workDaysForDoctor( doctorId:number ):Ref<number[]>{
+    public workDaysForDoctor( doctorId:number ):Ref<string[]>|null{
+        const workDays = this.state.get('schedulesByDoctorsIds')?.value?.[doctorId];
+        return (workDays) ? toRef(Object.keys(workDays)) : null;
+    }
+
+    public workDayInfoForDoctorDayClinic( doctorId:number, day:number ):ScheduleInterface{
+
         return toRef(this.state.get('schedulesByDoctorsIds').value[doctorId] )
     }
 
-    public workDayInfoForDoctor( doctorId:number, day:number ):ScheduleInterface{
-        return toRef(this.state.get('schedulesByDoctorsIds').value[doctorId] )
-    }
 
-
-    public nearestWorkDayForDoctor(doctorId:number):Ref<number>|null{
+    public nearestWorkDayForDoctor(doctorId:number):Ref<string>|null{
         const workDaysRef = this.workDaysForDoctor(doctorId);
-        if (workDaysRef.value) {
-            const nearestDay = Object.keys(workDaysRef.value)[0];
-            const nearestDayAsNumber = parseInt(nearestDay, 10); // Assuming the day is represented as a string
-            return toRef(nearestDayAsNumber);
-        }
-        return null
+        return (workDaysRef?.value) ? toRef(Object.keys(workDaysRef.value)[0]) : null;
     }
 
-    public getSlots(doctorId:number, day:number):Ref<number[]>|null{
+    public getSlots(doctorId:number, day:number, clinicId:number):Ref<string[]>|null{
         const nearestWorkDay = this.nearestWorkDayForDoctor(doctorId);
-        if (nearestWorkDay?.value) {
-            this.workDayInfoForDoctor(doctorId, day)
-            return null;
-        }
+        // if (nearestWorkDay?.value) {
+        //     this.workDayInfoForDoctor(doctorId, day)
+        //     return null;
+        // }
         return null
     }
 

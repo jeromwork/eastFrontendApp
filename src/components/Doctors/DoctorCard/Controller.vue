@@ -7,12 +7,12 @@ import type ContentInterface from "../../../EastclinicVueApi/interfaces/ContentI
 import type ServiceData from "../../../EastclinicVueApi/interfaces/ServiceData";
 import type {ClinicInterface} from "#build/src/EastclinicVueApi";
 import {ScheduleService,
-    // ClinicsService
+    ClinicsService
 } from "../../../EastclinicVueApi";
 
-
-import useEventBus from '../../../composables/useEventBus'
-import { EventClinicMapOpen } from '../../../composables/useEventBus'
+import { useEventBus } from '@vueuse/core'
+import { EventClinicMapOpen } from '../../../composables/useEvents'
+import clinicsService from "#build/src/EastclinicVueApi/modules/Clinics/ClinicsService";
 
 
 
@@ -75,19 +75,19 @@ doctorInfo.value.favoriteService = computed(() => {
 }).value;
 
 
-useEventBus(EventClinicMapOpen).on((e) => {
-    console.log('hohoho!!')
-    // `e` will be `{ name: foo }`
-})
+doctorInfo.value.clinics = computed(() => clinicsService.getClinicByIds(Object.values(doctorInfo.value.filials))).value;
+
+
+
 
 
 //add work days
 const workDays = ScheduleService.workDaysForDoctor(doctorInfo.value.id);
 
-const currentWorkingDayModel:Ref<number>|null = ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id)
+const currentWorkingDayModel:Ref<string>|null = ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id)
 
 
-const slots:Ref<number[]>|null = (currentWorkingDayModel?.value) ? ScheduleService.getSlots(doctorInfo.value.id, currentWorkingDayModel.value) : null;
+const slots:Ref<string[]>|null = (currentWorkingDayModel?.value) ? ScheduleService.getSlots(doctorInfo.value.id, currentWorkingDayModel.value) : null;
 provide('slots', slots);
 
 
@@ -99,15 +99,13 @@ const timeAppointment:Ref<number> = ref(0)
 onMounted(()=>{
 })
 
-const handleInputEvent = (data) => {
-    // Handle the input event from DoctorCardSingleDoctor
-    console.log('Received input event data:', data);
-};
+//handle events from child
+useEventBus(EventClinicMapOpen).on((e) => {
 
-
-watch(servicesSelected.value, () => {
-    console.log(servicesSelected.value)
+    console.log(e)
+    // `e` will be `{ name: foo }`
 })
+
 
 </script>
 
@@ -115,7 +113,6 @@ watch(servicesSelected.value, () => {
 
   <slot
           v-bind="{doctor:doctorInfo, servicesSelected, currentWorkingDayModel, workDays, slots}"
-          @handleInputEvent="handleInputEvent"
 
   ></slot>
 </template>

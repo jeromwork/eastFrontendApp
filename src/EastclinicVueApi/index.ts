@@ -28,7 +28,7 @@ import type ContentInterface from "./interfaces/ContentInterface";
 import type ScheduleInterface from "./interfaces/ScheduleInterface";
 import type ClinicInterface from "./interfaces/ClinicInterface";
 
-// import ClinicsService from './modules/Clinics/ClinicsService';
+import ClinicsService from './modules/Clinics/ClinicsService';
 
 export {
 
@@ -40,7 +40,7 @@ export {
     PageInfoService,
     PageInfoRequest,
 
-    // ClinicsService,
+    ClinicsService,
     // ClinicsRequest,
 
     ScheduleService,

@@ -1,13 +1,11 @@
-import PageInfoApi from './api/PageInfoApi';
-import type RequestAdapterInterface from "../../interfaces/RequestAdapterInterface";
+
+
 import StateManager from "../../util/StateManager";
-import type ApiGetPageInfoResponseInterface from "./api/ApiGetPageInfoResponseInterface";
-import type PageInfoRequest from "./api/PageInfoRequest";
-import type ModxRequest from "./api/PageInfoRequest";
 import type {Ref} from "vue";
 import {toRef} from "vue";
-import type PageInfoInterface from "../../interfaces/PageInfoInterface";
-// import {createWebHistory, useRouter} from "vue-router";
+import ClinicsRequest from "./api/ClinicsRequest";
+import ClinicsApi from "./api/ClinicsApi";
+import type ClinicInterface from "../../interfaces/ClinicInterface";
 
 const state = new StateManager();
 class PageInfoService{
@@ -17,29 +15,38 @@ class PageInfoService{
         this.state = state;
     }
 
-    public async refreshPageInfoFromServer( request:PageInfoRequest ){
+    public async getClinicsFromServer( request:ClinicsRequest ){
 
         request.with('component', 'east').with('action', 'getPageInfo')
 
-        const {data, sessionId} = await (new PageInfoApi).get(request.with('component', 'east').getRequestData()) as ApiGetPageInfoResponseInterface;
+        const {data, sessionId} = await (new ClinicsApi).get(request.with('component', 'east').getRequestData()) ;
 
-        this.state.set('pageInfo', data.resource);
-        this.state.set('sessionId', sessionId);
+        this.state.set('clinics', data.resource);
     }
 
 
-    public get getPageInfo():Ref<PageInfoInterface>{
-        return this.state.get('pageInfo') as Ref<PageInfoInterface>;
+    public get clinics():Ref<ClinicInterface>{
+        return this.state.get('clinics') as Ref<ClinicInterface>;
     }
 
-    public getSessionId(){
-        return this.state.get('sessionId');
+
+    public getClinic( id:number):Ref<ClinicInterface>|null{
+        return (this.state.get('clinics')?.value?.[id]) ? toRef(this.state.get('clinics').value[id]) : null
     }
 
-    typeDoctorPage(){
-        return this.state.get('typeDoctorPage');
-    }
+    public getClinicByIds( ids:number[]):Ref<ClinicInterface>[]|null{
+        if(!this.state.get('clinics')?.value) return null;
+        const clinics: Ref<ClinicInterface>[] = [];
 
+        for (const i in ids) {
+            const clinic = this.getClinic(ids[i]);
+
+            if (clinic) {
+                clinics.push(clinic);
+            }
+        }
+        return clinics.length > 0 ? clinics : null;
+    }
 
 }
 // const pageInfoService = new PageInfoService()
