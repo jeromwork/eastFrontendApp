@@ -1,12 +1,13 @@
 
 <script setup lang="ts">
 import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, onBeforeMount , onMounted, defineModel} from "vue";
+import { useEventBus } from '@vueuse/core'
 
-import { ScheduleService } from "../../EastclinicVueApi";
+const bus = useEventBus<string>('news')
+
 
 const props = defineProps({
-    doctorId : Number,
-    clinicId : Number
+slots:
 
 })
 
@@ -22,7 +23,7 @@ onMounted(async ()=>{
 
 <template>
 
-    <div >
+    <div @click="bus.emit('The Tokyo Olympics has begun')">
 
     </div>
 

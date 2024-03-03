@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw } from "vue";
+import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, provide } from "vue";
 import type { Ref } from "vue";
 
 import type DoctorInterface from "../../../EastclinicVueApi/interfaces/DoctorInterface";
@@ -71,15 +71,17 @@ doctorInfo.value.favoriteService = computed(() => {
     return mainService as ServiceData;
 }).value;
 
+
+
+
 //add work days
 const workDays = ScheduleService.workDaysForDoctor(doctorInfo.value.id);
 
 const currentWorkingDayModel:Ref<number>|null = ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id)
 
-const slots:Ref<number>|null = (currentWorkingDayModel?.value) ? ScheduleService.getSlots(doctorInfo.value.id, currentWorkingDayModel.value) : null;
 
-
-
+const slots:Ref<number[]>|null = (currentWorkingDayModel?.value) ? ScheduleService.getSlots(doctorInfo.value.id, currentWorkingDayModel.value) : null;
+provide('slots', slots);
 
 
 const servicesSelected = ref([])

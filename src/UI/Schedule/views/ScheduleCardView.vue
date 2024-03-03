@@ -16,7 +16,7 @@ interface ScheduleCardViewProps {
 
 const props = defineProps<ScheduleCardViewProps>();
 
-const currentDayModel = defineModel('currentDayModel',{ type: Number })
+const currentWorkingDayModel = defineModel('currentDayModel',{ type: Number })
 const currentSlotModel = defineModel('currentSlotModel',{ type: Number })
 
 const emit = defineEmits(['slotSelected'])
@@ -35,7 +35,7 @@ onMounted(async ()=>{
 
         <div class="doctor-card-2__slots">
 
-            <CalendarCarouselView :workDays="workDays" v-model="currentDayModel">
+            <CalendarCarouselView :workDays="workDays" v-model="currentWorkingDayModel">
 
             </CalendarCarouselView>
 

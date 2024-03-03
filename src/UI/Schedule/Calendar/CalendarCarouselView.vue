@@ -10,7 +10,7 @@ const props = defineProps({
 
 })
 
-const currentDayModel = defineModel({ type: Number })
+const currentWorkingDayModel = defineModel({ type: Number })
 onMounted(async ()=>{
 });
 

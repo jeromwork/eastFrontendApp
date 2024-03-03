@@ -5,7 +5,9 @@ import {ref, defineProps, defineEmits, defineModel} from 'vue';
 
 const props = defineProps({
     options: {type: Array<Object>, required:true },
-    optionValue:{type:String, default:'id', required:true}
+    optionValue:{type:String, default:'id', required:true},
+    /* is fullScreen view*/
+    fullScreen:{type:Boolean, default:false, required:false},
 });
 // const emits = defineEmits(['update:modelValue'])
 const model = defineModel({ type: Array<Object> })
