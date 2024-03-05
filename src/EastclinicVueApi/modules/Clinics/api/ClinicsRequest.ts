@@ -53,7 +53,6 @@ export default class ClinicsRequest implements RequestAdapterInterface
     //getters
 
     getRequestData() {
-        this.with('component', 'east').with('action', 'getPageInfo')
         return this._requestData;
     }
 

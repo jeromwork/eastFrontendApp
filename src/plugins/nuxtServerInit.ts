@@ -3,8 +3,9 @@ import {ClinicsRequest} from "../EastclinicVueApi";
 
 
 export default defineNuxtPlugin(async (nuxtApp) => {
+    await ClinicsService.getClinicsFromServer((new ClinicsRequest()));
+
     if(process.server){
-        console.log(21111111111)
-        await ClinicsService.getClinicsFromServer((new ClinicsRequest()));
+
     }
 })

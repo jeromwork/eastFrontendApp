@@ -12,9 +12,14 @@ export default class StateManager<T extends DefaultState = DefaultState> {
         return this;
     }
 
-    public get<K extends keyof T>(key: string): Ref<T[K]> {
-        return toRef(this._state, key) as Ref<T[K]>;
+    // public get<K extends keyof T>(key: string): Ref<T[K]> {
+    //     return toRef(this._state, key) as Ref<T[K]>;
+    // }
+
+    public get<K extends keyof T>(key: string) {
+        return computed(()=>this._state[key]).value;
     }
+
 
     public getItems(){
         return computed(()=>this._state).value.items;

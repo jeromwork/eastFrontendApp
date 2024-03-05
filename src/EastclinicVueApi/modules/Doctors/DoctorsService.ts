@@ -1,5 +1,5 @@
 
-// import {computed, reactive, ref, toRaw} from "vue";
+import {computed, reactive, ref, toRaw} from "vue";
 import DoctorsApi from './api/DoctorsApi';
 import DoctorsModxApi from './api/DoctorsModxApi';
 import MultiStateManager from "../../util/MultiStateManager";//probably to use one state manage for many services - its global state
@@ -9,6 +9,9 @@ import StateManager from "../../util/StateManager";
 import type ApiDoctorsResponseInterface from "./api/ResponceInterfaces/ApiDoctorsResponseInterface";
 import type DefaultState from "../../util/DefaultState";
 import scheduleService from '../Schedule/ScheduleService'
+import type {ClinicInterface} from "../../index";
+import type {DoctorInterface} from "../../index";
+import ScheduleService from "../Schedule/ScheduleService";
 
 
 const globalMultiState = new MultiStateManager();
@@ -67,5 +70,22 @@ export default class DoctorsService{
     }
 
 
+    public clinicWorkingDefault(doctorId:number):ClinicInterface|null{
+        return computed(() => {
+            const doctor =  this.state.getItem(doctorId) as DoctorInterface;
+
+            if(!doctor || !doctor.filials) return null;
+            //get doctors schedule
+            const schedule = ScheduleService.getScheduleForDoctor(doctorId)
+            //get current clinic from url
+
+
+
+            // console.log(schedule)
+
+            return null;
+        }).value
+
+        }
 
 }

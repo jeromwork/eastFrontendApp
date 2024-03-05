@@ -10,10 +10,7 @@ export default class PageInfoApi {
 
     public async get(requestData: Object): Promise<ApiGetPageInfoResponseInterface> {
         try {
-            console.log('refreshPageInfoFromServer')
-
              const res = await postToServer(API_MODX_URL, { ...requestData });
-
             return res as ApiGetPageInfoResponseInterface;
 
         } catch (error) {

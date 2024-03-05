@@ -17,11 +17,10 @@ class ClinicsService{
 
     public async getClinicsFromServer( request:ClinicsRequest ){
 
-        request.with('component', 'east').with('action', 'getPageInfo')
+        request.with('component', 'east_filial').with('action', 'filials/get')
 
-        const {data, sessionId} = await (new ClinicsApi).get(request.with('component', 'east').getRequestData()) ;
-
-        this.state.set('clinics', data.resource);
+        const {data} = await (new ClinicsApi).get(request.getRequestData()) ;
+        this.state.set('clinics', data);
     }
 
 
@@ -34,15 +33,16 @@ class ClinicsService{
         return (this.state.get('clinics')?.value?.[id]) ? toRef(this.state.get('clinics').value[id]) : null
     }
 
-    public getClinicByIds( ids:number[]):Ref<ClinicInterface>[]|null{
+    public getClinicsByIds( ids:number[]):Ref<ClinicInterface>[]|null{
         if(!this.state.get('clinics')?.value) return null;
         const clinics: Ref<ClinicInterface>[] = [];
 
         for (const i in ids) {
-            const clinic = this.getClinic(ids[i]);
+            const clinicId = ids[i];
+            const clinic = this.getClinic(clinicId);
 
             if (clinic) {
-                clinics.push(clinic);
+                clinics[clinicId] = clinic;
             }
         }
         return clinics.length > 0 ? clinics : null;

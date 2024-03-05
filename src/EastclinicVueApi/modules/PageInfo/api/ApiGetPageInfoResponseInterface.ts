@@ -21,9 +21,24 @@ export default interface ApiGetPageInfoResponseInterface {
             showInstaSlider: number,
             breadcrumbs?: Breadcrumb[];
         };
+        currentClinicId?:number,
+        clinicUrl?:string,
+        nearestClinicsRoutsInfo?:NearestClinicsRoutsInfo[],
+
     };
-    sessionId: string;
+    sessionId?: string;
 }
+
+interface NearestClinicsRoutsInfo {
+    id: number;
+    clinic_id: number;
+    place_id: number;
+    distance_car: number;
+    duration_car: number;
+    distance_walk: number;
+    duration_walk: number;
+}
+
 
 interface Breadcrumb {
     title: string;

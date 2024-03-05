@@ -68,10 +68,18 @@ class ScheduleService{
         return null
     }
 
+    public getScheduleForDoctor(doctorId: number): Ref<ScheduleInterface[]> | Ref<null> {
+        const schedules = this.state.get('schedules').value;
+        if (!schedules) return toRef(null);
+
+        const schedulesOfDoctor = schedules.filter((shd:ScheduleInterface) => shd.doctorId === doctorId) as ScheduleInterface[];
+
+        return schedulesOfDoctor.length > 0 ? toRef(schedulesOfDoctor) : toRef(null);
+    }
 
 
-    public get schedules():Ref<ScheduleInterface>{
-        return this.state.get('schedules') as Ref<ScheduleInterface>;
+    public get schedules(): Ref<ScheduleInterface>[]|Ref<null> {
+        return (this.state.get('schedules').value ) ? this.state.get('schedules') as any as Ref<ScheduleInterface>[] : toRef(null);
     }
 
 protected sortAsc(a:ScheduleInterface, b:ScheduleInterface) {

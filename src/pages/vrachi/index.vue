@@ -1,40 +1,50 @@
 
 
 <script setup>
-import Gallery from '~/UI/Gallery'
-const name = "index.vue";
+import Doctors from "../../components/Doctors/Controller";
+import DoctorCardController from '../../components/Doctors/DoctorCard/Controller'
+import DoctorCardSingleDoctor from '../../components/Doctors/DoctorCard/views/SingleDoctor.vue'
+import DoctorCardXL from '../../components/Doctors/DoctorCard/views/XL.vue'
+import {PageInfoService} from "~/EastclinicVueApi";
+
+const pageInfo = PageInfoService.getPageInfo
+// const route = useRoute();
+
+import { onMounted, ref, defineAsyncComponent } from 'vue';
+
+
+
+onMounted(() => {
+    // setTimeout(()=>{
+    //     Doctors.value = defineAsyncComponent(async () => await import('../../components/Doctors/Controller'));
+    //     console.log('load doctors component')
+    // }, 10000)
+
+
+});
+
 </script>
+
 <template>
-    <NuxtLayout name="default">
-    <div class="white" style="height: 100%;">
+    <div>
+        <NuxtLayout name="doctors">
+            <Doctors>
+                <template #doctorsList="doctorInfo">
+                    <DoctorCardController v-bind="doctorInfo" #default="doctorInfoPrepared" >
+                        <DoctorCardXL v-bind="doctorInfoPrepared"/>
+                    </DoctorCardController>
+                </template>
+                <template #singleDoctor="doctorInfo">
+                    <DoctorCardController v-bind="doctorInfo" #default="doctorInfoPrepared">
+                        <DoctorCardSingleDoctor v-bind="doctorInfoPrepared"/>
+                    </DoctorCardController>
+                </template>
 
-<!--        <MainPageSearch />-->
+            </Doctors>
 
-        <Gallery/>
-
-        <div class="main_page main-container mt-10">
-            <div class="scroll-container main_page__awards-container">
-                <div class="awards scrolling-block">
-                    <div class="awards__item">
-                        <img src="https://eastclinic.ru/assets/images/awards/award-sberzdorovie.png" alt="Награда Ист Клиник в СберЗдоровье 2021 | 2020 | 2019">
-                    </div>
-                    <div class="awards__item">
-                        <img src="https://eastclinic.ru/assets/images/awards/award-prodoctorov.png" alt="Награда Ист Клиник в ПроДокторов 2022 | 2021">
-                    </div>
-                    <div class="awards__item">
-                        <img src="https://eastclinic.ru/assets/images/awards/award-napopravku.png" alt="Награда Ист Клиник НаПоправку 2022 | 2021 | 2020 | 2019">
-                    </div>
-                    <div class="awards__item">
-                        <img src="https://eastclinic.ru/assets/images/awards/award-yandex.png" alt="Награда Ист Клиник в Яндекс 2022 | 2020 | 2019">
-                    </div>
-                </div>
-            </div>
-        </div>
+        </NuxtLayout>
     </div>
-    </NuxtLayout >
 </template>
 
-
 <style scoped>
-
 </style>

@@ -12,8 +12,7 @@ import {ScheduleService,
 
 import { useEventBus } from '@vueuse/core'
 import { EventClinicMapOpen } from '../../../composables/useEvents'
-
-
+import {DoctorsService} from "../../../EastclinicVueApi";
 
 
 //В этом компоненте обращаемся к сервису за данными по доктору
@@ -74,8 +73,7 @@ doctorInfo.value.favoriteService = computed(() => {
 }).value;
 
 
-doctorInfo.value.clinics = computed(() => ClinicsService.getClinicByIds(Object.values(doctorInfo.value.filials))).value;
-
+doctorInfo.value.clinics = computed(() => ClinicsService.getClinicsByIds(Object.values(doctorInfo.value.filials))).value;
 
 
 
@@ -86,12 +84,14 @@ const workDays = ScheduleService.workDaysForDoctor(doctorInfo.value.id);
 const currentWorkingDayModel:Ref<string>|null = ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id)
 
 
+
 const slots:Ref<string[]>|null = (currentWorkingDayModel?.value) ? ScheduleService.getSlots(doctorInfo.value.id, currentWorkingDayModel.value) : null;
 provide('slots', slots);
 
 
 const servicesSelected = ref([])
-const clinicWorkingSelected:Ref<ClinicInterface | null> = ref(null)
+
+const clinicWorkingSelected = computed(() => (new DoctorsService()).clinicWorkingDefault(doctorInfo.value.id));
 
 const timeAppointment:Ref<number> = ref(0)
 
@@ -109,7 +109,7 @@ useEventBus(EventClinicMapOpen).on((e) => {
 </script>
 
 <template>
-{{doctorInfo.clinics}}
+    {{clinicWorkingSelected}}
   <slot
           v-bind="{doctor:doctorInfo, servicesSelected, currentWorkingDayModel, workDays, slots}"
 
