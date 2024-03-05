@@ -33,7 +33,7 @@ class ClinicsService{
         return (this.state.get('clinics')?.[id]) ? this.state.get('clinics')[id] : null
     }
 
-    public getClinicsByIds(ids: number[]): { [key: number]: ClinicInterface } | null {
+    public getClinicsByIds(ids: number[]): ClinicInterface[] | null {
 
         if (!this.state.get('clinics')) return null;
         const clinics: { [key: number]: ClinicInterface } = {};
@@ -46,7 +46,7 @@ class ClinicsService{
             }
         }
 
-        return Object.keys(clinics).length > 0 ? clinics: null;
+        return Object.keys(clinics).length > 0 ? Object.values(clinics): null;
     }
 
     public get currentClinic() :ClinicInterface|null {

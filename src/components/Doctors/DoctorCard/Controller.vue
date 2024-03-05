@@ -11,7 +11,7 @@ import {ScheduleService,
 } from "../../../EastclinicVueApi";
 
 import { useEventBus } from '@vueuse/core'
-import { EventClinicMapOpen } from '../../../composables/useEvents'
+import {EventClinicMapOpen, EventSetCurrentClinic} from '../../../composables/useEvents'
 import {DoctorsService} from "../../../EastclinicVueApi";
 
 
@@ -71,6 +71,7 @@ doctorInfo.value.favoriteService = computed(() => {
 
 
 doctorInfo.value.clinics = computed(() => ClinicsService.getClinicsByIds(Object.values(doctorInfo.value.filials))).value;
+provide('clinics', doctorInfo.value.clinics)
 
 
 
@@ -80,6 +81,8 @@ const workDays = ScheduleService.workDaysForDoctor(doctorInfo.value.id);
 
 const currentWorkingDayModel: Ref<number | null> = ref(    ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id) as number ?? null);
 const clinicWorkingSelected: Ref<ClinicInterface | null> = ref( (new DoctorsService()).clinicWorkingDefault(doctorInfo.value.id) as ClinicInterface ?? null);
+// provide('clinicWorkingSelected', clinicWorkingSelected)
+
 
 
 const slots:Ref<number[]|null> = ref(null);
@@ -87,6 +90,7 @@ if(currentWorkingDayModel.value && clinicWorkingSelected?.value?.id) {
     slots.value = (ScheduleService.getSlots(clinicWorkingSelected?.value?.id as number, doctorInfo.value.id, currentWorkingDayModel.value as number)) ?? null;
 }
 provide('slots', slots);
+
 
 
 const servicesSelected = ref([])
@@ -102,15 +106,20 @@ onMounted(()=>{
 useEventBus(EventClinicMapOpen).on((e) => {
 
     console.log(e)
-    // `e` will be `{ name: foo }`
 })
+useEventBus(EventSetCurrentClinic).on((clinic) => {
+    clinicWorkingSelected.value = clinic;
+})
+
+
 
 
 </script>
 
 <template>
+
   <slot
-          v-bind="{doctor:doctorInfo, servicesSelected, currentWorkingDayModel, workDays, slots}"
+          v-bind="{doctor:doctorInfo, servicesSelected, currentWorkingDayModel, workDays, clinicWorkingSelected}"
 
   ></slot>
 </template>

@@ -26,6 +26,7 @@ import ServicesDialog from '../../ServicesDialog.vue'
 import ScheduleCardView from '../../../../UI/Schedule/views/ScheduleCardView.vue'
 import ClinicCardSelectedView from "../../../../UI/Clinics/views/ClinicCardSelectedView.vue";
 import ClinicsSelectView from "../../../../UI/Clinics/views/ClinicsSelectView.vue";
+import type {ClinicInterface} from "../../../../EastclinicVueApi";
 
 //календарь это не зависимый от доктора компонент
 //он может принимать массив или объект disables days, что бы дни были неактивны
@@ -53,7 +54,8 @@ import ClinicsSelectView from "../../../../UI/Clinics/views/ClinicsSelectView.vu
 interface DoctorCardViewProps {
     doctor?: DoctorInterface | Ref<DoctorInterface>
     workDays: number[]|Ref<number[]>|null
-    slots: number[]|Ref<number[]>|null,
+    //slots: number[]|Ref<number[]>|null,
+    clinicWorkingSelected: ClinicInterface | null
 
 }
 
@@ -161,8 +163,7 @@ const currentSlotModel = defineModel('currentSlotModel',{ type: Number })
 
                     <ServicesDialog v-model:visible="showModalServices" v-model:servicesSelected="servicesSelected" :services="doctor.service_data" />
 
-
-                    <ClinicsSelectView :clinics="[]">
+                    <ClinicsSelectView v-if="doctor.clinics && clinicWorkingSelected" :clinics="doctor.clinics"  :current-clinic="clinicWorkingSelected">
 
                     </ClinicsSelectView>
 

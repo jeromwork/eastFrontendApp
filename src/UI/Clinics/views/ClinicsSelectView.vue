@@ -1,51 +1,71 @@
 <script setup lang="ts">
 
-import { defineProps } from 'vue'
+import { defineProps, defineModel, ref } from 'vue'
 import ClinicCardSelectedView from './ClinicCardSelectedView.vue'
 import type { ClinicInterface } from '../../../EastclinicVueApi'
 import type {Ref} from "/vue";
 import { useEventBus } from '@vueuse/core'
-import { EventClinicMapOpen } from '../../../composables/useEvents'
+import { EventClinicMapOpen, EventSetCurrentClinic, } from '../../../composables/useEvents'
+import SelectList from '../../SelectList'
+import ClinicCardInSelectListView from './ClinicCardInSelectListView'
+import Modal from "../../../UI/Modal.vue";
+
+// import ServiceData from "#build/src/EastclinicVueApi/interfaces/ServiceData";
+
 
 
 
 
 const props = defineProps<{
-    clinics : ClinicInterface[] | Ref<ClinicInterface[]>,
-    currentClinic : ClinicInterface | Ref<ClinicInterface>|undefined|null,
+    clinics : ClinicInterface[] | null,
+    currentClinic : ClinicInterface | null,
 }>();
 
-const countClinics = computed(() => (isRef(props.clinics)) ?props.clinics.value.length : props.clinics.length);
-const currentClinicPrepared = computed(() => {
-    if(!props.currentClinic) return null;
-    return (isRef(props.currentClinic)) ?props.currentClinic.value : props.currentClinic
-})
+const visibleClinicsList = ref(false)
+
+// const clinics = inject('clinics') as ClinicInterface[];
+// const currentClinic = inject('clinicWorkingSelected') as ClinicInterface;
+
+
+const countClinics = computed(() => props.clinics?.length);
+// const currentClinicPrepared = computed(() => {
+//     if(!props.currentClinic) return null;
+//     return (isRef(props.currentClinic)) ?props.currentClinic.value : props.currentClinic
+// })
+
+
+const currentClinic = computed(() =>  props.currentClinic )
+const selectedClinic = (clinic:ClinicInterface) => {
+    useEventBus(EventSetCurrentClinic).emit(clinic)
+    visibleClinicsList.value = false;
+}
 
 </script>
 
 <template>
-
-
     <div>
-        <div class="slots__clinic-changer ">
-            <div  v-if="countClinics > 0">
+        <div class="slots__clinic-changer " @click="visibleClinicsList = !visibleClinicsList">
+            <div  v-if="countClinics > 0 && currentClinic">
                 <div class="slots__clinic-changer_dropdown-input dropdown-wrapper">
                     <div class="slots__clinic-changer_metro font-14">
-                        <ClinicCardSelectedView :clinic="currentClinic"/>
+                        <ClinicCardSelectedView :clinic="currentClinic as ClinicInterface"/>
                     </div>
                     <span class="icons down justify-self-end"></span>
                 </div>
             </div>
-            <div v-else>
+            <div v-else-if="countClinics === 0 && currentClinic">
                 <div class="slots__clinic-changer_metro-noclick">
-                    <ClinicCardSelectedView :clinic="currentClinic"/>
+                    <ClinicCardSelectedView :clinic="currentClinic as ClinicInterface"/>
                 </div>
 
             </div>
         </div>
 
-        <div v-if="currentClinicPrepared"
-                @click="useEventBus(EventClinicMapOpen).emit(currentClinicPrepared)"
+
+
+
+        <div v-if="currentClinic"
+                @click="useEventBus(EventClinicMapOpen).emit(currentClinic)"
                 class="slots__address">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path d="M10 1.6665C6.3181 1.6665 3.33333 5.00199 3.33333 8.74984C3.33333 12.4683 5.4611 16.5102 8.78089 18.0619C9.55478 18.4236 10.4452 18.4236 11.2191 18.0619C14.5389 16.5102 16.6667 12.4683 16.6667 8.74984C16.6667 5.00199 13.6819 1.6665 10 1.6665Z" fill="#1C274C"/>
@@ -63,8 +83,18 @@ const currentClinicPrepared = computed(() => {
                     </linearGradient>
                 </defs>
             </svg>
-            <span>{{currentClinicPrepared.node_address}}</span>
+            <span>{{currentClinic.node_address}}</span>
         </div>
+
+
+        <Modal v-model:visible="visibleClinicsList">
+            <template #default>
+        <SelectList :options="clinics as any[]" #default="{option, selected}" optionValue="id" v-model="currentClinic" >
+            <ClinicCardInSelectListView v-bind="{clinic:option, selected}" @click="selectedClinic(option)"></ClinicCardInSelectListView>
+        </SelectList>
+            </template>
+        </Modal>
+
     </div>
 
 </template>

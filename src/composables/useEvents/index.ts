@@ -4,6 +4,7 @@ import { useEventBus } from '@vueuse/core'
 
 
 import EventClinicMapOpen from "./events/EventClinicMapOpen";
+import EventSetCurrentClinic from "./events/EventSetCurrentClinic";
 import type {EventBusKey} from "@vueuse/core";
 import exp from "constants";
 
@@ -17,5 +18,6 @@ export default useEventBus;
 
 export {
     EventClinicMapOpen,
-    // DoctorInterface,
+    EventSetCurrentClinic,
 }
+

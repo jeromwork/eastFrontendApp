@@ -161,7 +161,7 @@ export default interface DoctorInterface {
 
 
     workDays?:number[]|Ref<number[]>;
-    clinics: { [key: number]: ClinicInterface }|Ref<{ [key: number]: ClinicInterface }>|null
+    clinics: ClinicInterface[]|null
 
 }
 
