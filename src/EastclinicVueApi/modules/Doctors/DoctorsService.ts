@@ -47,10 +47,7 @@ export default class DoctorsService{
             this.state.set('typeDoctorPage', 'list');
         }
 
-
-
         this.state.setItems(response.doctors);
-
 
     // for legacy alg, schedules init in doctors request
         scheduleService.setSchedules((response.schedule) ?? [] );
@@ -66,13 +63,14 @@ export default class DoctorsService{
     };
 
     typeDoctorPage(){
+        console.log(this.state)
         return this.state.get('typeDoctorPage');
     }
 
 
     public clinicWorkingDefault(doctorId:number):ClinicInterface|null{
         return computed(() => {
-            const doctor =  this.state.getItem(doctorId) as DoctorInterface;
+            const doctor =  this.state.getItem( doctorId ) as DoctorInterface;
 
             if(!doctor || !doctor.filials) return null;
             //get doctors schedule

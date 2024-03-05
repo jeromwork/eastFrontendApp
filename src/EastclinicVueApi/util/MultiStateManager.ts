@@ -20,15 +20,14 @@ export default class MultiStateManager extends DefaultState{
 
 
 
-    //getters
-    // public getItems(){        return toRef(this._state[this._stateName], 'items'); };
+
     public count():number|null {
         return (this._state[this._stateName]?.itemsIds) ? computed(()=>this._state[this._stateName]?.itemsIds).value.items: null;
     }
     public setItems (items:any):this {
         this.setCacheItems(items).setItemsIds(items);
 
-        this._state[this._stateName].items = items;
+        // this._state[this._stateName].items = items;
 
         if(items.length === 0){
             this._state[this._stateName].itemsIds = {};
@@ -37,12 +36,28 @@ export default class MultiStateManager extends DefaultState{
         return this;
     }
 
-    public getItems(){
-        return computed(()=>this._state[this._stateName]).value.items;
+    public set(name: string, value: any): this {
+        this._state[this._stateName][name] = value;
+        return this;
+    }
+
+    //getters
+
+    public getItems():any[]|null{
+        return computed(()=>{
+            if(!this._state[this._stateName]?.itemsIds) return null
+            const foundItems = [];
+            for(const i in this._state[this._stateName].itemsIds){
+                const itemId = this._state[this._stateName].itemsIds[i];
+                if(this._state?._cash?.[itemId]) foundItems.push(this._state._cash[itemId]);
+            }
+            return foundItems;
+        }).value;
     };
+
+
     public get(key: string) {
         return computed(()=>this._state[this._stateName][key]).value;
-        // return toRef(this._state[this._stateName], key);
     }
 
 

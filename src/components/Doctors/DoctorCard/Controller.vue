@@ -28,9 +28,6 @@ import {DoctorsService} from "../../../EastclinicVueApi";
  * Данные по рейтингу приходят с данными доктора*/
 
 
-
-
-
 interface DoctorCardViewProps {
     doctor: DoctorInterface;
 }
@@ -109,7 +106,6 @@ useEventBus(EventClinicMapOpen).on((e) => {
 </script>
 
 <template>
-{{doctorInfo.clinics}}
   <slot
           v-bind="{doctor:doctorInfo, servicesSelected, currentWorkingDayModel, workDays, slots}"
 

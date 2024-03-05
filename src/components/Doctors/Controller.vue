@@ -40,7 +40,6 @@ const count = ref(0);
 
 <template>
 <div v-for="(doctor, key) in doctors" v-if="doctors">
-
     <slot v-if="typeDoctorPage==='list'" name="doctorsList" v-bind="{doctor}"></slot>
     <slot v-if="typeDoctorPage==='single'" name="singleDoctor" v-bind="{doctor}"></slot>
 </div>

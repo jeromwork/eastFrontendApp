@@ -14,7 +14,6 @@ export default defineNuxtPlugin((_nuxtApp) => {
         }
 
         await PageInfoService.refreshPageInfoFromServer(request)//its all!
-
         //after fetch to server, in pageInfoService global contains reactive page info data
         const currentClinicId = (PageInfoService.currentClinicId) ?? null;
         if(currentClinicId){
