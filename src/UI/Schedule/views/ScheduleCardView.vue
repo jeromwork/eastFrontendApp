@@ -7,8 +7,9 @@ import SlotsListView from "../Slots/SlotsListView.vue";
 
 
 interface ScheduleCardViewProps {
-    workDays: number[]|Ref<number[]>|null;
+    workDays: number[] | null;
     slots: number[]|Ref<number[]>|null;
+    currentWorkingDay: number|null
 
 }
 
@@ -35,7 +36,7 @@ onMounted(async ()=>{
 
         <div class="doctor-card-2__slots">
 
-            <CalendarCarouselView :workDays="workDays" v-model="currentWorkingDayModel">
+            <CalendarCarouselView :workDays :currentWorkingDay >
 
             </CalendarCarouselView>
 

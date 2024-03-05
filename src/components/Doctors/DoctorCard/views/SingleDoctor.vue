@@ -54,9 +54,11 @@ import type {ClinicInterface} from "../../../../EastclinicVueApi";
 interface DoctorCardViewProps {
     doctor?: DoctorInterface | Ref<DoctorInterface>
     workDays: number[]|Ref<number[]>|null
-    //slots: number[]|Ref<number[]>|null,
+
     clinicWorkingSelected: ClinicInterface | null
 
+    slots: number[]|null,
+    currentWorkingDay: number | null,
 }
 
 const props = defineProps<DoctorCardViewProps>();
@@ -69,7 +71,7 @@ const mobileScreen = ref(false)
 const showModalServices = ref(false);
 
 const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Number })
-const currentSlotModel = defineModel('currentSlotModel',{ type: Number })
+// const currentSlotModel = defineModel('currentSlotModel',{ type: Number })
 
 
 </script>
@@ -167,9 +169,9 @@ const currentSlotModel = defineModel('currentSlotModel',{ type: Number })
 
                     </ClinicsSelectView>
 
-<!--                    <ScheduleCardView v-bind="{workDays, currentWorkingDayModel, currentSlotModel}">-->
+                    <ScheduleCardView v-bind="{workDays, currentWorkingDay, slots}">
 
-<!--                    </ScheduleCardView>-->
+                    </ScheduleCardView>
 
                 </div>
             </FixedBlock>

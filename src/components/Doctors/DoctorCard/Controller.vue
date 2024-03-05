@@ -11,7 +11,12 @@ import {ScheduleService,
 } from "../../../EastclinicVueApi";
 
 import { useEventBus } from '@vueuse/core'
-import {EventClinicMapOpen, EventSetCurrentClinic} from '../../../composables/useEvents'
+import {
+    EventClinicMapOpen,
+    EventSelectedSlot,
+    EventSelectedWorkingDay,
+    EventSetCurrentClinic
+} from '../../../composables/useEvents'
 import {DoctorsService} from "../../../EastclinicVueApi";
 
 
@@ -79,16 +84,19 @@ provide('clinics', doctorInfo.value.clinics)
 //add work days
 const workDays = ScheduleService.workDaysForDoctor(doctorInfo.value.id);
 
-const currentWorkingDayModel: Ref<number | null> = ref(    ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id) as number ?? null);
+const currentWorkingDay: Ref<number | null> = ref(    ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id) as number ?? null);
 const clinicWorkingSelected: Ref<ClinicInterface | null> = ref( (new DoctorsService()).clinicWorkingDefault(doctorInfo.value.id) as ClinicInterface ?? null);
 // provide('clinicWorkingSelected', clinicWorkingSelected)
 
 
 
 const slots:Ref<number[]|null> = ref(null);
-if(currentWorkingDayModel.value && clinicWorkingSelected?.value?.id) {
-    slots.value = (ScheduleService.getSlots(clinicWorkingSelected?.value?.id as number, doctorInfo.value.id, currentWorkingDayModel.value as number)) ?? null;
+if(currentWorkingDay.value && clinicWorkingSelected?.value?.id) {
+    slots.value = (ScheduleService.getSlots(clinicWorkingSelected?.value?.id as number, doctorInfo.value.id, currentWorkingDay.value as number)) ?? null;
 }
+
+const selectedSlot:Ref<number|null> = ref(null);
+
 provide('slots', slots);
 
 
@@ -110,7 +118,14 @@ useEventBus(EventClinicMapOpen).on((e) => {
 useEventBus(EventSetCurrentClinic).on((clinic) => {
     clinicWorkingSelected.value = clinic;
 })
+useEventBus(EventSelectedWorkingDay).on((day) => {
+    currentWorkingDay.value = day;
+})
 
+useEventBus(EventSelectedSlot).on((slot) => {
+    selectedSlot.value = slot;
+    //todo booking!!!!
+})
 
 
 
@@ -119,7 +134,7 @@ useEventBus(EventSetCurrentClinic).on((clinic) => {
 <template>
 
   <slot
-          v-bind="{doctor:doctorInfo, servicesSelected, currentWorkingDayModel, workDays, clinicWorkingSelected}"
+          v-bind="{doctor:doctorInfo, servicesSelected,  workDays, clinicWorkingSelected, slots, currentWorkingDay,}"
 
   ></slot>
 </template>

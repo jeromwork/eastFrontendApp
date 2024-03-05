@@ -3,43 +3,45 @@
 import {    defineProps, reactive, ref, defineEmits, computed, onBeforeMount, onMounted, defineModel} from "vue";
 
 import type {Ref} from 'vue'
+import {EventSelectedSlot} from "../../../composables/useEvents";
+import {useEventBus} from "@vueuse/core";
 
 const props = defineProps({
     isDownloaded : Boolean,
-    slots : Array as () => number[] | Ref<number[]>|null,
+    slots : Array as () => number[] | null,
     countShowSlots:{type: Number}
+
 })
 
 
-const currentSlotModel = defineModel('currentSlotModel',{ type: Number })
-const emit = defineEmits(['slotSelected'])
 const countShowSlots = ref(7);
 
 onMounted(async ()=>{
 });
 
 const slotSelected = ( slot:number )=>{
-    currentSlotModel.value = slot;
-    emit('slotSelected', slot)
+    useEventBus(EventSelectedSlot).emit(slot);
 }
  const showRestSlots = () => {
-     const slotsLength = props.slots.length;
+     const slotsLength = (props.slots?.length) ? props.slots.length : 0;
      countShowSlots.value = (slotsLength === countShowSlots) ? 7 : slotsLength;
  }
+
+
 
 
 </script>
 
 <template>
     <div>
-        <div v-if=" isDownloaded ">
+        <div v-if="  true ">
             <div class="slots__timeslots-wrapper" v-if="slots">
                 <template
                     v-for="(slot, j) in slots"
                 >
                     <button class="slots_item button primary slot"
                             v-if="j < countShowSlots || countShowSlots+1 === slots.length"
-                            @click.prevent="slotSelected"
+                            @click.prevent="slotSelected(slot)"
                     >
                         {{slot}}
                     </button>
