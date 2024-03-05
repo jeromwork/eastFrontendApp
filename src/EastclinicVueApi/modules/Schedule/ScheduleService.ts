@@ -35,17 +35,17 @@ class ScheduleService{
         const workDaysByDoctorsDaysClinics:any = {};
         for (const s in schedules.sort(this.sortAsc)){
             const schedule = schedules[s];
-            workDaysByDoctorsDaysClinics['doctorId'] ??= {};
-            workDaysByDoctorsDaysClinics['doctorId']['date'] ??= {};
-            workDaysByDoctorsDaysClinics['doctorId']['date']['clinicId'] = schedule;
+            workDaysByDoctorsDaysClinics[schedule.doctorId] ??= {};
+            workDaysByDoctorsDaysClinics[schedule.doctorId][schedule.date] ??= {};
+            workDaysByDoctorsDaysClinics[schedule.doctorId][schedule.date][schedule.clinicId] = schedule;
         }
         this.state.set('schedulesByDoctorsIds', workDaysByDoctorsDaysClinics);
         return this;
     }
 
-    public workDaysForDoctor( doctorId:number ):Ref<string[]>|null{
-        const workDays = this.state.get('schedulesByDoctorsIds')?.value?.[doctorId];
-        return (workDays) ? toRef(Object.keys(workDays)) : null;
+    public workDaysForDoctor(doctorId: number): number[] | null {
+        const workDays = this.state.get('schedulesByDoctorsIds')?.[doctorId];
+        return workDays ? Object.keys(workDays).map(Number) : null;
     }
 
     public workDayInfoForDoctorDayClinic( doctorId:number, day:number ):ScheduleInterface{
@@ -54,9 +54,9 @@ class ScheduleService{
     }
 
 
-    public nearestWorkDayForDoctor(doctorId:number):Ref<string>|null{
-        const workDaysRef = this.workDaysForDoctor(doctorId);
-        return (workDaysRef?.value) ? toRef(Object.keys(workDaysRef.value)[0]) : null;
+    public nearestWorkDayForDoctor(doctorId:number):string|null{
+        const workDays = this.workDaysForDoctor(doctorId);
+        return (workDays) ? Object.keys(workDays)[0] : null;
     }
 
     public getSlots(doctorId:number, day:number, clinicId:number):Ref<string[]>|null{

@@ -109,7 +109,7 @@ useEventBus(EventClinicMapOpen).on((e) => {
 </script>
 
 <template>
-    {{clinicWorkingSelected}}
+{{doctorInfo.clinics}}
   <slot
           v-bind="{doctor:doctorInfo, servicesSelected, currentWorkingDayModel, workDays, slots}"
 

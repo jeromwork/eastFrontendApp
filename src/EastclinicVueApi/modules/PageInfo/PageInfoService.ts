@@ -38,15 +38,15 @@ class PageInfoService{
     }
 
     public getSessionId(): string | null {
-        return (this.state.get('sessionId') as unknown as string) ?? null;
+        return (this.state.get('sessionId')  as string) ?? null;
     }
 
     typeDoctorPage(){
         return this.state.get('typeDoctorPage');
     }
 
-    public get currentClinicId(){
-        return this.state.get('currentClinicId');
+    public get currentClinicId(): number | null {
+        return (this.state.get('currentClinicId')) ?? null
     }
 
 }

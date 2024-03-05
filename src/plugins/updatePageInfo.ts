@@ -1,4 +1,4 @@
-import { PageInfoService, PageInfoRequest } from "../EastclinicVueApi";
+import { PageInfoService, PageInfoRequest, ClinicsService } from "../EastclinicVueApi";
 
 export default defineNuxtPlugin((_nuxtApp) => {
     const router = useRouter();
@@ -17,8 +17,9 @@ export default defineNuxtPlugin((_nuxtApp) => {
 
         //after fetch to server, in pageInfoService global contains reactive page info data
         const currentClinicId = (PageInfoService.currentClinicId) ?? null;
-        console.log(PageInfoService)
-        // if(currentClinicId)
+        if(currentClinicId){
+            ClinicsService.setCurrentClinic(currentClinicId)
+        }
 
         next();
     });

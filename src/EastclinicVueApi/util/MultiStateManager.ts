@@ -1,21 +1,17 @@
 import { ref, reactive, computed, toRef } from 'vue';
-import type DefaultState from "./DefaultState";
+import DefaultState from "./DefaultState";
 
-export default class MultiStateManager <T extends DefaultState = DefaultState>{
-    protected _state: { [key: string]: any } = { };
+export default class MultiStateManager extends DefaultState{
     protected _stateName = 'default'
     _requestData = {};
 
     constructor( name = 'default') {
+        super();
         this._stateName = name;
         this._state[name] = reactive({ count: 0, itemsIds: [], items: [] });
         this._state['_cash'] = reactive({});
     }
     //mutations
-    public set<K extends keyof T>(name: string, value: T[K]): this {
-        this._state[this._stateName][name] = value;
-        return this;
-    }
 
     public setCount(count:number){
         this._state[this._stateName].count = count;
@@ -26,9 +22,9 @@ export default class MultiStateManager <T extends DefaultState = DefaultState>{
 
     //getters
     // public getItems(){        return toRef(this._state[this._stateName], 'items'); };
-    public count() {
-        return toRef(this._state[this._stateName], 'count');
-        }
+    public count():number|null {
+        return (this._state[this._stateName]?.itemsIds) ? computed(()=>this._state[this._stateName]?.itemsIds).value.items: null;
+    }
     public setItems (items:any):this {
         this.setCacheItems(items).setItemsIds(items);
 
@@ -44,13 +40,13 @@ export default class MultiStateManager <T extends DefaultState = DefaultState>{
     public getItems(){
         return computed(()=>this._state[this._stateName]).value.items;
     };
-    public get<K extends keyof T>(key: string) {
+    public get(key: string) {
         return computed(()=>this._state[this._stateName][key]).value;
         // return toRef(this._state[this._stateName], key);
     }
 
 
-    public getItem<K extends keyof T>(val: string, field:string = 'id') {
+    public getItem(val: string, field:string = 'id') {
         return computed(()=>{
             if(field === 'id'){
                 return (this._state?._cash?.[val]) ? this._state._cash[val] : null;
