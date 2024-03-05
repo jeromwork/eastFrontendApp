@@ -36,8 +36,10 @@ const countClinics = computed(() => props.clinics?.length);
 
 const currentClinic = computed(() =>  props.currentClinic )
 const selectedClinic = (clinic:ClinicInterface) => {
-    useEventBus(EventSetCurrentClinic).emit(clinic)
     visibleClinicsList.value = false;
+    if(clinic.id === currentClinic?.value?.id) return;
+    useEventBus(EventSetCurrentClinic).emit(clinic)
+
 }
 
 </script>

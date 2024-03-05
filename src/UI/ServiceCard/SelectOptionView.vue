@@ -3,37 +3,37 @@ import type ServiceData from "../../EastclinicVueApi/interfaces/ServiceData";
 import {ref, defineProps} from 'vue'
 
 
-const props = defineProps<ServiceData>()
+const props = defineProps<{service:ServiceData, selected?:boolean}>()
 
 onMounted(()=>{
 })
 </script>
 
 <template>
-    <div class="doctor-info__services list" :class="(favorite) ? 'chosen' : ''">
-        <div class="doctor-info__services_title serv-title">{{name}}
-            <span class="text-secondary text-no-wrap">{{ option }}</span>
+    <div class="doctor-info__services list" :class="(service.favorite) ? 'chosen' : ''">
+        <div class="doctor-info__services_title serv-title">{{service.name}}
+            <span class="text-secondary text-no-wrap">{{ service.option }}</span>
             <div
-                v-if="discount && custom_price < price"
+                v-if="service.discount && service.custom_price < service.price"
                 class="pt-2 text-small text-green">
                 Скидка на первичный прием
             </div>
         </div>
         <div
-            v-if="custom_price && custom_price < price"
+            v-if="service.custom_price && service.custom_price < service.price"
             class="doctor-info__services_price serv-price">
 
             <div class="doctor-info__services_price_discount_price">
-                <span class="doctor-info__services_off_price list">{{usePriceFormat(price)}} ₽</span>
-                <div class="doctor-info__services_price_current text-semibold d-inline">{{usePriceFormat(custom_price)}} ₽</div>
+                <span class="doctor-info__services_off_price list">{{usePriceFormat(service.price)}} ₽</span>
+                <div class="doctor-info__services_price_current text-semibold d-inline">{{usePriceFormat(service.custom_price)}} ₽</div>
             </div>
             <span class="doctor-info__services_discount_percent list">
-                        -{{discount}} %
+                        -{{service.discount}} %
                       </span>
 
         </div>
         <div v-else class="doctor-info__services_price serv-price">
-            <div class="doctor-info__services_price_current text-semibold">{{(price > custom_price) ? usePriceFormat(price) : usePriceFormat(custom_price)}}₽</div>
+            <div class="doctor-info__services_price_current text-semibold">{{(service.price > service.custom_price) ? usePriceFormat(service.price) : usePriceFormat(service.custom_price)}}₽</div>
         </div>
 
         <div
