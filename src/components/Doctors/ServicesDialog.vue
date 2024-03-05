@@ -18,8 +18,8 @@ const servicesSelected =  defineModel('servicesSelected' )
 
     <Modal v-model:visible="visible">
         <template #default>
-            <SelectList :options="services" v-model="servicesSelected" #default="service" optionValue="id">
-                <ServiceSelectOptionView v-bind="service as ServiceData"></ServiceSelectOptionView>
+            <SelectList :options="services" v-model="servicesSelected" #default="{option, selected } " optionValue="id" >
+                <ServiceSelectOptionView v-bind="{service:option as ServiceData, selected}" ></ServiceSelectOptionView>
             </SelectList>
         </template>
     </Modal>

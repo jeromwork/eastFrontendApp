@@ -25,6 +25,11 @@ class PageInfoService{
 
         this.state.set('pageInfo', data.resource);
         this.state.set('sessionId', sessionId);
+        if(data.currentClinicId){
+            this.state.set('currentClinicId', data.currentClinicId);
+        }
+
+
     }
 
 
@@ -32,14 +37,17 @@ class PageInfoService{
         return this.state.get('pageInfo') as Ref<PageInfoInterface>;
     }
 
-    public getSessionId(){
-        return this.state.get('sessionId');
+    public getSessionId(): string | null {
+        return (this.state.get('sessionId')  as string) ?? null;
     }
 
     typeDoctorPage(){
         return this.state.get('typeDoctorPage');
     }
 
+    public get currentClinicId(): number | null {
+        return (this.state.get('currentClinicId')) ?? null
+    }
 
 }
 // const pageInfoService = new PageInfoService()

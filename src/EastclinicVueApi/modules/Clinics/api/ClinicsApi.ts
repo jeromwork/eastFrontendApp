@@ -2,16 +2,16 @@
 
 import {API_MODX_URL} from '../../../config';
 import {postToServer} from '../../../util/UseFetchToServer';
-import type ApiGetPageInfoResponseInterface from "./ApiGetPageInfoResponseInterface";
 
 
 
 export default class PageInfoApi {
 
-    public async get(requestData: Object): Promise<ApiGetPageInfoResponseInterface> {
+    public async get(requestData: Object): Promise<any> {
         try {
+
              const res = await postToServer(API_MODX_URL, { ...requestData });
-            return res as ApiGetPageInfoResponseInterface;
+            return res as any;
 
         } catch (error) {
             console.log('error')

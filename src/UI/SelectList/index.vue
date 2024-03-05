@@ -5,30 +5,44 @@ import {ref, defineProps, defineEmits, defineModel} from 'vue';
 
 const props = defineProps({
     options: {type: Array<Object>, required:true },
-    optionValue:{type:String, default:'id', required:true}
+    optionValue:{type:String, default:'id', required:true},
+    /* is fullScreen view*/
+    fullScreen:{type:Boolean, default:false, required:false},
 });
+
 // const emits = defineEmits(['update:modelValue'])
-const model = defineModel({ type: Array<Object> })
+const model = defineModel({ type: [Array<Object>, Object] })
 
 const findIn = (option:Object, options:Array<Object> ):number => {
     const idToFind = option?.[props.optionValue];
     if (!idToFind ) return -1;
     return  options.findIndex(obj => obj[props.optionValue] === idToFind);
 }
-const isSelected = (option:Object):boolean => {
-    return (findIn(option, model.value as Array<Object>) > -1)
-}
-
-
-const toggleServiceChoose = (option:Object) => {
-    //todo in model service with id service.id
-    const indexExists = findIn(option, model.value as Array<Object>);
-    if( indexExists > -1 && model.value ) {
-        model.value.splice(indexExists, 1);
-        return;
+const isSelected = (option: Object): boolean => {
+    const modelValue = model.value;
+    if (Array.isArray(modelValue)) {
+        return findIn(option, modelValue) > -1;
+    } else {
+        return (modelValue && option[props.optionValue] === modelValue[props.optionValue]) as boolean;
     }
-    model.value?.push(option);
-}
+};
+
+
+const toggleServiceChoose = (option: Object) => {
+    const modelValue = model.value;
+
+    if (Array.isArray(modelValue)) {
+        const indexExists = findIn(option, modelValue);
+
+        if (indexExists > -1) {
+            modelValue.splice(indexExists, 1);
+        } else {
+            modelValue.push(option);
+        }
+    } else {
+        model.value = modelValue && option[props.optionValue] === modelValue[props.optionValue] ? null : option;
+    }
+};
 
 //todo remove services word from css etc its simply Select list with selected options, not service list
 
@@ -45,7 +59,7 @@ const toggleServiceChoose = (option:Object) => {
                 class="services-list_row"
 
             >
-                <slot v-bind="{...option, selected:isSelected(option)}"></slot>
+                <slot v-bind="{option, selected:isSelected(option)}"></slot>
             </div>
         </div>
     </div>

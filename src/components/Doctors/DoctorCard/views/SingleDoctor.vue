@@ -2,7 +2,7 @@
 //в этом компоненте только прием пропсов, проверка, и их отображение
 //в том числе во вложенных компонентах
 
-import { defineProps, withDefaults, reactive, ref, toRef, defineEmits, computed, toRaw, defineOptions } from "vue";
+import { defineProps, withDefaults, reactive, ref, toRef, defineEmits, computed, toRaw, defineOptions, defineModel } from "vue";
 import type { Ref } from 'vue'
 import type {DoctorInterface} from "../../../../EastclinicVueApi";
 
@@ -23,24 +23,63 @@ import FavoriteServiceCard from '../../../../UI/ServiceCard/FavoriteView.vue'
 import type ServiceData from "../../../../EastclinicVueApi/interfaces/ServiceData";
 import Modal from '../../../../UI/Modal.vue'
 import ServicesDialog from '../../ServicesDialog.vue'
+import ScheduleCardView from '../../../../UI/Schedule/views/ScheduleCardView.vue'
+import ClinicCardSelectedView from "../../../../UI/Clinics/views/ClinicCardSelectedView.vue";
+import ClinicsSelectView from "../../../../UI/Clinics/views/ClinicsSelectView.vue";
+import type {ClinicInterface} from "../../../../EastclinicVueApi";
+
+//календарь это не зависимый от доктора компонент
+//он может принимать массив или объект disables days, что бы дни были неактивны
+//календарей может быть несколько видов
+//для начала вид с прокруткой
+//v-model календаря может возвращать один день или период дней
+//это обрабатывается  в контроллере календаря
+//для календаря с каруселью будут вьюшка одного дня,
+//вьюшка группы дней
+//значки вперед назад
+
+
+//слот не имеет смысла без расписания.
+//это маленькая вьюшка с форматированным временм
+//кроме этого есть вьюшки групп слотов, управление read more
+
+
+
+
+
+
+
+
 
 interface DoctorCardViewProps {
     doctor?: DoctorInterface | Ref<DoctorInterface>
+    //calendar
+    workDays: number[]|Ref<number[]>|null
+    currentWorkingDay: number | null,
+    clinicWorkingSelected: ClinicInterface | null
+//slots
+    slots: number[]|null,
+    selectedSlot: number | null,
+
 }
 
 const props = defineProps<DoctorCardViewProps>();
+const servicesSelected =  defineModel('servicesSelected' )
+
+
+
 const doctor = ref(props.doctor) as Ref<DoctorInterface>;
 const mobileScreen = ref(false)
-const showModal = ref(false);
-const servicesSelected = ref([])
+const showModalServices = ref(false);
 
+const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Number })
+// const currentSlotModel = defineModel('currentSlotModel',{ type: Number })
 
 
 </script>
 
 <template>
     <BackLink/>
-
     <slot name="body">
 
     </slot>
@@ -122,19 +161,19 @@ const servicesSelected = ref([])
                         :service="doctor.favoriteService as ServiceData"
                     />
                     <span
-                        @click="showModal=true"
+                        @click="showModalServices=true"
                         class="font-12 main-color pointer text-semibold">Другие услуги
                     </span>
 
-                    <ServicesDialog v-model:visible="showModal" v-model:servicesSelected="servicesSelected" :services="doctor.service_data" />
-                    <div class="slots mt-6">
+                    <ServicesDialog v-model:visible="showModalServices" v-model:servicesSelected="servicesSelected" :services="doctor.service_data" />
 
-                        <div class="doctor-card-2__slots">
-<!--                            <Schedule>-->
-<!--                                :doctor="doctor"-->
-<!--                            />-->
-                        </div>
-                    </div>
+                    <ClinicsSelectView v-if="doctor.clinics && clinicWorkingSelected" :clinics="doctor.clinics"  :current-clinic="clinicWorkingSelected">
+
+                    </ClinicsSelectView>
+
+                    <ScheduleCardView v-bind="{workDays, currentWorkingDay, slots, selectedSlot}">
+
+                    </ScheduleCardView>
 
                 </div>
             </FixedBlock>

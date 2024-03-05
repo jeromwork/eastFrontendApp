@@ -2,6 +2,8 @@ import type ChevronInterface from './ChevronInterface'
 import type AwardInterface from './AwardInterface'
 import type ContentInterface from './ContentInterface'
 import type ServiceData from './ServiceData'
+import type ClinicInterface from './ClinicInterface'
+import type {Ref} from 'vue'
 interface Research {
     question: string;
     answer: string;
@@ -157,6 +159,9 @@ export default interface DoctorInterface {
     specials?:string,
     specials_of_service?:Speciality[];
 
+
+    workDays?:number[]|Ref<number[]>;
+    clinics: ClinicInterface[]|null
 
 }
 

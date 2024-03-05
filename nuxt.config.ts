@@ -17,6 +17,19 @@ export default defineNuxtConfig({
       // Run after the main build
 
     },
+
+    'pages:extend' (pages) {
+      // add a route
+      pages.push({
+        name: 'vrachi',
+        //WTF??
+        path: '/vrachi/:slug1?/:slug2?/:slug3?/:slug4?/:slug5?/:slug6?/:slug7?',
+        file: '~/pages/vrachi/index.vue',
+      })
+
+
+    }
+
   },
   // asyncContext:true,
 ssr:false,

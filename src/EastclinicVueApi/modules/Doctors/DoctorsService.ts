@@ -1,5 +1,5 @@
 
-// import {computed, reactive, ref, toRaw} from "vue";
+import {computed, reactive, ref, toRaw} from "vue";
 import DoctorsApi from './api/DoctorsApi';
 import DoctorsModxApi from './api/DoctorsModxApi';
 import MultiStateManager from "../../util/MultiStateManager";//probably to use one state manage for many services - its global state
@@ -8,6 +8,12 @@ import  DoctorsRequest from "./api/DoctorsRequest";
 import StateManager from "../../util/StateManager";
 import type ApiDoctorsResponseInterface from "./api/ResponceInterfaces/ApiDoctorsResponseInterface";
 import type DefaultState from "../../util/DefaultState";
+import scheduleService from '../Schedule/ScheduleService'
+import type {ClinicInterface} from "../../index";
+import type {DoctorInterface} from "../../index";
+import ScheduleService from "../Schedule/ScheduleService";
+import {ClinicsService} from "../../index";
+
 
 const globalMultiState = new MultiStateManager();
 export default class DoctorsService{
@@ -43,6 +49,11 @@ export default class DoctorsService{
         }
 
         this.state.setItems(response.doctors);
+
+    // for legacy alg, schedules init in doctors request
+        scheduleService.setSchedules((response.schedule) ?? [] );
+
+
     }
     items(condition?:any) {
         return this.state.getItems();
@@ -57,5 +68,20 @@ export default class DoctorsService{
     }
 
 
+    public clinicWorkingDefault(doctorId:number):ClinicInterface|null{
+        return computed(() => {
+            const doctor =  this.state.getItem( doctorId ) as DoctorInterface;
+
+            if(!doctor || !doctor.filials) return null;
+            //get current clinic from url
+            if( ClinicsService.currentClinic ) return ClinicsService.currentClinic;
+
+            //get doctors schedule
+            const schedule = ScheduleService.getScheduleForDoctor(doctorId)
+            if( !schedule?.[0] ) return null;
+            return (ClinicsService.getClinic(schedule[0].clinicId))?? null
+        }).value
+
+        }
 
 }

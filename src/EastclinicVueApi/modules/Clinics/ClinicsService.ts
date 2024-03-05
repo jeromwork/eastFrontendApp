@@ -1,60 +1,67 @@
 
-// import {computed, reactive, ref, toRaw} from "vue";
-import DoctorsApi from '../../../api/Doctors/DoctorsApi';
-import DoctorsModxApi from '../../../api/Doctors/DoctorsModxApi';
-import MultiStateManager from "../util/MultiStateManager";//probably to use one state manage for many services - its global state
-import type RequestAdapterInterface from "../../../api/RequestAdapterInterface";
-import StateManager from "../util/StateManager";
-import ApiDoctorsResponseInterface from "../../../api/Doctors/ResponceInterfaces/ApiDoctorsResponseInterface";
 
-const globalMultiState = new MultiStateManager();
-export default class ClinicsService {
+import StateManager from "../../util/StateManager";
+import type {Ref} from "vue";
+import {toRef, ref} from "vue";
+import ClinicsRequest from "./api/ClinicsRequest";
+import ClinicsApi from "./api/ClinicsApi";
+import type ClinicInterface from "../../interfaces/ClinicInterface";
+
+const state = new StateManager();
+class ClinicsService{
     private state: StateManager;
-    private stateName: string = 'default';
-    private modxApiUrl:string = '';
-    protected isModxApi:boolean = false;
 
-    constructor(stateName:string = 'default', state?: StateManager) {
-        if(state){
-            this.state = state;
-        }else{
-            this.state = globalMultiState;
+    constructor() {
+        this.state = state;
+    }
+
+    public async getClinicsFromServer( request:ClinicsRequest ){
+
+        request.with('component', 'east_filial').with('action', 'filials/get')
+
+        const {data} = await (new ClinicsApi).get(request.getRequestData()) ;
+        this.state.set('clinics', data);
+    }
+
+
+    public get clinics():Ref<ClinicInterface>{
+        return this.state.get('clinics') as Ref<ClinicInterface>;
+    }
+
+
+    public getClinic( id:number):ClinicInterface|null{
+        return (this.state.get('clinics')?.[id]) ? this.state.get('clinics')[id] : null
+    }
+
+    public getClinicsByIds(ids: number[]): ClinicInterface[] | null {
+
+        if (!this.state.get('clinics')) return null;
+        const clinics: { [key: number]: ClinicInterface } = {};
+
+        for (const i in ids) {
+            const clinicId = ids[i];
+            const clinic = this.getClinic(clinicId) as ClinicInterface;
+            if (clinic) {
+                clinics[clinicId] = clinic;
+            }
         }
-        this.stateName = stateName;
 
+        return Object.keys(clinics).length > 0 ? Object.values(clinics): null;
     }
-    async getItemsFromServer(request:RequestAdapterInterface){
 
-        let response;
-        response = await (new DoctorsModxApi).get(request.getRequestData()) as ApiDoctorsResponseInterface;
-//todo add to state info type doctor page: list, single doctor, dismiss doctor from server
-        if(response.doctors && response.doctors.length === 1){
-            this.state.set('typeDoctorPage', 'single');
-        }else {
-            this.state.set('typeDoctorPage', 'list');
+    public get currentClinic() :ClinicInterface|null {
+        return this.state.get('currentClinic');
+    }
+
+    public setCurrentClinic(clinic:ClinicInterface|number) :this {
+        if (typeof clinic === 'number') {
+            const clinicFind= this.getClinic(clinic)
+            if(clinicFind) this.state.set('currentClinic', clinicFind);
+        } else {
+            this.state.set('currentClinic', clinic);
         }
-
-        this.state.setItems(response.doctors);
-    }
-    items(condition?:any) {
-        return this.state.getItems();
-    };
-
-    count() {
-        // return this.state.count();
-    };
-
-    typeDoctorPage(){
-        return this.state.get('typeDoctorPage');
-    }
-    public useModxApiUrl( url:string ):this{
-        this.modxApiUrl = url;
-        return this;
-    }
-
-    public useModxApi():this{
-        this.isModxApi = true;
         return this;
     }
 
 }
+export default new ClinicsService()

@@ -1,6 +1,6 @@
 import type RequestAdapterInterface from "../../../interfaces/RequestAdapterInterface";
 
-export default class PageInfoRequest implements RequestAdapterInterface
+export default class ScheduleRequest implements RequestAdapterInterface
 {
     protected _requestData: { [key: string]: any } = {};
 

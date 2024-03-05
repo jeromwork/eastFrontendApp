@@ -1,44 +1,92 @@
 import ScheduleApi from './api/ScheduleApi';
 import StateManager from "../../util/StateManager";
-import type ApiScheduleResponseInterface from "./api/ApiScheduleResponseInterface";
-import type PageInfoRequest from "./api/PageInfoRequest";
-import type ModxRequest from "./api/PageInfoRequest";
+import type ScheduleRequest from "./api/ScheduleRequest";
 import type {Ref} from "vue";
 import {toRef} from "vue";
 import type ScheduleInterface from "../../interfaces/ScheduleInterface";
 
 //singleton state
 const state = new StateManager();
-class PageInfoService{
+class ScheduleService{
     private state: StateManager;
 
     constructor() {
         this.state = state;
     }
 
-    public async refreshPageInfoFromServer( request:PageInfoRequest ){
+    public async getSchedulesFromServer( request:ScheduleRequest ){
+        //add modx api data
+        request.with('component', 'east_schedule').with('action', 'getSchedule')
 
-        request.with('component', 'east').with('action', 'getPageInfo')
+        const { schedules } = await (new ScheduleApi).get(request.with('component', 'east').getRequestData()) ;
 
-        const { schedules } = await (new ScheduleApi).get(request.with('component', 'east').getRequestData()) as ApiScheduleResponseInterface;
-
-        this.state.set('pageInfo', schedules);
+        this.setSchedules( schedules );
     }
 
 
-    public get getSchedule():Ref<ScheduleInterface>{
-        return this.state.get('pageInfo') as Ref<ScheduleInterface>;
+    public setSchedules(schedules: ScheduleInterface[]):this{
+        this.state.set('schedules', schedules);
+        this.setSchedulesByDoctorsDays(schedules);
+        return this;
     }
 
-    public getSessionId(){
-        return this.state.get('sessionId');
+
+    protected setSchedulesByDoctorsDays( schedules: ScheduleInterface[]):this{
+        const workDaysByDoctorsDaysClinics:any = {};
+        for (const s in schedules.sort(this.sortAsc)){
+            const schedule = schedules[s];
+            workDaysByDoctorsDaysClinics[schedule.doctorId] ??= {};
+            workDaysByDoctorsDaysClinics[schedule.doctorId][schedule.date] ??= {};
+            workDaysByDoctorsDaysClinics[schedule.doctorId][schedule.date][schedule.clinicId] = schedule;
+        }
+        this.state.set('schedulesByDoctorsIds', workDaysByDoctorsDaysClinics);
+        return this;
     }
 
-    typeDoctorPage(){
-        return this.state.get('typeDoctorPage');
+    public workDaysForDoctor(doctorId: number): number[] | null {
+        const workDays = this.state.get('schedulesByDoctorsIds')?.[doctorId];
+        return workDays ? Object.keys(workDays).map(Number) : null;
     }
+
+    public nearestWorkDayForDoctor(doctorId:number):number|null{
+        return (this.workDaysForDoctor(doctorId)?.[0]) ?? null;
+    }
+    public workDayInfoForDoctorDayClinic( clinicId:number, doctorId:number, day:number ):ScheduleInterface{
+
+        return toRef(this.state.get('schedulesByDoctorsIds').value[doctorId] )
+    }
+
+
+
+
+    public getSlots(clinicId:number, doctorId:number, day:number, ):number[]|null {
+        return (this.state.get('schedulesByDoctorsIds')?.[doctorId]?.[day]?.[clinicId]?.slots) ?? null;
+    }
+
+    public getScheduleForDoctor(doctorId: number): ScheduleInterface[]|null {
+        return computed(()=>{
+            const schedules = this.state.get('schedules');
+            return ( schedules ) ? schedules.filter((shd:ScheduleInterface) => shd.doctorId === doctorId) : null;
+        }).value
+
+    }
+
+
+    public get schedules(): Ref<ScheduleInterface>[]|Ref<null> {
+        return (this.state.get('schedules').value ) ? this.state.get('schedules') as any as Ref<ScheduleInterface>[] : toRef(null);
+    }
+
+protected sortAsc(a:ScheduleInterface, b:ScheduleInterface) {
+        if (a.doctorId !== b.doctorId) {
+            return a.doctorId - b.doctorId;
+        }
+        return a.date - b.date;
+    }
+
 
 
 }
-// const pageInfoService = new PageInfoService()
-export default new PageInfoService()
+
+
+//schedule service is singleton of class ScheduleService
+export default new ScheduleService()
