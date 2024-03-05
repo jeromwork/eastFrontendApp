@@ -12,6 +12,7 @@ import scheduleService from '../Schedule/ScheduleService'
 import type {ClinicInterface} from "../../index";
 import type {DoctorInterface} from "../../index";
 import ScheduleService from "../Schedule/ScheduleService";
+import {ClinicsService} from "../../index";
 
 
 const globalMultiState = new MultiStateManager();
@@ -63,7 +64,6 @@ export default class DoctorsService{
     };
 
     typeDoctorPage(){
-        console.log(this.state)
         return this.state.get('typeDoctorPage');
     }
 
@@ -73,15 +73,13 @@ export default class DoctorsService{
             const doctor =  this.state.getItem( doctorId ) as DoctorInterface;
 
             if(!doctor || !doctor.filials) return null;
+            //get current clinic from url
+            if( ClinicsService.currentClinic ) return ClinicsService.currentClinic;
+
             //get doctors schedule
             const schedule = ScheduleService.getScheduleForDoctor(doctorId)
-            //get current clinic from url
-
-
-
-            // console.log(schedule)
-
-            return null;
+            if( !schedule?.[0] ) return null;
+            return (ClinicsService.getClinic(schedule[0].clinicId))?? null
         }).value
 
         }

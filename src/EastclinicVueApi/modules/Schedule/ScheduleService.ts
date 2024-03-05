@@ -48,33 +48,27 @@ class ScheduleService{
         return workDays ? Object.keys(workDays).map(Number) : null;
     }
 
-    public workDayInfoForDoctorDayClinic( doctorId:number, day:number ):ScheduleInterface{
+    public nearestWorkDayForDoctor(doctorId:number):number|null{
+        return (this.workDaysForDoctor(doctorId)?.[0]) ?? null;
+    }
+    public workDayInfoForDoctorDayClinic( clinicId:number, doctorId:number, day:number ):ScheduleInterface{
 
         return toRef(this.state.get('schedulesByDoctorsIds').value[doctorId] )
     }
 
 
-    public nearestWorkDayForDoctor(doctorId:number):string|null{
-        const workDays = this.workDaysForDoctor(doctorId);
-        return (workDays) ? Object.keys(workDays)[0] : null;
+
+
+    public getSlots(clinicId:number, doctorId:number, day:number, ):number[]|null {
+        return (this.state.get('schedulesByDoctorsIds')?.[doctorId]?.[day]?.[clinicId]?.slots) ?? null;
     }
 
-    public getSlots(doctorId:number, day:number, clinicId:number):Ref<string[]>|null{
-        const nearestWorkDay = this.nearestWorkDayForDoctor(doctorId);
-        // if (nearestWorkDay?.value) {
-        //     this.workDayInfoForDoctor(doctorId, day)
-        //     return null;
-        // }
-        return null
-    }
+    public getScheduleForDoctor(doctorId: number): ScheduleInterface[]|null {
+        return computed(()=>{
+            const schedules = this.state.get('schedules');
+            return ( schedules ) ? schedules.filter((shd:ScheduleInterface) => shd.doctorId === doctorId) : null;
+        }).value
 
-    public getScheduleForDoctor(doctorId: number): Ref<ScheduleInterface[]> | Ref<null> {
-        const schedules = this.state.get('schedules').value;
-        if (!schedules) return toRef(null);
-
-        const schedulesOfDoctor = schedules.filter((shd:ScheduleInterface) => shd.doctorId === doctorId) as ScheduleInterface[];
-
-        return schedulesOfDoctor.length > 0 ? toRef(schedulesOfDoctor) : toRef(null);
     }
 
 

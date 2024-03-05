@@ -49,8 +49,11 @@ class ClinicsService{
         return Object.keys(clinics).length > 0 ? clinics: null;
     }
 
+    public get currentClinic() :ClinicInterface|null {
+        return this.state.get('currentClinic');
+    }
 
-    public setCurrentClinic(clinic:ClinicInterface|number):this{
+    public setCurrentClinic(clinic:ClinicInterface|number) :this {
         if (typeof clinic === 'number') {
             const clinicFind= this.getClinic(clinic)
             if(clinicFind) this.state.set('currentClinic', clinicFind);

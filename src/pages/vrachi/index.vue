@@ -31,10 +31,7 @@ onMounted(() => {
 
         <NuxtLayout name="doctors">
             <Doctors>
-
                 <template #doctorsList="doctorInfo">
-                    {{doctorInfo}}
-
                     <DoctorCardController v-bind="doctorInfo" #default="doctorInfoPrepared" >
                         <DoctorCardXL v-bind="doctorInfoPrepared"/>
                     </DoctorCardController>

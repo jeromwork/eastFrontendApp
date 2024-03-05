@@ -78,17 +78,20 @@ doctorInfo.value.clinics = computed(() => ClinicsService.getClinicsByIds(Object.
 //add work days
 const workDays = ScheduleService.workDaysForDoctor(doctorInfo.value.id);
 
-const currentWorkingDayModel:Ref<string>|null = ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id)
+const currentWorkingDayModel: Ref<number | null> = ref(    ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id) as number ?? null);
+const clinicWorkingSelected: Ref<ClinicInterface | null> = ref( (new DoctorsService()).clinicWorkingDefault(doctorInfo.value.id) as ClinicInterface ?? null);
 
 
-
-const slots:Ref<string[]>|null = (currentWorkingDayModel?.value) ? ScheduleService.getSlots(doctorInfo.value.id, currentWorkingDayModel.value) : null;
+const slots:Ref<number[]|null> = ref(null);
+if(currentWorkingDayModel.value && clinicWorkingSelected?.value?.id) {
+    slots.value = (ScheduleService.getSlots(clinicWorkingSelected?.value?.id as number, doctorInfo.value.id, currentWorkingDayModel.value as number)) ?? null;
+}
 provide('slots', slots);
 
 
 const servicesSelected = ref([])
 
-const clinicWorkingSelected = computed(() => (new DoctorsService()).clinicWorkingDefault(doctorInfo.value.id));
+
 
 const timeAppointment:Ref<number> = ref(0)
 
