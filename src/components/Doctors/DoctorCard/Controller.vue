@@ -125,6 +125,7 @@ useEventBus(EventSelectedWorkingDay).on((day) => {
 useEventBus(EventSelectedSlot).on((slot) => {
     selectedSlot.value = slot;
     //todo booking!!!!
+    alert('BOOKING!!')
 })
 
 
@@ -134,7 +135,7 @@ useEventBus(EventSelectedSlot).on((slot) => {
 <template>
 
   <slot
-          v-bind="{doctor:doctorInfo, servicesSelected,  workDays, clinicWorkingSelected, slots, currentWorkingDay,}"
+          v-bind="{doctor:doctorInfo, servicesSelected,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot}"
 
   ></slot>
 </template>

@@ -6,19 +6,19 @@ import type {Ref} from 'vue'
 import {EventSelectedSlot} from "../../../composables/useEvents";
 import {useEventBus} from "@vueuse/core";
 
-const props = defineProps({
-    isDownloaded : Boolean,
-    slots : Array as () => number[] | null,
-    countShowSlots:{type: Number}
+const props = defineProps<{
+    isDownloaded?: Boolean,
+    slots: number[] | null;
+    countShowSlots?: number; // Update the type to number[]
+    selectedSlot: number | null;
+}>();
 
-})
 
-
-const countShowSlots = ref(7);
 
 onMounted(async ()=>{
 });
 
+const countShowSlots = ref((props.countShowSlots) ?? 5 )
 const slotSelected = ( slot:number )=>{
     useEventBus(EventSelectedSlot).emit(slot);
 }
@@ -34,6 +34,8 @@ const slotSelected = ( slot:number )=>{
 
 <template>
     <div>
+
+        {{selectedSlot}}
         <div v-if="  true ">
             <div class="slots__timeslots-wrapper" v-if="slots">
                 <template
@@ -46,7 +48,7 @@ const slotSelected = ( slot:number )=>{
                         {{slot}}
                     </button>
                     <button class="slots_item button primary slot"
-                            v-else-if="j === countShowSlots && countShowSlots+1 !== slots.length"
+                            v-else-if="j === countShowSlots && countShowSlots+1 !== slots?.length"
                             @click.prevent="showRestSlots"
                     >
                         <span class="icons down-white"></span>

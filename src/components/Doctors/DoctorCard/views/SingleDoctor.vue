@@ -53,12 +53,14 @@ import type {ClinicInterface} from "../../../../EastclinicVueApi";
 
 interface DoctorCardViewProps {
     doctor?: DoctorInterface | Ref<DoctorInterface>
+    //calendar
     workDays: number[]|Ref<number[]>|null
-
-    clinicWorkingSelected: ClinicInterface | null
-
-    slots: number[]|null,
     currentWorkingDay: number | null,
+    clinicWorkingSelected: ClinicInterface | null
+//slots
+    slots: number[]|null,
+    selectedSlot: number | null,
+
 }
 
 const props = defineProps<DoctorCardViewProps>();
@@ -169,7 +171,7 @@ const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Numb
 
                     </ClinicsSelectView>
 
-                    <ScheduleCardView v-bind="{workDays, currentWorkingDay, slots}">
+                    <ScheduleCardView v-bind="{workDays, currentWorkingDay, slots, selectedSlot}">
 
                     </ScheduleCardView>
 
