@@ -142,8 +142,6 @@ useEventBus(EventSelectedSlot).on((slot) => {
 </script>
 
 <template>
-    {{workDays}}
-
   <slot
           v-bind="{doctor:doctorInfo, servicesSelected,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot}"
 

@@ -27,7 +27,6 @@ const selectedDay = (day:number) => {
 </script>
 
 <template>
-    {{currentWorkingDay}}
     <!--                                    <Carousel>-->
     <div v-if="workDays">
     <button  v-for="(day, key) in workDays" @click="selectedDay(day)">

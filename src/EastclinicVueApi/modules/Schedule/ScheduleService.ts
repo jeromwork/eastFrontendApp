@@ -44,11 +44,10 @@ class ScheduleService{
     }
 
     public workDays(doctorId: number, clinicId?:number|null): number[] | null {
-        const schedules = this.state.get('schedules');
-        console.log(clinicId)
+        let schedules = this.state.get('schedules');
         if( !schedules || schedules.length === 0 ) return null;
-        schedules.filter((shd) => (shd.doctorId === doctorId && (!clinicId || (clinicId && shd.clinicId === clinicId))) )
-        return schedules.map((shd) => shd.date );
+        schedules = schedules.filter((shd:ScheduleInterface) => (shd.doctorId === doctorId && (!clinicId || (clinicId && shd.clinicId === clinicId))) )
+        return schedules.map((shd:ScheduleInterface) => shd.date );
     }
 
     public nearestWorkDayForDoctor(doctorId:number):number|null{

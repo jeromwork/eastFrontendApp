@@ -171,9 +171,7 @@ const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Numb
 
                     </ClinicsSelectView>
 
-                    <ScheduleCardView v-bind="{workDays, currentWorkingDay, slots, selectedSlot}">
-
-                    </ScheduleCardView>
+                    <ScheduleCardView v-bind="{workDays, currentWorkingDay, slots, selectedSlot}"/>
 
                 </div>
             </FixedBlock>
