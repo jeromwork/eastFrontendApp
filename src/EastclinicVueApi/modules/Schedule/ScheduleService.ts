@@ -43,13 +43,16 @@ class ScheduleService{
         return this;
     }
 
-    public workDaysForDoctor(doctorId: number): number[] | null {
-        const workDays = this.state.get('schedulesByDoctorsIds')?.[doctorId];
-        return workDays ? Object.keys(workDays).map(Number) : null;
+    public workDays(doctorId: number, clinicId?:number|null): number[] | null {
+        const schedules = this.state.get('schedules');
+        console.log(clinicId)
+        if( !schedules || schedules.length === 0 ) return null;
+        schedules.filter((shd) => (shd.doctorId === doctorId && (!clinicId || (clinicId && shd.clinicId === clinicId))) )
+        return schedules.map((shd) => shd.date );
     }
 
     public nearestWorkDayForDoctor(doctorId:number):number|null{
-        return (this.workDaysForDoctor(doctorId)?.[0]) ?? null;
+        return (this.workDays(doctorId)?.[0]) ?? null;
     }
     public workDayInfoForDoctorDayClinic( clinicId:number, doctorId:number, day:number ):ScheduleInterface{
 

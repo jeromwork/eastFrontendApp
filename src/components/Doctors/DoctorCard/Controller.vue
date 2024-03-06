@@ -81,19 +81,26 @@ provide('clinics', doctorInfo.value.clinics)
 
 
 
+
+
+const clinicWorkingSelected: Ref<ClinicInterface | null> = ref( (new DoctorsService()).clinicWorkingDefault(doctorInfo.value.id) as ClinicInterface ?? null);
+
 //add work days
-const workDays = ScheduleService.workDaysForDoctor(doctorInfo.value.id);
+const workDays = computed( () => ScheduleService.workDays(doctorInfo.value.id, (clinicWorkingSelected.value) ? clinicWorkingSelected.value?.id : null));
 
 const currentWorkingDay: Ref<number | null> = ref(    ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id) as number ?? null);
-const clinicWorkingSelected: Ref<ClinicInterface | null> = ref( (new DoctorsService()).clinicWorkingDefault(doctorInfo.value.id) as ClinicInterface ?? null);
+
 // provide('clinicWorkingSelected', clinicWorkingSelected)
 
 
 
-const slots:Ref<number[]|null> = ref(null);
-if(currentWorkingDay.value && clinicWorkingSelected?.value?.id) {
-    slots.value = (ScheduleService.getSlots(clinicWorkingSelected?.value?.id as number, doctorInfo.value.id, currentWorkingDay.value as number)) ?? null;
-}
+const slots = computed(() => {
+    if (!currentWorkingDay.value || !clinicWorkingSelected?.value?.id) return null;
+    const slotsDoctor = ScheduleService.getSlots(clinicWorkingSelected?.value?.id as number, doctorInfo.value.id, currentWorkingDay.value as number);
+    return slotsDoctor ?? null;
+});
+
+
 
 const selectedSlot:Ref<number|null> = ref(null);
 
@@ -116,7 +123,9 @@ useEventBus(EventClinicMapOpen).on((e) => {
     console.log(e)
 })
 useEventBus(EventSetCurrentClinic).on((clinic) => {
+
     clinicWorkingSelected.value = clinic;
+    currentWorkingDay.value = ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id) as number ?? null
 })
 useEventBus(EventSelectedWorkingDay).on((day) => {
     currentWorkingDay.value = day;
@@ -133,6 +142,7 @@ useEventBus(EventSelectedSlot).on((slot) => {
 </script>
 
 <template>
+    {{workDays}}
 
   <slot
           v-bind="{doctor:doctorInfo, servicesSelected,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot}"
