@@ -1,11 +1,11 @@
 
 <script setup lang="ts">
-import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, onBeforeMount , onMounted, defineModel} from "vue";
+import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, onBeforeMount , onMounted, defineModel, inject} from "vue";
 
 
 import type {Ref} from "vue";
 import {useEventBus} from "@vueuse/core";
-import {EventSelectedWorkingDay, EventSetCurrentClinic} from "../../../composables/useEvents";
+import {EventSelectedWorkingDay, EventSelectClinic} from "../../../composables/useEvents";
 
 const props = defineProps<{
     workDays : number[] | null,
@@ -17,11 +17,11 @@ const currentWorkingDayModel = defineModel({ type: Number })
 onMounted(async ()=>{
 });
 
+const selectWorkingDayOn = inject(EventSelectedWorkingDay);
 
 const selectedDay = (day:number) => {
     if(props.currentWorkingDay === day) return;
-    useEventBus(EventSelectedWorkingDay).emit(day)
-
+    selectWorkingDayOn(day)
 }
 
 </script>

@@ -5,7 +5,7 @@ import ClinicCardSelectedView from './ClinicCardSelectedView.vue'
 import type { ClinicInterface } from '../../../EastclinicVueApi'
 import type {Ref} from "/vue";
 import { useEventBus } from '@vueuse/core'
-import { EventClinicMapOpen, EventSetCurrentClinic, } from '../../../composables/useEvents'
+import { EventClinicMapOpen, EventSelectClinic, } from '../../../composables/useEvents'
 import SelectList from '../../SelectList'
 import ClinicCardInSelectListView from './ClinicCardInSelectListView'
 import Modal from "../../../UI/Modal.vue";
@@ -35,11 +35,15 @@ const countClinics = computed(() => props.clinics?.length);
 
 
 const currentClinic = computed(() =>  props.currentClinic )
+
+//listener of select clinic
+const selectedClinicOn = inject(EventSelectClinic);
+
+
 const selectedClinic = (clinic:ClinicInterface) => {
     visibleClinicsList.value = false;
     if(clinic.id === currentClinic?.value?.id) return;
-    useEventBus(EventSetCurrentClinic).emit(clinic)
-
+    selectedClinicOn(clinic);
 }
 
 </script>

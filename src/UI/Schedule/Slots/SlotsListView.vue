@@ -1,6 +1,6 @@
 
 <script setup lang="ts">
-import {    defineProps, reactive, ref, defineEmits, computed, onBeforeMount, onMounted, defineModel} from "vue";
+import {    defineProps, reactive, ref, defineEmits, computed, onBeforeMount, onMounted, defineModel, inject} from "vue";
 
 import type {Ref} from 'vue'
 import {EventSelectedSlot} from "../../../composables/useEvents";
@@ -19,8 +19,11 @@ onMounted(async ()=>{
 });
 
 const countShowSlots = ref((props.countShowSlots) ?? 5 )
+const ss = inject(EventSelectedSlot);
+
 const slotSelected = ( slot:number )=>{
-    useEventBus(EventSelectedSlot).emit(slot);
+    ss(slot)
+    //useEventBus(EventSelectedSlot).emit(slot);
 }
  const showRestSlots = () => {
      const slotsLength = (props.slots?.length) ? props.slots.length : 0;
@@ -35,7 +38,6 @@ const slotSelected = ( slot:number )=>{
 <template>
     <div>
 
-        {{selectedSlot}}
         <div v-if="  true ">
             <div class="slots__timeslots-wrapper" v-if="slots">
                 <template

@@ -39,9 +39,7 @@ onMounted(async ()=>{
 
         <div class="doctor-card-2__slots">
 
-            <CalendarCarouselView :workDays :currentWorkingDay >
-
-            </CalendarCarouselView>
+            <CalendarCarouselView :workDays :currentWorkingDay > </CalendarCarouselView>
 
             <SlotsListView v-bind="{slots, selectedSlot}"></SlotsListView>
         </div>

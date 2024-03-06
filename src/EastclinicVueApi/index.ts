@@ -18,6 +18,7 @@ import ScheduleRequest from "./modules/Schedule/api/ScheduleRequest";
 import ClinicsService from './modules/Clinics/ClinicsService';
 import ClinicsRequest from './modules/Clinics/api/ClinicsRequest';
 
+import BookingService from './modules/Booking/BookingService'
 
 
 
@@ -45,7 +46,9 @@ export {
     ClinicsRequest,
 
     ScheduleService,
-    ScheduleRequest
+    ScheduleRequest,
+
+    BookingService,
 
 };
 

@@ -4,7 +4,7 @@ import { useEventBus } from '@vueuse/core'
 
 
 import EventClinicMapOpen from "./events/EventClinicMapOpen";
-import EventSetCurrentClinic from "./events/EventSetCurrentClinic";
+import EventSelectClinic from "./events/EventSelectClinic";
 import EventSelectedWorkingDay from "./events/EventSelectedWorkingDay";
 import EventSelectedSlot from "./events/EventSelectedSlot";
 import type {EventBusKey} from "@vueuse/core";
@@ -20,7 +20,7 @@ export default useEventBus;
 
 export {
     EventClinicMapOpen,
-    EventSetCurrentClinic,
+    EventSelectClinic,
     EventSelectedWorkingDay,
     EventSelectedSlot,
 }

@@ -15,9 +15,10 @@ import {
     EventClinicMapOpen,
     EventSelectedSlot,
     EventSelectedWorkingDay,
-    EventSetCurrentClinic
+    EventSelectClinic
 } from '../../../composables/useEvents'
 import {DoctorsService} from "../../../EastclinicVueApi";
+import DoctorCardBooking from '../DoctorCard/views/Booking.vue'
 
 
 //В этом компоненте обращаемся к сервису за данными по доктору
@@ -33,12 +34,10 @@ import {DoctorsService} from "../../../EastclinicVueApi";
  * Данные по рейтингу приходят с данными доктора*/
 
 
-interface DoctorCardViewProps {
-    doctor: DoctorInterface;
-}
 
 
-const props = defineProps<DoctorCardViewProps>();
+
+const props = defineProps<{    doctor: DoctorInterface }>();
 
 const doctorInfo = toRef(props, 'doctor');
 const specials = computed(() => {
@@ -112,36 +111,36 @@ const servicesSelected = ref([])
 
 
 
-const timeAppointment:Ref<number> = ref(0)
-
 onMounted(()=>{
 })
 
 //handle events from child
 useEventBus(EventClinicMapOpen).on((e) => {
-
-    console.log(e)
+    // console.log('EventClinicMapOpen')
+    // console.log(e)
 })
-useEventBus(EventSetCurrentClinic).on((clinic) => {
 
+provide(EventSelectClinic, (clinic:ClinicInterface) => {
     clinicWorkingSelected.value = clinic;
     currentWorkingDay.value = ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id) as number ?? null
 })
-useEventBus(EventSelectedWorkingDay).on((day) => {
+
+provide(EventSelectedWorkingDay, (day:number) => {
     currentWorkingDay.value = day;
 })
 
-useEventBus(EventSelectedSlot).on((slot) => {
+
+provide(EventSelectedSlot, (slot) => {
     selectedSlot.value = slot;
     //todo booking!!!!
-    alert('BOOKING!!')
+    //alert('BOOKING!!')
 })
-
 
 
 </script>
 
 <template>
+
   <slot
           v-bind="{doctor:doctorInfo, servicesSelected,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot}"
 
