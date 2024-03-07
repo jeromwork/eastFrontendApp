@@ -9,7 +9,7 @@ import {BookingService} from "../../EastclinicVueApi";
 
 
 const props = defineProps<{bookingService:BookingService}>();
-const bookingService = ref(props.bookingService)
+// const bookingService = ref(props.bookingService)
 
 </script>
 

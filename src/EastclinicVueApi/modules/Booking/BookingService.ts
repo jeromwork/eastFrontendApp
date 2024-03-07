@@ -44,5 +44,8 @@ export default class BookingService{
         return (this._doctor) ?? null;
     }
 
+    public get selectedClinic():ClinicInterface|null{
+        return (this._clinic) ?? null;
+    }
 
 }

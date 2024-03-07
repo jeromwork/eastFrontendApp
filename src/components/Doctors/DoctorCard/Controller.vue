@@ -112,7 +112,7 @@ provide('slots', slots);
 
 
 const servicesSelected = ref([])
-const bookingService = new BookingService();
+
 
 
 onMounted(()=>{
@@ -134,31 +134,46 @@ provide(EventSelectedWorkingDay, (day:number) => {
 })
 
 
+
+const showModalBooking = ref(false)
+const showDoctorBlock = ref(false);
+const showServicesBlock = ref(false);
+const showClinicBlock = ref(false);
+const showScheduleBlock = ref(false);
 provide(EventSelectedSlot, (slot:number) => {
     selectedSlot.value = slot;
     //todo booking!!!!
 
-    bookingService
-        .withDoctor(doctorInfo.value)
-        .withSlot(slot)
-        .withClinic(clinicWorkingSelected.value)
+    // bookingService = new BookingService()
+    //     .withDoctor(doctorInfo.value)
+    //     .withSlot(slot)
+    //     .withClinic(clinicWorkingSelected.value)
 
-    console.log(bookingService)
+
     showModalBooking.value=true;
+    showDoctorBlock.value = true;
+    showClinicBlock.value = true;
+    showScheduleBlock.value = true;
+
+
+
+
 })
 
-const showModalBooking = ref(true)
 
 
 </script>
 
 <template>
-    <Modal  v-model:visible="showModalBooking" v-if="bookingService" >
-      <BookingController :bookingService="bookingService" #default="bookingServiceHandler">
-          <BookingFormWithChoiceView :booking-service="bookingServiceHandler as BookingService">
+    <Modal  v-model:visible="showModalBooking" v-if="showModalBooking" >
+
+          <BookingFormWithChoiceView v-bind="{doctor:doctorInfo, servicesSelected,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot,
+          showDoctorBlock, showServicesBlock, showClinicBlock, showScheduleBlock}"
+
+          >
+
 
           </BookingFormWithChoiceView>
-      </BookingController>
     </Modal>
   <slot
           v-bind="{doctor:doctorInfo, servicesSelected,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot}"
