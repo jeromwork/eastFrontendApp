@@ -29,6 +29,7 @@ import type DoctorInterface from "./interfaces/DoctorInterface";
 import type ContentInterface from "./interfaces/ContentInterface";
 import type ScheduleInterface from "./interfaces/ScheduleInterface";
 import type ClinicInterface from "./interfaces/ClinicInterface";
+import type ServiceData from "./interfaces/ServiceData";
 
 
 
@@ -63,4 +64,6 @@ export type {
 
     ScheduleInterface,
     ClinicInterface,
+
+    ServiceData
 }

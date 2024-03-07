@@ -3,7 +3,7 @@ import {ref, defineProps, defineEmits, defineModel} from 'vue';
 import SelectList from "../../UI/SelectList";
 import Modal from "../../UI/Modal.vue";
 import ServiceSelectOptionView from "../../UI/ServiceCard/SelectOptionView.vue";
-import type ServiceData from "../../EastclinicVueApi/interfaces/ServiceData";
+import type { ServiceData } from "../../EastclinicVueApi";
 
 const props = defineProps({
     services:{type:Array, required:true },

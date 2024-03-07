@@ -19,6 +19,10 @@ import {
 } from '../../../composables/useEvents'
 import {DoctorsService} from "../../../EastclinicVueApi";
 import DoctorCardBooking from '../DoctorCard/views/Booking.vue'
+import {BookingService} from "../../../EastclinicVueApi";
+import BookingController from "../../Booking/BookingController.vue";
+import BookingFormWithChoiceView from "../../Booking/views/BookingFormWithChoiceView.vue";
+import Modal from "../../../UI/Modal.vue";
 
 
 //В этом компоненте обращаемся к сервису за данными по доктору
@@ -108,7 +112,7 @@ provide('slots', slots);
 
 
 const servicesSelected = ref([])
-
+const bookingService = new BookingService();
 
 
 onMounted(()=>{
@@ -130,17 +134,32 @@ provide(EventSelectedWorkingDay, (day:number) => {
 })
 
 
-provide(EventSelectedSlot, (slot) => {
+provide(EventSelectedSlot, (slot:number) => {
     selectedSlot.value = slot;
     //todo booking!!!!
-    //alert('BOOKING!!')
+
+    bookingService
+        .withDoctor(doctorInfo.value)
+        .withSlot(slot)
+        .withClinic(clinicWorkingSelected.value)
+
+    console.log(bookingService)
+    showModalBooking.value=true;
 })
+
+const showModalBooking = ref(true)
 
 
 </script>
 
 <template>
+    <Modal  v-model:visible="showModalBooking" v-if="bookingService" >
+      <BookingController :bookingService="bookingService" #default="bookingServiceHandler">
+          <BookingFormWithChoiceView :booking-service="bookingServiceHandler as BookingService">
 
+          </BookingFormWithChoiceView>
+      </BookingController>
+    </Modal>
   <slot
           v-bind="{doctor:doctorInfo, servicesSelected,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot}"
 
