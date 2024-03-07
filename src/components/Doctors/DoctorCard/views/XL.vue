@@ -15,14 +15,14 @@ import Reviews from '../../../Reviews/Controller.vue'
 import ReviewCardController from '../../../Reviews/ReviewCard/Controller.vue'
 import ReviewCardXL from '../../../Reviews/ReviewCard/views/XL.vue'
 import AwardCardWithIcon from "../../../../UI/Awards/AwardCardWithIcon.vue";
-import Rating from '../../../../UI/Rating/Controller.vue'
-import RatingDetailView from '../../../../UI/Rating/RatingDetailView.vue'
-import type RatingViewProps from "../../../../UI/Rating/RatingViewProps";
-import Gallery from "../../Gallery.vue";
+// import Rating from '../../../../UI/Rating/Controller.vue'
+// import RatingDetailView from '../../../../UI/Rating/RatingDetailView.vue'
+// import type RatingViewProps from "../../../../UI/Rating/RatingViewProps";
+// import Gallery from "../../Gallery.vue";
 import FixedBlock from "../../../../UI/FixedBlock.vue";
-import FavoriteServiceCard from '../../../../UI/ServiceCard/FavoriteView.vue'
+import FavoriteServiceCard from '../../../../UI/Services/views/FavoriteView.vue'
 import type ServiceData from "../../../../EastclinicVueApi/interfaces/ServiceData";
-import ServicesDialogView from '../../ServicesDialogView.vue'
+import ServicesModalView from '../../../../UI/Services/views/ServicesModalView.vue'
 import ScheduleCardView from '../../../../UI/Schedule/views/ScheduleCardView.vue'
 import ClinicsSelectView from "../../../../UI/Clinics/views/ClinicsSelectView.vue";
 
@@ -62,6 +62,8 @@ const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Numb
 
 <template>
 
+
+    <BackLink/>
     <slot name="body">
 
     </slot>
@@ -72,14 +74,14 @@ const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Numb
                 <div class="doctor__top__info__desc desc">
                     <h1 class="doctor__top__info__desc_fio" itemprop="name">{{doctor.fullname}}</h1>
                     <div class="doctor__top__info__desc_specials" itemprop="medicalSpecialty">{{doctor.specials}}</div>
-                    <Rating v-if="doctor.rating"
-                            :reviews-count="doctor.comments"
-                            :level="doctor.rating"
-                            :uri="'/'+doctor.uri"
-                            #default="ratingInfo"
-                    >
-                        <RatingDetailView v-bind="ratingInfo as RatingViewProps"></RatingDetailView>
-                    </Rating>
+<!--                    <Rating v-if="doctor.rating"-->
+<!--                            :reviews-count="doctor.comments"-->
+<!--                            :level="doctor.rating"-->
+<!--                            :uri="'/'+doctor.uri"-->
+<!--                            #default="ratingInfo"-->
+<!--                    >-->
+<!--                        <RatingDetailView v-bind="ratingInfo as RatingViewProps"></RatingDetailView>-->
+<!--                    </Rating>-->
                 </div>
 
                 <div
@@ -147,7 +149,7 @@ const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Numb
                         class="font-12 main-color pointer text-semibold">Другие услуги
                     </span>
 
-                    <ServicesDialogView v-model:visible="showModalServices" v-model:servicesSelected="servicesSelected" :services="doctor.service_data" />
+                    <ServicesModalView v-model:visible="showModalServices" v-model:servicesSelected="servicesSelected" :services="doctor.service_data" />
 
                     <ClinicsSelectView v-if="doctor.clinics && clinicWorkingSelected" :clinics="doctor.clinics"  :current-clinic="clinicWorkingSelected"/>
 

@@ -3,8 +3,8 @@
 <script setup>
 import Doctors from "../../components/Doctors/Controller";
 import DoctorCardController from '../../components/Doctors/DoctorCard/Controller'
-import DoctorCardSingleDoctor from '../../components/Doctors/DoctorCard/views/SingleDoctor.vue'
-import DoctorCardXL from '../../components/Doctors/DoctorCard/views/XL.vue'
+import SingleDoctor from '../../components/Doctors/DoctorCard/views/SingleDoctor.vue'
+// import DoctorCardXL from '../../components/Doctors/DoctorCard/views/XL.vue'
 import {PageInfoService} from "~/EastclinicVueApi";
 
 const pageInfo = PageInfoService.getPageInfo
@@ -34,12 +34,12 @@ onMounted(() => {
                 <template #doctorsList="{doctor}">
 
                     <DoctorCardController v-bind="{doctor}" #default="doctorInfoPrepared" >
-                        <DoctorCardXL v-bind="doctorInfoPrepared"/>
+                        <SingleDoctor v-bind="doctorInfoPrepared"/>
                     </DoctorCardController>
                 </template>
                 <template #singleDoctor="{doctor}">
                     <DoctorCardController v-bind="{doctor}" #default="doctorInfoPrepared">
-                        <DoctorCardSingleDoctor v-bind="doctorInfoPrepared"/>
+                        <SingleDoctor v-bind="doctorInfoPrepared"/>
                     </DoctorCardController>
                 </template>
 

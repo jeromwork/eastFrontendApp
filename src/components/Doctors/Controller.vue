@@ -22,7 +22,7 @@ const buildRequest = () => {
     return (new DoctorsRequest).forCurrentUrl(currentRoute)
 
 }
-await doctorsService.getItemsFromServer( buildRequest().forPage(1).perPage(50));
+await doctorsService.getItemsFromServer( buildRequest().forPage(1).perPage(10));
 
 onMounted(async ()=>{
 

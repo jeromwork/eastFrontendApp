@@ -2,10 +2,7 @@
 import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, provide } from "vue";
 import type { Ref } from "vue";
 
-import type DoctorInterface from "../../../EastclinicVueApi/interfaces/DoctorInterface";
-import type ContentInterface from "../../../EastclinicVueApi/interfaces/ContentInterface";
-import type ServiceData from "../../../EastclinicVueApi/interfaces/ServiceData";
-import type {ClinicInterface} from "#build/src/EastclinicVueApi";
+import type {DoctorInterface, ContentInterface, ServiceData, ServiceCartInterface, ClinicInterface} from "../../../EastclinicVueApi";
 import {ScheduleService,
     ClinicsService
 } from "../../../EastclinicVueApi";
@@ -15,7 +12,8 @@ import {
     EventClinicMapOpen,
     EventSelectedSlot,
     EventSelectedWorkingDay,
-    EventSelectClinic
+    EventSelectClinic,
+    EventServiceAddToCart
 } from '../../../composables/useEvents'
 import {DoctorsService} from "../../../EastclinicVueApi";
 import DoctorCardBooking from '../DoctorCard/views/Booking.vue'
@@ -111,7 +109,7 @@ provide('slots', slots);
 
 
 
-const servicesSelected = ref([])
+const servicesInCart: Ref<ServiceCartInterface> = ref({} as ServiceCartInterface)
 
 
 
@@ -133,6 +131,17 @@ provide(EventSelectedWorkingDay, (day:number) => {
     currentWorkingDay.value = day;
 })
 
+provide(EventSelectedWorkingDay, (day:number) => {
+    currentWorkingDay.value = day;
+})
+
+provide(EventServiceAddToCart, (service:ServiceData) => {
+
+
+    currentWorkingDay.value = day;
+})
+
+
 
 
 const showModalBooking = ref(false)
@@ -140,6 +149,7 @@ const showDoctorBlock = ref(false);
 const showServicesBlock = ref(false);
 const showClinicBlock = ref(false);
 const showScheduleBlock = ref(false);
+
 provide(EventSelectedSlot, (slot:number) => {
     selectedSlot.value = slot;
     //todo booking!!!!
@@ -168,9 +178,7 @@ provide(EventSelectedSlot, (slot:number) => {
     <Modal  v-model:visible="showModalBooking" v-if="showModalBooking" >
 
           <BookingFormWithChoiceView v-bind="{doctor:doctorInfo, servicesSelected,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot,
-          showDoctorBlock, showServicesBlock, showClinicBlock, showScheduleBlock}"
-
-          >
+          showDoctorBlock, showServicesBlock, showClinicBlock, showScheduleBlock}" >
 
 
           </BookingFormWithChoiceView>

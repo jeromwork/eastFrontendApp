@@ -9,6 +9,8 @@ import BackLink from "../../../UI/BackLink/BackLink.vue";
 import ClinicsSelectView from "../../../UI/Clinics/views/ClinicsSelectView.vue";
 import ScheduleCardView from "../../../UI/Schedule/views/ScheduleCardView.vue";
 import type DoctorCardViewProps from "../../Doctors/Interfaces/DoctorCardViewProps";
+import EventClearSelectedServices from "../../../composables/useEvents/events/EventClearSelectedServices";
+import DoctorCardBookingView from '../../Doctors/DoctorCard/views/Booking.vue'
 
 interface BookingFormViewProps extends DoctorCardViewProps{
     showDoctorBlock?:boolean|string;
@@ -24,9 +26,12 @@ console.log(1111)
 
 const doctor = computed(() => props.doctor).value
 
-const chooseClinicSchedule = ref(true)
+const showChooseClinicScheduleBlock = ref(false)
 
 const toggleLeaveMessage = () =>{}
+
+
+const clearSelectedServicesOn = inject(EventClearSelectedServices);
 
 </script>
 
@@ -51,24 +56,13 @@ const toggleLeaveMessage = () =>{}
                                 @click="toggleLeaveMessage"
                         ></span>
                     </div>
-                    <div v-if="showDoctorBlock"
-                            class="booking__dialog__doctor-card">
-                        <div class="booking__dialog__doctor-card_photo">
-                            <img :src="doctor.photo120x120" :alt="doctor.fullname">
-                        </div>
-                        <div class="booking__dialog__doctor-card_info">
-                            <div class="text-semibold">{{doctor.fullname}}</div>
-                            <div class="booking__dialog__doctor-card_info_desc">{{doctor.specials}}</div>
-                        </div>
-                    </div>
+                    <DoctorCardBookingView v-if="showDoctorBlock" :doctor="doctor"/>
                 </div>
                 <div ref="booking_scroll_dialog" class="border-radius-30 scroll">
                     <div class="booking__dialog">
 
-                        <div v-if="chooseClinicSchedule" class="v-card-container last">
-                            <BackLink @click="chooseClinicSchedule=false" to=""/>
-
-
+                        <div v-if="showChooseClinicScheduleBlock" class="v-card-container last">
+                            <BackLink @click="showChooseClinicScheduleBlock=false" to=""/>
                             <div class="slots" style="margin: 0 auto">
                                 <div class="slots__header text-secondary">
                                     Врач принимает
@@ -87,68 +81,64 @@ const toggleLeaveMessage = () =>{}
 
                         </div>
 
-<!--                        <div v-if="!chooseClinicDialog">-->
-<!--                            <div-->
-<!--                                    v-show="bookingBlocks.services"-->
-<!--                                    class="v-card-container middle divider">-->
-<!--                                <div class="">-->
-<!--                                    <div-->
-<!--                                            @click="clearAllServices"-->
-<!--                                            class="booking__dialog__small-header mb-3">-->
-<!--                                        <span class="text-semibold text-regular">Услуга</span> <span v-show="Object.keys(chooseServices).length" class="annotation">{{Object.keys(chooseServices).length}}</span>-->
-<!--                                        <span v-show="Object.keys(chooseServices).length" class="annotation float-right pointer">Удалить всё <span class="icons trash"></span></span>-->
-<!--                                    </div>-->
-<!--                                    <div-->
-<!--                                            v-show="Object.keys(chooseServices).length === 0"-->
-<!--                                            class="services-full-width">-->
-<!--                                        <services-->
-<!--                                                :doctor="doctor"-->
-<!--                                                :openServicesDialog="openServicesDialog"-->
-<!--                                                :clickable="true"-->
-<!--                                                :mainServices="mainService"-->
-<!--                                                :allServices="services"-->
-<!--                                                @closeServicesDialog="toggleServicesDialog()"-->
-<!--                                                @clickServicesDialog="toggleServicesDialog()"-->
-<!--                                        ></services>-->
-<!--                                    </div>-->
-<!--                                    <div-->
-<!--                                            v-for="service in chooseServices"-->
-<!--                                            class="doctor-info__services__cart-list">-->
-<!--                                        <div class="mb-2 text-medium">-->
-<!--                                            {{(service.title) ? service.title :  service.name}}-->
-<!--                                            <span v-if="service.option !== ''" class="text-secondary">({{service.option}})</span>-->
-<!--                                        </div>-->
-<!--                                        <div class="doctor-info__services list cart">-->
-<!--                                            <div class="doctor-info__services_title serv-title">-->
-<!--                                                <div class="services__count-switcher">-->
-<!--                    <span-->
-<!--                            @click="serviceMinusCount(service)"-->
-<!--                            class="icons minus"></span>-->
-<!--                                                    <span class="text-regular">{{serviceCount(service)}}</span>-->
-<!--                                                    <span-->
-<!--                                                            @click="servicePlusCount(service)"-->
-<!--                                                            class="icons plus"></span>-->
-<!--                                                </div>-->
+                        <div v-if="!showChooseClinicScheduleBlock && showServicesBlock">
+                            <div class="v-card-container middle divider">
+                                <div @click="clearSelectedServicesOn" class="booking__dialog__small-header mb-3">
+                                    <span class="text-semibold text-regular">Услуга</span> <span v-show="Object.keys(chooseServices).length" class="annotation">{{Object.keys(chooseServices).length}}</span>
 
-<!--                                            </div>-->
-<!--                                            <div-->
-<!--                                                    v-if="service.custom_price && service.custom_price < service.price"-->
-<!--                                                    class="doctor-info__services_price serv-price">-->
-<!--                                                <div class="doctor-info__services_price_current text-semibold">{{service.custom_price * service.counter}}₽</div>-->
-<!--                                                <div class="doctor-info__services_price_discount_price">-->
-<!--                                                    <span class="doctor-info__services_off_price list">{{service.price}}₽</span>-->
-<!--                                                    <span class="doctor-info__services_discount_percent list">-->
-<!--                        -{{ Math.floor(((service.price - service.custom_price) / service.price) * 100)}}%-->
-<!--                      </span>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <div v-else class="doctor-info__services_price serv-price">-->
-<!--                                                <div class="doctor-info__services_price_current text-semibold text-regular">{{(service.price > service.custom_price) ? service.price * service.counter : service.custom_price * service.counter}}₽</div>-->
-<!--                                            </div>-->
+                                    <span v-show="Object.keys(chooseServices).length" class="annotation float-right pointer">Удалить всё <span class="icons trash"></span></span>
+                                </div>
+                                <div
+                                        v-show="Object.keys(chooseServices).length === 0"
+                                        class="services-full-width">
+                                    <services
+                                            :doctor="doctor"
+                                            :openServicesDialog="openServicesDialog"
+                                            :clickable="true"
+                                            :mainServices="mainService"
+                                            :allServices="services"
+                                            @closeServicesDialog="toggleServicesDialog()"
+                                            @clickServicesDialog="toggleServicesDialog()"
+                                    ></services>
+                                </div>
+                                <div
+                                        v-for="service in chooseServices"
+                                        class="doctor-info__services__cart-list">
+                                    <div class="mb-2 text-medium">
+                                        {{(service.title) ? service.title :  service.name}}
+                                        <span v-if="service.option !== ''" class="text-secondary">({{service.option}})</span>
+                                    </div>
+                                    <div class="doctor-info__services list cart">
+                                        <div class="doctor-info__services_title serv-title">
+                                            <div class="services__count-switcher">
+                <span
+                        @click="serviceMinusCount(service)"
+                        class="icons minus"></span>
+                                                <span class="text-regular">{{serviceCount(service)}}</span>
+                                                <span
+                                                        @click="servicePlusCount(service)"
+                                                        class="icons plus"></span>
+                                            </div>
+
+                                        </div>
+                                        <div
+                                                v-if="service.custom_price && service.custom_price < service.price"
+                                                class="doctor-info__services_price serv-price">
+                                            <div class="doctor-info__services_price_current text-semibold">{{service.custom_price * service.counter}}₽</div>
+                                            <div class="doctor-info__services_price_discount_price">
+                                                <span class="doctor-info__services_off_price list">{{service.price}}₽</span>
+                                                <span class="doctor-info__services_discount_percent list">
+                    -{{ Math.floor(((service.price - service.custom_price) / service.price) * 100)}}%
+                  </span>
+                                            </div>
+                                        </div>
+                                        <div v-else class="doctor-info__services_price serv-price">
+                                            <div class="doctor-info__services_price_current text-semibold text-regular">{{(service.price > service.custom_price) ? service.price * service.counter : service.custom_price * service.counter}}₽</div>
+                                        </div>
 
 
-<!--                                        </div>-->
-<!--                                    </div>-->
+                                    </div>
+                                </div>
 
 <!--                                    <div-->
 <!--                                            v-show="Object.keys(chooseServices).length !== 0"-->
@@ -177,8 +167,8 @@ const toggleLeaveMessage = () =>{}
 <!--                                            </template>-->
 <!--                                        </v-checkbox>-->
 <!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
+
+                            </div>
 
 <!--                            <div class="v-card-container last" id="booking-form">-->
 <!--                                &lt;!&ndash; inputs &ndash;&gt;-->
@@ -424,7 +414,7 @@ const toggleLeaveMessage = () =>{}
 <!--                                <div class="mt-4 booking__annotation annotation">Нажимая «Записаться», я даю <a target="_blank" href="https://eastclinic.ru/assets-new/docs/soglasie-na-obrabotku.pdf">согласие на обработку персональных данных</a>-->
 <!--                                    и принимаю <a target="_blank" href="https://yandex.ru/legal/smartcaptcha_notice/">политику обработки данных</a>.</div>-->
 <!--                            </div>-->
-<!--                        </div>-->
+                        </div>
 
 
                     </div>

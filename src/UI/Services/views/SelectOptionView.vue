@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ServiceData from "../../EastclinicVueApi/interfaces/ServiceData";
+import type ServiceData from "../../../EastclinicVueApi/interfaces/ServiceData";
 import {ref, defineProps} from 'vue'
 
 

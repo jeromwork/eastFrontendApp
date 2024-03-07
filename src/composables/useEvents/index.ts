@@ -7,6 +7,7 @@ import EventClinicMapOpen from "./events/EventClinicMapOpen";
 import EventSelectClinic from "./events/EventSelectClinic";
 import EventSelectedWorkingDay from "./events/EventSelectedWorkingDay";
 import EventSelectedSlot from "./events/EventSelectedSlot";
+import EventServiceAddToCart from "./events/EventServiceAddToCart";
 import type {EventBusKey} from "@vueuse/core";
 import exp from "constants";
 
@@ -23,5 +24,6 @@ export {
     EventSelectClinic,
     EventSelectedWorkingDay,
     EventSelectedSlot,
+    EventServiceAddToCart,
 }
 
