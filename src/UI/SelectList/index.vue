@@ -8,14 +8,11 @@ const props = defineProps({
     optionValue:{type:String, default:'id', required:true},
     /* is fullScreen view*/
     fullScreen:{type:Boolean, default:false, required:false},
-    selected:{ type: [Array<Object>, Object], default:null, required:false },
-
 });
 
-const emit = defineEmits(['updated:selected'])
-// let model = defineModel({ type: [Array<Object>, Object] })
-// console.log({...model.value})
-const model = ref([...props.selected])
+// const emits = defineEmits(['update:modelValue'])
+const model = defineModel({ type: [Array<Object>, Object] })
+
 const findIn = (option:Object, options:Array<Object> ):number => {
     const idToFind = option?.[props.optionValue];
     if (!idToFind ) return -1;
@@ -33,8 +30,8 @@ const isSelected = (option: Object): boolean => {
 
 const toggleServiceChoose = (option: Object) => {
     const modelValue = model.value;
-
-    if (Array.isArray(model.value)) {
+    console.log(345345435)
+    if (Array.isArray(modelValue)) {
         const indexExists = findIn(option, modelValue);
 
         if (indexExists > -1) {
@@ -45,9 +42,6 @@ const toggleServiceChoose = (option: Object) => {
     } else {
         model.value = modelValue && option[props.optionValue] === modelValue[props.optionValue] ? null : option;
     }
-    model.value = modelValue
-    emit('updated:selected', option);
-
 };
 
 //todo remove services word from css etc its simply Select list with selected options, not service list

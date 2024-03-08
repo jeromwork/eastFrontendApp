@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, provide } from "vue";
+import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, provide, watch, watchEffect } from "vue";
 import type { Ref, InjectionKey } from "vue";
 
 import type {DoctorInterface, ContentInterface, ServiceData, ServiceCartInterface, ClinicInterface} from "../../../EastclinicVueApi";
@@ -115,25 +115,33 @@ const servicesInCart: Ref<ServiceCartInterface> = ref({} )
 const servicesSelected: Ref<ServiceData[]> = ref([] )
 
 provide(servicesInCartSymbol, servicesInCart)
-provide(servicesSelectedSymbol, readonly(servicesSelected))
+provide(servicesSelectedSymbol, servicesSelected)
+
+
+watch(servicesSelected.value, () => {
+
+    console.log(servicesSelected.value)
+});
+
+
+
+
 provide(EventServiceAddToCart, (service: ServiceData, multiple: boolean = false) => {
     servicesInCart.value = useServiceAddToCart(service, servicesInCart.value, multiple);
-    const serviceExistsIndex = servicesSelected.value.findIndex(obj => obj.id === service.id);
-    if (serviceExistsIndex > -1) {
-        servicesSelected.value.splice(serviceExistsIndex, 1);
-    } else {
-        servicesSelected.value.push({...service});
-    }
+    // const serviceExistsIndex = servicesSelected.value.findIndex(obj => obj.id === service.id);
+    // if (serviceExistsIndex > -1) {
+    //     servicesSelected.value.splice(serviceExistsIndex, 1);
+    // } else {
+    //     servicesSelected.value.push({...service});
+    // }
+
 });
 
 onMounted(()=>{
 })
 
 //handle events from child
-useEventBus(EventClinicMapOpen).on((e) => {
-    // console.log('EventClinicMapOpen')
-    // console.log(e)
-})
+
 
 provide(EventSelectClinic, (clinic:ClinicInterface) => {
     clinicWorkingSelected.value = clinic;
@@ -170,6 +178,8 @@ provide(EventSelectedSlot, (slot:number) => {
     showDoctorBlock.value = true;
     showClinicBlock.value = true;
     showScheduleBlock.value = true;
+    showServicesBlock.value = true;
+
 
 
 

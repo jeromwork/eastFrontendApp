@@ -5,24 +5,23 @@ import ServiceSelectOptionView from "./SelectOptionView.vue";
 import type { ServiceData } from "../../../EastclinicVueApi";
 import {EventServiceAddToCart} from '../../../composables/useEvents'
 import {servicesSelectedSymbol} from "../../../composables/useSymbols";
-import type {ServiceCartInterface} from "../../../EastclinicVueApi";
 
 const props = defineProps({
     services:{type:Array, required:true },
 })
 
-const visible = defineModel('visible') as boolean
 
 const addToCartOn  =  inject(EventServiceAddToCart);
 const servicesSelected  =  inject(servicesSelectedSymbol);
 
 
-
 </script>
 
 <template>
-    <SelectList :options="services" :selected="servicesSelected" @update:selected="addToCartOn(option)" #default="{option, selected } " optionValue="id" >
-        <ServiceSelectOptionView v-bind="{service:option as ServiceData, selected}" @click=""></ServiceSelectOptionView>
+    <SelectList :options="services" v-model="servicesSelected" #default="{option, selected } " optionValue="id" >
+        <ServiceSelectOptionView v-bind="{service:option as ServiceData, selected}" >
+            <button v-if="selected" @click.stop="addToCartOn(option)"> sadfwefwefsd</button>
+        </ServiceSelectOptionView>
     </SelectList>
 </template>
 
