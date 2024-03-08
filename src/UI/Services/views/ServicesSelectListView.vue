@@ -11,7 +11,6 @@ const props = defineProps({
 })
 
 
-const addToCartOn  =  inject(EventServiceAddToCart);
 const servicesSelected  =  inject(servicesSelectedSymbol);
 
 
@@ -20,7 +19,6 @@ const servicesSelected  =  inject(servicesSelectedSymbol);
 <template>
     <SelectList :options="services" v-model="servicesSelected" #default="{option, selected } " optionValue="id" >
         <ServiceSelectOptionView v-bind="{service:option as ServiceData, selected}" >
-            <button v-if="selected" @click.stop="addToCartOn(option)"> sadfwefwefsd</button>
         </ServiceSelectOptionView>
     </SelectList>
 </template>

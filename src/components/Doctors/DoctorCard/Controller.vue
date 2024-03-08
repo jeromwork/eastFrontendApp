@@ -126,8 +126,8 @@ watch(servicesSelected.value, () => {
 
 
 
-provide(EventServiceAddToCart, (service: ServiceData, multiple: boolean = false) => {
-    servicesInCart.value = useServiceAddToCart(service, servicesInCart.value, multiple);
+provide(EventServiceAddToCart, ( service: ServiceData ) => {
+    // servicesInCart.value = useServiceAddToCart(service, servicesInCart.value, multiple);
     // const serviceExistsIndex = servicesSelected.value.findIndex(obj => obj.id === service.id);
     // if (serviceExistsIndex > -1) {
     //     servicesSelected.value.splice(serviceExistsIndex, 1);
