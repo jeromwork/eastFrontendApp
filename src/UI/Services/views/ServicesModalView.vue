@@ -10,13 +10,12 @@ const props = defineProps({
 })
 
 const visible = defineModel('visible') as boolean
-const servicesSelected =  defineModel('servicesSelected' )
 
 </script>
 
 <template>
     <Modal v-model:visible="visible">
-        <ServicesSelectListView v-model:servicesSelected="servicesSelected" :services="services"/>
+        <ServicesSelectListView :services="services"/>
     </Modal>
 </template>
 

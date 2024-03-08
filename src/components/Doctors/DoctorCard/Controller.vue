@@ -109,13 +109,26 @@ const selectedSlot:Ref<number|null> = ref(null);
 provide('slots', slots);
 
 
-
-const servicesInCart: Ref<ServiceCartInterface> = ref({} as ServiceCartInterface)
-
-
+//handle services of doctor
+const servicesInCart: Ref<ServiceCartInterface> = ref({} )
 
 provide(servicesInCartSymbol, servicesInCart)
+provide(EventServiceAddToCart, (service:ServiceData, multiple: boolean = false) => {
+    // currentWorkingDay.value = day;
+    const serviceId = service.id;
+    const cart = servicesInCart.value;
+    if(!multiple) {}
+    if(cart[serviceId]){
+        if(multiple)  cart[serviceId].count++;
+        else delete cart[serviceId];
+    }else {
+        cart[serviceId] = {count:1, service:service}
+    }
+    servicesInCart.value = cart;
 
+    // console.log(service)
+
+})
 
 
 onMounted(()=>{
@@ -137,11 +150,7 @@ provide(EventSelectedWorkingDay, (day:number) => {
 })
 
 
-provide(EventServiceAddToCart, (service:ServiceData) => {
 
-    console.log(servicesInCart)
-    // currentWorkingDay.value = day;
-})
 
 
 
@@ -179,7 +188,7 @@ provide(EventSelectedSlot, (slot:number) => {
 <template>
     <Modal  v-model:visible="showModalBooking" v-if="showModalBooking" >
 
-          <BookingFormWithChoiceView v-bind="{doctor:doctorInfo, servicesInCart,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot,
+          <BookingFormWithChoiceView v-bind="{doctor:doctorInfo,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot,
           showDoctorBlock, showServicesBlock, showClinicBlock, showScheduleBlock}" >
 
 
