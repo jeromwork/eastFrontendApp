@@ -1,5 +1,6 @@
 import type {ClinicInterface, DoctorInterface, ServiceData} from "../../../EastclinicVueApi";
 import type {Ref} from "vue";
+import type {ServiceCartInterface} from "../../../EastclinicVueApi";
 
 export default interface DoctorCardViewProps {
     doctor: DoctorInterface
@@ -16,6 +17,6 @@ export default interface DoctorCardViewProps {
     selectedSlot: number | null;
 
 //services list
-    servicesSelected?: ServiceData[] | null;
+    servicesInCart?: ServiceCartInterface | null;
 
 }

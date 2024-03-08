@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, provide } from "vue";
-import type { Ref } from "vue";
+import type { Ref, InjectionKey } from "vue";
 
 import type {DoctorInterface, ContentInterface, ServiceData, ServiceCartInterface, ClinicInterface} from "../../../EastclinicVueApi";
 import {ScheduleService,
     ClinicsService
 } from "../../../EastclinicVueApi";
 
-import { useEventBus } from '@vueuse/core'
+import { useEventBus, injectLocal, provideLocal } from '@vueuse/core'
 import {
     EventClinicMapOpen,
     EventSelectedSlot,
@@ -15,6 +15,12 @@ import {
     EventSelectClinic,
     EventServiceAddToCart
 } from '../../../composables/useEvents'
+
+
+import {  servicesInCartSymbol } from '../../../composables/useSymbols'
+
+
+
 import {DoctorsService} from "../../../EastclinicVueApi";
 import DoctorCardBooking from '../DoctorCard/views/Booking.vue'
 import {BookingService} from "../../../EastclinicVueApi";
@@ -34,8 +40,6 @@ import Modal from "../../../UI/Modal.vue";
 /** рейтинг доктора относится к данным доктора
  * Рейтинг скорее всего кэшируется, что бы не нагружать систему
  * Данные по рейтингу приходят с данными доктора*/
-
-
 
 
 
@@ -77,9 +81,6 @@ doctorInfo.value.favoriteService = computed(() => {
 
 
 doctorInfo.value.clinics = computed(() => ClinicsService.getClinicsByIds(Object.values(doctorInfo.value.filials))).value;
-provide('clinics', doctorInfo.value.clinics)
-
-
 
 
 
@@ -113,6 +114,10 @@ const servicesInCart: Ref<ServiceCartInterface> = ref({} as ServiceCartInterface
 
 
 
+provide(servicesInCartSymbol, servicesInCart)
+
+
+
 onMounted(()=>{
 })
 
@@ -131,14 +136,11 @@ provide(EventSelectedWorkingDay, (day:number) => {
     currentWorkingDay.value = day;
 })
 
-provide(EventSelectedWorkingDay, (day:number) => {
-    currentWorkingDay.value = day;
-})
 
 provide(EventServiceAddToCart, (service:ServiceData) => {
 
-
-    currentWorkingDay.value = day;
+    console.log(servicesInCart)
+    // currentWorkingDay.value = day;
 })
 
 
@@ -177,14 +179,14 @@ provide(EventSelectedSlot, (slot:number) => {
 <template>
     <Modal  v-model:visible="showModalBooking" v-if="showModalBooking" >
 
-          <BookingFormWithChoiceView v-bind="{doctor:doctorInfo, servicesSelected,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot,
+          <BookingFormWithChoiceView v-bind="{doctor:doctorInfo, servicesInCart,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot,
           showDoctorBlock, showServicesBlock, showClinicBlock, showScheduleBlock}" >
 
 
           </BookingFormWithChoiceView>
     </Modal>
   <slot
-          v-bind="{doctor:doctorInfo, servicesSelected,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot}"
+          v-bind="{doctor:doctorInfo, servicesInCart,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot}"
 
   ></slot>
 </template>

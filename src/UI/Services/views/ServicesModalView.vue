@@ -15,9 +15,8 @@ const servicesSelected =  defineModel('servicesSelected' )
 </script>
 
 <template>
-
     <Modal v-model:visible="visible">
-        <ServicesSelectListView v-model:servicesSelected="servicesSelected" :services="props.services"/>
+        <ServicesSelectListView v-model:servicesSelected="servicesSelected" :services="services"/>
     </Modal>
 </template>
 

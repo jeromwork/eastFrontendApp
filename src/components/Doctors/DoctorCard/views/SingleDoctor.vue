@@ -148,7 +148,6 @@ const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Numb
                         @click="showModalServices=true"
                         class="font-12 main-color pointer text-semibold">Другие услуги
                     </span>
-
                     <ServicesModalView v-model:visible="showModalServices" v-model:servicesSelected="servicesSelected" :services="doctor.service_data" />
 
                     <ClinicsSelectView v-if="doctor.clinics && clinicWorkingSelected" :clinics="doctor.clinics"  :current-clinic="clinicWorkingSelected"/>

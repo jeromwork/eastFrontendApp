@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {ref, defineProps, defineEmits, defineModel} from 'vue';
+import {ref, defineProps, defineEmits, defineModel, inject} from 'vue';
 import SelectList from "../../SelectList/index.vue";
-import Modal from "../../Modal.vue";
 import ServiceSelectOptionView from "./SelectOptionView.vue";
 import type { ServiceData } from "../../../EastclinicVueApi";
+import {EventServiceAddToCart} from '../../../composables/useEvents'
 
 const props = defineProps({
     services:{type:Array, required:true },
@@ -12,15 +12,15 @@ const props = defineProps({
 const visible = defineModel('visible') as boolean
 const servicesSelected =  defineModel('servicesSelected' )
 
+const addToCartOn  =  inject(EventServiceAddToCart);
+
 </script>
 
 <template>
-
-    <Modal v-model:visible="visible">
-        <SelectList :options="services" v-model="servicesSelected" #default="{option, selected } " optionValue="id" >
-            <ServiceSelectOptionView v-bind="{service:option as ServiceData, selected}" ></ServiceSelectOptionView>
-        </SelectList>
-    </Modal>
+    {{servicesSelected}}
+    <SelectList :options="services" v-model="servicesSelected" #default="{option, selected } " optionValue="id" >
+        <ServiceSelectOptionView v-bind="{service:option as ServiceData, selected}" @click="addToCartOn(option)"></ServiceSelectOptionView>
+    </SelectList>
 </template>
 
 <style scoped>

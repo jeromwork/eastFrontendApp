@@ -1,8 +1,6 @@
-import type { ClinicInterface } from '../../../EastclinicVueApi'
-
-
 
 import type { EventBusKey } from '@vueuse/core'
+import type {ServiceData} from "../../../EastclinicVueApi";
 
-const eventServiceAddToCart: EventBusKey<ClinicInterface> = Symbol('event-service-add-to-cart')
+const eventServiceAddToCart: EventBusKey<ServiceData> = Symbol('event-service-add-to-cart')
 export default  eventServiceAddToCart;

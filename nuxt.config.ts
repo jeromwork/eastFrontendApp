@@ -32,7 +32,7 @@ export default defineNuxtConfig({
 
   },
   // asyncContext:true,
-ssr:true,
+ssr:false,
   sourcemap: {
     server: true,
     client: true
