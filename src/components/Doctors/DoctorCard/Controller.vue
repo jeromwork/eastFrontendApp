@@ -17,7 +17,7 @@ import {
 } from '../../../composables/useEvents'
 
 
-import {  servicesInCartSymbol } from '../../../composables/useSymbols'
+import {servicesInCartSymbol, servicesSelectedSymbol} from '../../../composables/useSymbols'
 
 
 
@@ -27,6 +27,7 @@ import {BookingService} from "../../../EastclinicVueApi";
 import BookingController from "../../Booking/BookingController.vue";
 import BookingFormWithChoiceView from "../../Booking/views/BookingFormWithChoiceView.vue";
 import Modal from "../../../UI/Modal.vue";
+import useServiceAddToCart from "../../../composables/useServiceAddToCart";
 
 
 //В этом компоненте обращаемся к сервису за данными по доктору
@@ -111,25 +112,19 @@ provide('slots', slots);
 
 //handle services of doctor
 const servicesInCart: Ref<ServiceCartInterface> = ref({} )
+const servicesSelected: Ref<ServiceData[]> = ref([] )
 
 provide(servicesInCartSymbol, servicesInCart)
-provide(EventServiceAddToCart, (service:ServiceData, multiple: boolean = false) => {
-    // currentWorkingDay.value = day;
-    const serviceId = service.id;
-    const cart = servicesInCart.value;
-    if(!multiple) {}
-    if(cart[serviceId]){
-        if(multiple)  cart[serviceId].count++;
-        else delete cart[serviceId];
-    }else {
-        cart[serviceId] = {count:1, service:service}
+provide(servicesSelectedSymbol, readonly(servicesSelected))
+provide(EventServiceAddToCart, (service: ServiceData, multiple: boolean = false) => {
+    servicesInCart.value = useServiceAddToCart(service, servicesInCart.value, multiple);
+    const serviceExistsIndex = servicesSelected.value.findIndex(obj => obj.id === service.id);
+    if (serviceExistsIndex > -1) {
+        servicesSelected.value.splice(serviceExistsIndex, 1);
+    } else {
+        servicesSelected.value.push({...service});
     }
-    servicesInCart.value = cart;
-
-    // console.log(service)
-
-})
-
+});
 
 onMounted(()=>{
 })
