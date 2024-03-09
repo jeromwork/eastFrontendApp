@@ -17,7 +17,12 @@ import {
 } from '../../../composables/useEvents'
 
 
-import {servicesInCartSymbol, servicesSelectedSymbol} from '../../../composables/useSymbols'
+import {
+    bookingServiceSymbol,
+    servicesInCartSymbol,
+    servicesSelectedSymbol,
+    servicesSymbol
+} from '../../../composables/useSymbols'
 
 
 
@@ -32,7 +37,6 @@ import type BookingFormViewProps from "../../Booking/imterfaces/BookingFormViewP
 
 //В этом компоненте обращаемся к сервису за данными по доктору
 //Возможно доктора уже загружены - в списке докторов, тогда просто отображаем данные доктора
-//кроме сервиса Doctors ничего более не знаем (СЕО? Клиники?)
 
 //данные из этого контроллера передаются в index.vue - это view.
 //в этой view ничего не обрабатываем - только отобржаем/
@@ -118,23 +122,7 @@ provide(servicesInCartSymbol, servicesInCart)
 provide(servicesSelectedSymbol, servicesSelected)
 
 
-
-
-provide(EventServiceAddToCart, ( service: ServiceData ) => {
-    // servicesInCart.value = useServiceAddToCart(service, servicesInCart.value, multiple);
-    // const serviceExistsIndex = servicesSelected.value.findIndex(obj => obj.id === service.id);
-    // if (serviceExistsIndex > -1) {
-    //     servicesSelected.value.splice(serviceExistsIndex, 1);
-    // } else {
-    //     servicesSelected.value.push({...service});
-    // }
-
-});
-
-onMounted(()=>{
-})
-
-//handle events from child
+provide(bookingServiceSymbol, new BookingService());
 
 
 provide(EventSelectClinic, (clinic:ClinicInterface) => {
