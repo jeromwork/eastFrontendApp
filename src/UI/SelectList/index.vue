@@ -30,7 +30,6 @@ const isSelected = (option: Object): boolean => {
 
 const toggleServiceChoose = (option: Object) => {
     const modelValue = model.value;
-    console.log(345345435)
     if (Array.isArray(modelValue)) {
         const indexExists = findIn(option, modelValue);
 

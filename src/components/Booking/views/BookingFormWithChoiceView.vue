@@ -3,7 +3,7 @@
 
 import { defineProps,  ref, inject } from "vue";
 import type { Ref } from 'vue'
-import {BookingService, ServiceCartInterface} from "../../../EastclinicVueApi";
+import type {BookingService, ServiceCartInterface} from "../../../EastclinicVueApi";
 import type { ServiceData} from "../../../EastclinicVueApi";
 import useIsMobile from "../../../composables/useIsMobile";
 import BackLink from "../../../UI/BackLink/BackLink.vue";

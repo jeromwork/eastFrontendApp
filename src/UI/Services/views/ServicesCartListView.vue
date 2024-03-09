@@ -2,8 +2,7 @@
 import {ref, defineProps, defineEmits, defineModel, inject} from 'vue';
 import type { ServiceData, ServiceCartInterface } from "../../../EastclinicVueApi";
 import {servicesInCartSymbol} from "../../../composables/useSymbols";
-import useServiceAddToCart from '../../../composables/useServiceAddToCart'
-import useServiceRemoveFromCart from '../../../composables/useServiceRemoveFromCart'
+import {serviceAddToCart, serviceRemoveFromCart} from '../../../composables/useServiceCart'
 
 const props = defineProps<{
     services:ServiceCartInterface,
@@ -29,11 +28,11 @@ const servicesInCart  =  inject(servicesInCartSymbol);
             <div class="doctor-info__services_title serv-title">
                 <div class="services__count-switcher">
                 <span
-                    @click="useServiceRemoveFromCart(serviceInCart.service as ServiceData, servicesInCart as ServiceCartInterface)"
+                    @click="serviceRemoveFromCart(serviceInCart.service as ServiceData, servicesInCart as ServiceCartInterface)"
                     class="icons minus"></span>
                     <span class="text-regular">{{serviceInCart.count}}</span>
                     <span
-                        @click="useServiceAddToCart(serviceInCart.service as ServiceData, servicesInCart as ServiceCartInterface)"
+                        @click="serviceAddToCart(serviceInCart.service as ServiceData, servicesInCart as ServiceCartInterface)"
                         class="icons plus"></span>
                 </div>
 

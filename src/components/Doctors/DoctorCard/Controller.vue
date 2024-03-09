@@ -27,7 +27,6 @@ import {BookingService} from "../../../EastclinicVueApi";
 import BookingController from "../../Booking/BookingController.vue";
 import BookingFormWithChoiceView from "../../Booking/views/BookingFormWithChoiceView.vue";
 import Modal from "../../../UI/Modal.vue";
-import useServiceAddToCart from "../../../composables/useServiceAddToCart";
 
 
 //В этом компоненте обращаемся к сервису за данными по доктору
@@ -116,12 +115,6 @@ const servicesSelected: Ref<ServiceData[]> = ref([] )
 
 provide(servicesInCartSymbol, servicesInCart)
 provide(servicesSelectedSymbol, servicesSelected)
-
-
-watch(servicesSelected.value, () => {
-
-    console.log(servicesSelected.value)
-});
 
 
 
