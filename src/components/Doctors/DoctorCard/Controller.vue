@@ -13,7 +13,7 @@ import {
     EventSelectedSlot,
     EventSelectedWorkingDay,
     EventSelectClinic,
-    EventServiceAddToCart
+    EventServiceAddToCart, EventOpenBookingForm
 } from '../../../composables/useEvents'
 
 
@@ -27,6 +27,7 @@ import {BookingService} from "../../../EastclinicVueApi";
 import BookingController from "../../Booking/BookingController.vue";
 import BookingFormWithChoiceView from "../../Booking/views/BookingFormWithChoiceView.vue";
 import Modal from "../../../UI/Modal.vue";
+import type BookingFormViewProps from "../../Booking/imterfaces/BookingFormViewProprs";
 
 
 //В этом компоненте обращаемся к сервису за данными по доктору
@@ -148,35 +149,19 @@ provide(EventSelectedWorkingDay, (day:number) => {
 
 
 
-
-
-
 const showModalBooking = ref(false)
 const showDoctorBlock = ref(false);
 const showServicesBlock = ref(false);
 const showClinicBlock = ref(false);
 const showScheduleBlock = ref(false);
 
-provide(EventSelectedSlot, (slot:number) => {
-    selectedSlot.value = slot;
-    //todo booking!!!!
 
-    // bookingService = new BookingService()
-    //     .withDoctor(doctorInfo.value)
-    //     .withSlot(slot)
-    //     .withClinic(clinicWorkingSelected.value)
-
-
-    showModalBooking.value=true;
-    showDoctorBlock.value = true;
-    showClinicBlock.value = true;
-    showScheduleBlock.value = true;
-    showServicesBlock.value = true;
-
-
-
-
-
+provide(EventOpenBookingForm, (bookingFormViewProps:BookingFormViewProps) => {
+     showModalBooking.value = true;
+     showDoctorBlock.value = bookingFormViewProps.showDoctorBlock as boolean
+     showServicesBlock.value = bookingFormViewProps.showServicesBlock as boolean
+     showClinicBlock.value = bookingFormViewProps.showClinicBlock as boolean
+     showScheduleBlock.value = bookingFormViewProps.showScheduleBlock as boolean
 })
 
 

@@ -15,15 +15,11 @@ import DoctorCardBookingView from '../../Doctors/DoctorCard/views/Booking.vue'
 import {servicesInCartSymbol, servicesSelectedSymbol} from "../../../composables/useSymbols";
 import ServicesModalView from "../../../UI/Services/views/ServicesModalView.vue";
 import ServicesCartListView from "../../../UI/Services/views/ServicesCartListView.vue";
+import type BookingFormViewProps from '../imterfaces/BookingFormViewProprs'
 
-interface BookingFormViewProps extends DoctorCardViewProps{
-    showDoctorBlock?:boolean|string;
-    showServicesBlock?:boolean|string;
-    showClinicBlock?:boolean|string;
-    showScheduleBlock?:boolean|string;
-}
+interface BookingFormProps extends DoctorCardViewProps, BookingFormViewProps{}
 
-const props = defineProps<BookingFormViewProps>();
+const props = defineProps<BookingFormProps>();
 
 
 const doctor = computed(() => props.doctor).value
@@ -115,33 +111,33 @@ const clearSelectedServices = () => {if(servicesSelectedCount.value && servicesS
 
 
 
-                                    <div
-                                            v-show="Object.keys(chooseServices).length !== 0"
-                                            @click="toggleServicesDialog(true)"
-                                            class="booking__dialog__add-service mt-4">
-                                        <div class="annotation d-flex align-center">
-                                            <span class="mr-3 text-regular">Добавить услугу</span>
-                                            <span class="icons closesearch turn filter-gray"></span>
-                                        </div>
-                                    </div>
-                                    <div class="booking__dialog__item_row">
-                                        <v-checkbox
-                                                v-if="Object.keys(chooseServices).length === 0"
-                                                :input-value="false"
-                                                class="checkbox"
-                                                color="black"
-                                                :ripple="false"
-                                                off-icon="icons-checkbox-off"
-                                                on-icon='icons-checkbox'
-                                                readonly
-                                                v-model="serviceCheckbox"
-                                                @click="toggleServicesDialog(true)"
-                                        >
-                                            <template v-slot:label>
-                                                <span class="checkbox__label text-color-main">Записаться без услуги</span>
-                                            </template>
-                                        </v-checkbox>
-                                    </div>
+<!--                                    <div-->
+<!--                                            v-show="Object.keys(chooseServices).length !== 0"-->
+<!--                                            @click="toggleServicesDialog(true)"-->
+<!--                                            class="booking__dialog__add-service mt-4">-->
+<!--                                        <div class="annotation d-flex align-center">-->
+<!--                                            <span class="mr-3 text-regular">Добавить услугу</span>-->
+<!--                                            <span class="icons closesearch turn filter-gray"></span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="booking__dialog__item_row">-->
+<!--                                        <v-checkbox-->
+<!--                                                v-if="Object.keys(chooseServices).length === 0"-->
+<!--                                                :input-value="false"-->
+<!--                                                class="checkbox"-->
+<!--                                                color="black"-->
+<!--                                                :ripple="false"-->
+<!--                                                off-icon="icons-checkbox-off"-->
+<!--                                                on-icon='icons-checkbox'-->
+<!--                                                readonly-->
+<!--                                                v-model="serviceCheckbox"-->
+<!--                                                @click="toggleServicesDialog(true)"-->
+<!--                                        >-->
+<!--                                            <template v-slot:label>-->
+<!--                                                <span class="checkbox__label text-color-main">Записаться без услуги</span>-->
+<!--                                            </template>-->
+<!--                                        </v-checkbox>-->
+<!--                                    </div>-->
 
                             </div>
 
