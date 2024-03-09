@@ -2,22 +2,19 @@
 import {ref, defineProps, defineEmits, defineModel, inject} from 'vue';
 import type { ServiceData, ServiceCartInterface } from "../../../EastclinicVueApi";
 import {bookingServiceSymbol, servicesInCartSymbol} from "../../../composables/useSymbols";
-import {serviceAddToCart, serviceRemoveFromCart} from '../../../composables/useServiceCart'
 import {BookingService} from "../../../EastclinicVueApi";
-
-const props = defineProps<{
-    services:ServiceCartInterface,
-}>()
-
+import {ShowModalServicesDispatch} from "../../../composables/useDispatches";
 
 const bookingService = inject(bookingServiceSymbol) as BookingService
 if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
 
+const showModalServices = inject(ShowModalServicesDispatch)
 
 
 </script>
 
 <template>
+
     <div
         v-for="good in bookingService.Cart.goods"
         class="doctor-info__services__cart-list">
@@ -55,8 +52,18 @@ if(!bookingService) throw new Error('not have BookingService by bookingServiceSy
 
 
         </div>
-    </div>
 
+
+    </div>
+    <div
+        v-show="bookingService.Cart.count"
+        @click="showModalServices(true)"
+        class="booking__dialog__add-service mt-4">
+        <div class="annotation d-flex align-center">
+            <span class="mr-3 text-regular">Добавить услугу</span>
+            <span class="icons closesearch turn filter-gray"></span>
+        </div>
+    </div>
 
 </template>
 

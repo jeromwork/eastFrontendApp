@@ -2,7 +2,7 @@
 //в этом компоненте только прием пропсов, проверка, и их отображение
 //в том числе во вложенных компонентах
 
-import { defineProps, withDefaults, reactive, ref, toRef, defineEmits, computed, toRaw, defineOptions, defineModel } from "vue";
+import { defineProps, withDefaults, reactive, ref, toRef, defineEmits, computed, toRaw, defineOptions, defineModel, inject } from "vue";
 import type { Ref } from 'vue'
 import type {DoctorInterface} from "../../../../EastclinicVueApi";
 import type DoctorCardViewProps from "../../Interfaces/DoctorCardViewProps";
@@ -22,9 +22,9 @@ import AwardCardWithIcon from "../../../../UI/Awards/AwardCardWithIcon.vue";
 import FixedBlock from "../../../../UI/FixedBlock.vue";
 import FavoriteServiceCard from '../../../../UI/Services/views/FavoriteView.vue'
 import type ServiceData from "../../../../EastclinicVueApi/interfaces/ServiceData";
-import ServicesModalView from '../../../../UI/Services/views/ServicesModalView.vue'
 import ScheduleCardView from '../../../../UI/Schedule/views/ScheduleCardView.vue'
 import ClinicsSelectView from "../../../../UI/Clinics/views/ClinicsSelectView.vue";
+import {ShowModalServicesDispatch} from "../../../../composables/useDispatches";
 
 //календарь это не зависимый от доктора компонент
 //он может принимать массив или объект disables days, что бы дни были неактивны
@@ -51,11 +51,10 @@ const props = defineProps<DoctorCardViewProps>();
 
 const doctor = ref(props.doctor) as Ref<DoctorInterface>;
 const mobileScreen = ref(false)
-const showModalServices = ref(false);
 
 const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Number })
 // const currentSlotModel = defineModel('currentSlotModel',{ type: Number })
-
+const showModalServices = inject(ShowModalServicesDispatch)
 
 </script>
 
@@ -144,10 +143,9 @@ const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Numb
                         :service="doctor.favoriteService as ServiceData"
                     />
                     <span
-                        @click="showModalServices=true"
+                        @click="showModalServices(true)"
                         class="font-12 main-color pointer text-semibold">Другие услуги
                     </span>
-                    <ServicesModalView v-model:visible="showModalServices" :services="doctor.service_data" />
 
                     <ClinicsSelectView v-if="doctor.clinics && clinicWorkingSelected" :clinics="doctor.clinics"  :current-clinic="clinicWorkingSelected"/>
 

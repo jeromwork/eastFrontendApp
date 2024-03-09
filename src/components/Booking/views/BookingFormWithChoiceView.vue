@@ -10,12 +10,11 @@ import BackLink from "../../../UI/BackLink/BackLink.vue";
 import ClinicsSelectView from "../../../UI/Clinics/views/ClinicsSelectView.vue";
 import ScheduleCardView from "../../../UI/Schedule/views/ScheduleCardView.vue";
 import type DoctorCardViewProps from "../../Doctors/Interfaces/DoctorCardViewProps";
-import EventClearSelectedServices from "../../../composables/useEvents/events/EventClearSelectedServices";
 import DoctorCardBookingView from '../../Doctors/DoctorCard/views/Booking.vue'
-import {bookingServiceSymbol, servicesInCartSymbol, servicesSelectedSymbol} from "../../../composables/useSymbols";
-import ServicesModalView from "../../../UI/Services/views/ServicesModalView.vue";
+import { bookingServiceSymbol } from "../../../composables/useSymbols";
 import ServicesCartListView from "../../../UI/Services/views/ServicesCartListView.vue";
 import type BookingFormViewProps from '../imterfaces/BookingFormViewProprs'
+import {ShowModalServicesDispatch} from "../../../composables/useDispatches";
 
 interface BookingFormProps extends DoctorCardViewProps, BookingFormViewProps {}
 
@@ -27,10 +26,12 @@ const doctor = computed(() => props.doctor).value
 const showChooseClinicScheduleBlock = ref(false)
 
 const toggleLeaveMessage = () =>{}
-const showModalServices = ref(false);
 
 const bookingService = inject(bookingServiceSymbol) as BookingService
 if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
+
+
+const showModalServices = inject(ShowModalServicesDispatch);
 
 </script>
 
@@ -42,7 +43,6 @@ if(!bookingService) throw new Error('not have BookingService by bookingServiceSy
                 class="vcard-padding position-relative booking-container"
                 :class="{'rounded-xl' : !useIsMobile()}"
         >
-            <ServicesModalView v-model:visible="showModalServices" :services="doctor.service_data" />
 
             <div v-if="doctor" class="booking__dialog__scroll" id="booking__dialog__wrapper" >
                 <div class="v-card-container divider" >
@@ -93,7 +93,7 @@ if(!bookingService) throw new Error('not have BookingService by bookingServiceSy
                                 </div>
                                 <div v-if="!bookingService.Cart.count" class="services-full-width">
                                     <div class="doctor-info__services_wrap serv">
-                                        <div role="button" aria-haspopup="true" aria-expanded="false" class="doctor-info__services" @click="showModalServices = true">
+                                        <div role="button" aria-haspopup="true" aria-expanded="false" class="doctor-info__services" @click="showModalServices( true )">
                                             <div class="doctor-info__services_title serv-title">Выберите услугу</div>
                                             <div class="doctor-info__services_price serv-price"></div>
                                             <div class="doctor-info__services_more serv-more">
@@ -103,7 +103,7 @@ if(!bookingService) throw new Error('not have BookingService by bookingServiceSy
                                     </div>
 
                                 </div>
-                                <ServicesCartListView :services="bookingService.Cart.servicesList" />
+                                <ServicesCartListView />
 
 
 

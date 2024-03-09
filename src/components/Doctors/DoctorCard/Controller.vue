@@ -15,6 +15,7 @@ import {
     EventSelectClinic,
     EventServiceAddToCart, EventOpenBookingForm
 } from '../../../composables/useEvents'
+import {ShowModalBookingFormDispatch, ShowModalServicesDispatch} from '../../../composables/useDispatches'
 
 
 import {
@@ -33,6 +34,7 @@ import BookingController from "../../Booking/BookingController.vue";
 import BookingFormWithChoiceView from "../../Booking/views/BookingFormWithChoiceView.vue";
 import Modal from "../../../UI/Modal.vue";
 import type BookingFormViewProps from "../../Booking/imterfaces/BookingFormViewProprs";
+import ServicesSelectListView from "../../../UI/Services/views/ServicesSelectListView.vue";
 
 
 //В этом компоненте обращаемся к сервису за данными по доктору
@@ -131,6 +133,17 @@ provide(EventSelectedWorkingDay, (day:number) => {
 
 
 const showModalBooking = ref(false)
+provide(ShowModalBookingFormDispatch, (show:boolean) => {
+    showModalServices.value = false;
+    showModalBooking.value = show;
+})
+
+const showModalServices = ref(false)
+provide(ShowModalServicesDispatch, (show:boolean) => {
+    showModalServices.value = show;
+})
+
+
 const bookingFormViewProps:Ref<BookingFormViewProps> = ref({});
 
 
@@ -145,13 +158,15 @@ provide(EventOpenBookingForm, (viewProps:BookingFormViewProps) => {
 
 <template>
     <Modal  v-model:visible="showModalBooking" v-if="showModalBooking" >
-
           <BookingFormWithChoiceView v-bind="{doctor:doctorInfo,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot,
           ...bookingFormViewProps}" >
-
-
           </BookingFormWithChoiceView>
     </Modal>
+    {{showModalServices}}
+    <Modal v-model:visible="showModalServices">
+        <ServicesSelectListView :services="doctor.service_data"/>
+    </Modal>
+
   <slot
           v-bind="{doctor:doctorInfo,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot}"
 

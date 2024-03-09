@@ -9,6 +9,7 @@ import { bookingServiceSymbol } from "../../../composables/useSymbols";
 import EcButton from "../../../UI/Buttons/EcButton.vue";
 import {EventOpenBookingForm} from "../../../composables/useEvents";
 import type BookingFormViewProps from "../../../components/Booking/imterfaces/BookingFormViewProprs";
+import {ShowModalServicesDispatch} from "../../../composables/useDispatches";
 
 
 
@@ -24,6 +25,7 @@ if(!bookingService) throw new Error('not have BookingService by bookingServiceSy
 
 const servicesNames = computed(() => (bookingService.Cart.servicesList?.reverse().slice(-3).map((service) => service.name).join(' · ')) ?? '');
 
+const showModalServices = inject(ShowModalServicesDispatch);
 
 const openBookingFormOn = inject(EventOpenBookingForm)
 const openBookingForm = () =>{
@@ -33,8 +35,8 @@ const openBookingForm = () =>{
         // showClinicBlock:true,
         showScheduleBlock:true,
     }
-    emit('open-booking-form', viewProps);
     openBookingFormOn(viewProps);
+    showModalServices(false);
 }
 
 </script>
