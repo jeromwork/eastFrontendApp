@@ -6,7 +6,7 @@ import ServicesSelectListView from "./ServicesSelectListView.vue";
 import type { ServiceData } from "../../../EastclinicVueApi";
 import {servicesInCartSymbol, servicesSelectedSymbol} from "../../../composables/useSymbols";
 import EcButton from "../../Buttons/EcButton.vue";
-import { addServicesInCart, servicesNameListFormCart, sumPriceInCart } from '../../../composables/useServiceCart'
+import { refreshServicesInCart, servicesNameListFormCart, sumPriceInCart } from '../../../composables/useServiceCart'
 import type BookingFormViewProps from '../../../components/Booking/imterfaces/BookingFormViewProprs'
 import {EventOpenBookingForm} from "../../../composables/useEvents";
 const props = defineProps({
@@ -27,7 +27,7 @@ const totalPrice = computed(() => sumPriceInCart(servicesInCart.value));
 const servicesNames = computed(() => servicesNameListFormCart(servicesInCart.value));
 
 watch(servicesSelected.value,  () => {
-    servicesInCart.value = addServicesInCart(servicesSelected.value, servicesInCart.value );
+    servicesInCart.value = refreshServicesInCart(servicesSelected.value, servicesInCart.value );
 })
 
 const openBookingFormOn = inject(EventOpenBookingForm)
@@ -46,6 +46,7 @@ const openBookingForm = () =>{
 </script>
 
 <template>
+
     <Modal v-model:visible="visible">
         <ServicesSelectListView :services="services"/>
         <EcButton class="primary full-width shadow-button services-button-container"
