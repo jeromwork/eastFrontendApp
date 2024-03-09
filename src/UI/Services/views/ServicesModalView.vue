@@ -14,11 +14,6 @@ const props = defineProps({
 })
 
 const visible = defineModel('visible') as boolean
-const emit = defineEmits(['update:visible'])
-
-
-
-
 
 
 </script>
@@ -26,7 +21,7 @@ const emit = defineEmits(['update:visible'])
 <template>
 
     <Modal v-model:visible="visible">
-        <ServicesSelectListView :services="services"/>
+        <ServicesSelectListView :services="services" @open-booking-form="visible=false"/>
 
     </Modal>
 </template>

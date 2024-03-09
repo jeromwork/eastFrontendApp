@@ -13,13 +13,13 @@ class Cart{
         return this;
     }
 
-    public add (service:ServiceData, cart:ServiceCartInterface):this {
+    public add ( service:ServiceData ):this {
         if(this.getGoodByService(service)) this._cart.value[service.id].count++;
         else this._cart.value[service.id] = {count:1, service:service}
         return this;
     };
 
-    public remove (service:ServiceData, cart:ServiceCartInterface):this {
+    public remove ( service:ServiceData ):this {
         const good = this.getGoodByService(service);
         if(good) {
             if(good.count === 1) delete this._cart.value[service.id];
@@ -28,6 +28,12 @@ class Cart{
         else this._cart.value[service.id] = {count:1, service:service}
         return this;
     };
+
+    public clear():this {
+        this._cart.value = {};
+        return this;
+    }
+
 
     public get servicesList():ServiceData[]|null{
         return ( Object.values( this._cart.value ).map((good) => good.service) ) ?? null;
@@ -42,6 +48,10 @@ class Cart{
     public get count():number{
         Object.keys( this._cart.value ).length
         return ( Object.keys( this._cart.value ).length ) ?? 0;
+    }
+
+    public get goods():ServiceCartInterface {
+        return this._cart.value;
     }
 
 

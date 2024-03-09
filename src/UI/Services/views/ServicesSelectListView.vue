@@ -3,13 +3,12 @@ import {ref, defineProps, defineEmits, defineModel, inject, provide} from 'vue';
 import type {Ref} from 'vue';
 import SelectList from "../../SelectList/index.vue";
 import ServiceSelectOptionView from "./SelectOptionView.vue";
-import type { ServiceData, ServiceCartInterface } from "../../../EastclinicVueApi";
+import type { ServiceData } from "../../../EastclinicVueApi";
 import { BookingService } from "../../../EastclinicVueApi";
-import {bookingServiceSymbol, servicesInCartSymbol, servicesSelectedSymbol} from "../../../composables/useSymbols";
+import { bookingServiceSymbol } from "../../../composables/useSymbols";
 import EcButton from "../../../UI/Buttons/EcButton.vue";
 import {EventOpenBookingForm} from "../../../composables/useEvents";
 import type BookingFormViewProps from "../../../components/Booking/imterfaces/BookingFormViewProprs";
-import {refreshServicesInCart, servicesNameListFormCart, sumPriceInCart} from "../../../composables/useServiceCart";
 
 
 
@@ -19,14 +18,11 @@ const props = defineProps({
     services:{type:Array, required:true },
 })
 
+const emit = defineEmits(['open-booking-form'])
 const bookingService = inject(bookingServiceSymbol) as BookingService
 if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
 
 const servicesNames = computed(() => (bookingService.Cart.servicesList?.reverse().slice(-3).map((service) => service.name).join(' · ')) ?? '');
-
-const toogleService =(service) => {
-    bookingService.Cart.toogleService(service)
-}
 
 
 const openBookingFormOn = inject(EventOpenBookingForm)
@@ -37,14 +33,14 @@ const openBookingForm = () =>{
         // showClinicBlock:true,
         showScheduleBlock:true,
     }
-
+    emit('open-booking-form', viewProps);
     openBookingFormOn(viewProps);
 }
 
 </script>
 
 <template>
-    <SelectList :options="services" :model-value="bookingService.Cart.servicesList" @update:modelValue="toogleService" #default="{option, selected } " optionValue="id" >
+    <SelectList :options="services" :model-value="bookingService.Cart.servicesList" @update:modelValue="bookingService.Cart.toogleService($event)" #default="{option, selected } " optionValue="id" >
         <ServiceSelectOptionView v-bind="{service:option as ServiceData, selected}">
         </ServiceSelectOptionView>
     </SelectList>

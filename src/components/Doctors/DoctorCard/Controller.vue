@@ -115,13 +115,6 @@ provide('slots', slots);
 
 
 //handle services of doctor
-const servicesInCart: Ref<ServiceCartInterface> = ref({} )
-const servicesSelected: Ref<ServiceData[]> = ref([] )
-
-provide(servicesInCartSymbol, servicesInCart)
-provide(servicesSelectedSymbol, servicesSelected)
-
-
 provide(bookingServiceSymbol, new BookingService());
 
 
@@ -138,18 +131,12 @@ provide(EventSelectedWorkingDay, (day:number) => {
 
 
 const showModalBooking = ref(false)
-const showDoctorBlock = ref(false);
-const showServicesBlock = ref(false);
-const showClinicBlock = ref(false);
-const showScheduleBlock = ref(false);
+const bookingFormViewProps:Ref<BookingFormViewProps> = ref({});
 
 
-provide(EventOpenBookingForm, (bookingFormViewProps:BookingFormViewProps) => {
+provide(EventOpenBookingForm, (viewProps:BookingFormViewProps) => {
      showModalBooking.value = true;
-     showDoctorBlock.value = bookingFormViewProps.showDoctorBlock as boolean
-     showServicesBlock.value = bookingFormViewProps.showServicesBlock as boolean
-     showClinicBlock.value = bookingFormViewProps.showClinicBlock as boolean
-     showScheduleBlock.value = bookingFormViewProps.showScheduleBlock as boolean
+    bookingFormViewProps.value = viewProps;
 })
 
 
@@ -160,13 +147,13 @@ provide(EventOpenBookingForm, (bookingFormViewProps:BookingFormViewProps) => {
     <Modal  v-model:visible="showModalBooking" v-if="showModalBooking" >
 
           <BookingFormWithChoiceView v-bind="{doctor:doctorInfo,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot,
-          showDoctorBlock, showServicesBlock, showClinicBlock, showScheduleBlock}" >
+          ...bookingFormViewProps}" >
 
 
           </BookingFormWithChoiceView>
     </Modal>
   <slot
-          v-bind="{doctor:doctorInfo, servicesInCart,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot}"
+          v-bind="{doctor:doctorInfo,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot}"
 
   ></slot>
 </template>

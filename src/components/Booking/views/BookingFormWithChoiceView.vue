@@ -12,12 +12,12 @@ import ScheduleCardView from "../../../UI/Schedule/views/ScheduleCardView.vue";
 import type DoctorCardViewProps from "../../Doctors/Interfaces/DoctorCardViewProps";
 import EventClearSelectedServices from "../../../composables/useEvents/events/EventClearSelectedServices";
 import DoctorCardBookingView from '../../Doctors/DoctorCard/views/Booking.vue'
-import {servicesInCartSymbol, servicesSelectedSymbol} from "../../../composables/useSymbols";
+import {bookingServiceSymbol, servicesInCartSymbol, servicesSelectedSymbol} from "../../../composables/useSymbols";
 import ServicesModalView from "../../../UI/Services/views/ServicesModalView.vue";
 import ServicesCartListView from "../../../UI/Services/views/ServicesCartListView.vue";
 import type BookingFormViewProps from '../imterfaces/BookingFormViewProprs'
 
-interface BookingFormProps extends DoctorCardViewProps, BookingFormViewProps{}
+interface BookingFormProps extends DoctorCardViewProps, BookingFormViewProps {}
 
 const props = defineProps<BookingFormProps>();
 
@@ -29,13 +29,9 @@ const showChooseClinicScheduleBlock = ref(false)
 const toggleLeaveMessage = () =>{}
 const showModalServices = ref(false);
 
+const bookingService = inject(bookingServiceSymbol) as BookingService
+if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
 
-
-const servicesSelected  =  inject(servicesSelectedSymbol) as Ref<ServiceData[]>;
-const servicesInCart  =  inject(servicesInCartSymbol) as Ref<ServiceCartInterface>;
-
-const servicesSelectedCount = computed(()=>servicesSelected?.value.length)
-const clearSelectedServices = () => {if(servicesSelectedCount.value && servicesSelected?.value) servicesSelected.value = [];};
 </script>
 
 <template>
@@ -90,12 +86,12 @@ const clearSelectedServices = () => {if(servicesSelectedCount.value && servicesS
                             <div class="v-card-container middle divider">
                                 <div class="booking__dialog__small-header mb-3">
                                     <span class="text-semibold text-regular">Услуга</span>
-                                    <span v-show="servicesSelectedCount" class="annotation">{{servicesSelectedCount}}</span>
-                                    <span v-show="servicesSelected" class="annotation float-right pointer" @click="clearSelectedServices" >Удалить всё
+                                    <span v-show="bookingService.Cart.count" class="annotation">{{bookingService.Cart.count}}</span>
+                                    <span v-show="bookingService.Cart.servicesList" class="annotation float-right pointer" @click="bookingService.Cart.clear()" >Удалить всё
                                         <span class="icons trash"></span>
                                     </span>
                                 </div>
-                                <div v-if="!servicesSelectedCount" class="services-full-width">
+                                <div v-if="!bookingService.Cart.count" class="services-full-width">
                                     <div class="doctor-info__services_wrap serv">
                                         <div role="button" aria-haspopup="true" aria-expanded="false" class="doctor-info__services" @click="showModalServices = true">
                                             <div class="doctor-info__services_title serv-title">Выберите услугу</div>
@@ -107,7 +103,7 @@ const clearSelectedServices = () => {if(servicesSelectedCount.value && servicesS
                                     </div>
 
                                 </div>
-                                <ServicesCartListView :services="servicesInCart" />
+                                <ServicesCartListView :services="bookingService.Cart.servicesList" />
 
 
 
