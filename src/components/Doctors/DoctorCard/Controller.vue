@@ -162,7 +162,6 @@ provide(EventOpenBookingForm, (viewProps:BookingFormViewProps) => {
           ...bookingFormViewProps}" >
           </BookingFormWithChoiceView>
     </Modal>
-    {{showModalServices}}
     <Modal v-model:visible="showModalServices">
         <ServicesSelectListView :services="doctor.service_data"/>
     </Modal>

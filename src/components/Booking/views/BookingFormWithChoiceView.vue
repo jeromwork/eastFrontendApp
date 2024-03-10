@@ -25,7 +25,9 @@ const doctor = computed(() => props.doctor).value
 
 const showChooseClinicScheduleBlock = ref(false)
 
-const toggleLeaveMessage = () =>{}
+const toggleLeaveMessage = () =>{
+    console.log(4343343)
+}
 
 const bookingService = inject(bookingServiceSymbol) as BookingService
 if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
@@ -107,33 +109,12 @@ const showModalServices = inject(ShowModalServicesDispatch);
 
 
 
-<!--                                    <div-->
-<!--                                            v-show="Object.keys(chooseServices).length !== 0"-->
-<!--                                            @click="toggleServicesDialog(true)"-->
-<!--                                            class="booking__dialog__add-service mt-4">-->
-<!--                                        <div class="annotation d-flex align-center">-->
-<!--                                            <span class="mr-3 text-regular">Добавить услугу</span>-->
-<!--                                            <span class="icons closesearch turn filter-gray"></span>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="booking__dialog__item_row">-->
-<!--                                        <v-checkbox-->
-<!--                                                v-if="Object.keys(chooseServices).length === 0"-->
-<!--                                                :input-value="false"-->
-<!--                                                class="checkbox"-->
-<!--                                                color="black"-->
-<!--                                                :ripple="false"-->
-<!--                                                off-icon="icons-checkbox-off"-->
-<!--                                                on-icon='icons-checkbox'-->
-<!--                                                readonly-->
-<!--                                                v-model="serviceCheckbox"-->
-<!--                                                @click="toggleServicesDialog(true)"-->
-<!--                                        >-->
-<!--                                            <template v-slot:label>-->
-<!--                                                <span class="checkbox__label text-color-main">Записаться без услуги</span>-->
-<!--                                            </template>-->
-<!--                                        </v-checkbox>-->
-<!--                                    </div>-->
+                                <div v-if="!bookingService.Cart.count"
+                                     @click.prevent="showModalServices(true)"
+                                     class="booking__dialog__item_row">
+                                    <input type="checkbox" checked="checked"/>
+                                    <span class="checkbox__label text-color-main">Записаться без услуги</span>
+                                </div>
 
                             </div>
 
