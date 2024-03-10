@@ -63,6 +63,42 @@ class Cart{
 
 }
 
+interface PatientInterface{
+    setPhone(phone:string):this;
+    setFio(phone:string):this;
+}
+
+class Patient implements PatientInterface{
+    protected patientData:Ref = ref({fio:'', phone:''})
+    protected name:string = ''
+    protected surname:string = '';
+    protected lastname:string = '';
+    // public fio:string = '';
+    // public phone:string = '';
+
+    public get fio(){
+        return this.patientData.value.fio
+    }
+
+    public get phone(){
+        return this.patientData.value.phone
+    }
+
+    public setFio( fio:string ):this{
+        //todo check string
+        this.patientData.value.fio = fio;
+        return this;
+    }
+
+    public setPhone( phone:string ){
+        //todo check string by mask
+        this.patientData.value.phone = phone;
+        return this;
+    }
+
+
+
+}
 
 export default class BookingService{
 
@@ -71,6 +107,7 @@ export default class BookingService{
     protected _clinic?:ClinicInterface
     protected _services:ServiceData[] = [];
     public Cart:Cart = new Cart();
+    public Patient:Patient = new Patient()
 
 
 
@@ -93,15 +130,9 @@ export default class BookingService{
         return this;
     }
 
-    public withServices(services:ServiceData[]|ServiceData):this{
-        if(Array.isArray(services)){
-            this._services = services;
-        }else this._services = [services];
-        return this;
-    }
 
-    public addService(service:ServiceData):this{
-        this._services.push(service)
+    public withPatientName( name:string ):this {
+
         return this;
     }
 
@@ -112,6 +143,8 @@ export default class BookingService{
     public get selectedClinic():ClinicInterface|null{
         return (this._clinic) ?? null;
     }
+
+
 
 
 }

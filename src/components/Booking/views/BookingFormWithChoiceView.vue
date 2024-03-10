@@ -15,6 +15,7 @@ import { bookingServiceSymbol } from "../../../composables/useSymbols";
 import ServicesCartListView from "../../../UI/Services/views/ServicesCartListView.vue";
 import type BookingFormViewProps from '../imterfaces/BookingFormViewProprs'
 import {ShowModalServicesDispatch} from "../../../composables/useDispatches";
+import PatientFormView from "./PatientFormView.vue";
 
 interface BookingFormProps extends DoctorCardViewProps, BookingFormViewProps {}
 
@@ -38,6 +39,7 @@ const showModalServices = inject(ShowModalServicesDispatch);
 </script>
 
 <template>
+    {{bookingService}}
     <div  :class="{'mobile': false}" class="booking__dialog__wrapper"    >
 
         <div
@@ -118,74 +120,14 @@ const showModalServices = inject(ShowModalServicesDispatch);
 
                             </div>
 
-<!--                            <div class="v-card-container last" id="booking-form">-->
-<!--                                &lt;!&ndash; inputs &ndash;&gt;-->
-<!--                                <div class="booking__dialog__item">-->
-<!--                                    <v-form-->
-<!--                                            ref="bookingForm"-->
-<!--                                            id="booking-inputs"-->
-<!--                                            class="">-->
-<!--                                        <div-->
-<!--                                                v-if="bookingBlocks.short"-->
-<!--                                                class="booking__dialog__item">-->
-<!--                                            <span class="annotation">Оператор колл-центра перезвонит Вам в течение 15 минут для уточнения деталей и подтверждения записи на прием. </span>-->
-<!--                                        </div>-->
-<!--                                        <div class="booking__dialog__item">-->
-<!--                                            <v-text-field-->
-<!--                                                    autofocus-->
-<!--                                                    class="input full-width"-->
-<!--                                                    :class="{'text-color-main': isFilledFio}"-->
-<!--                                                    ref="fio"-->
-<!--                                                    validate-on-blur-->
-<!--                                                    v-mask="'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'"-->
-<!--                                                    :rules="[-->
-<!--                            rules.fio, rules.fioLength-->
-<!--                        ]"-->
-<!--                                                    @keydown="blockCharacters"-->
-<!--                                                    @paste="blockPaste"-->
-<!--                                                    @input="onFioChange($event)"-->
-<!--                                                    :error="fioError"-->
-<!--                                                    outlined-->
-<!--                                                    label="Ваше имя и фамилия"-->
-<!--                                                    placeholder="Введите имя и фамилию"-->
-<!--                                                    hide-details="auto"-->
-<!--                                                    v-model="fio"-->
-<!--                                            >-->
-<!--                                                <template v-slot:label>-->
-<!--                                                    <span class="v-label theme&#45;&#45;light ">Ваше имя и фамилия</span>-->
-<!--                                                </template>-->
-
-
-<!--                                            </v-text-field>-->
-<!--                                        </div>-->
-<!--                                        <div class="booking__dialog__item">-->
-<!--                                            <v-text-field-->
-<!--                                                    class="input full-width"-->
-<!--                                                    :class="{'text-color-main': isFilledPhone}"-->
-<!--                                                    label="Номер телефона"-->
-<!--                                                    ref="phone"-->
-<!--                                                    v-mask="'+# (###) ###-##-##'"-->
-<!--                                                    :error="phoneError"-->
-<!--                                                    :rules="[-->
-<!--                      rules.phoneContent-->
-<!--                    ]"-->
-<!--                                                    validate-on-blur-->
-<!--                                                    @input="onPhoneChange($event)"-->
-<!--                                                    outlined-->
-<!--                                                    hide-details="auto"-->
-<!--                                                    v-model="phone"-->
-<!--                                                    @blur="onPhoneComplete"-->
-<!--                                            >-->
-<!--                                                <template v-slot:label>-->
-<!--                                                    <span class="v-label theme&#45;&#45;light ">Номер телефона</span>-->
-<!--                                                </template>-->
-<!--                                            </v-text-field>-->
-<!--                                        </div>-->
-
-
-
-<!--                                    </v-form>-->
-<!--                                </div>-->
+                            <div class="v-card-container last" id="booking-form">
+                                <!-- inputs -->
+                                <div class="booking__dialog__item">
+                                    <div class="booking__dialog__item">
+                                        <span class="annotation">Оператор колл-центра перезвонит Вам в течение 15 минут для уточнения деталей и подтверждения записи на прием. </span>
+                                    </div>
+                                    <PatientFormView/>
+                                </div>
 <!--                                &lt;!&ndash; choose time &ndash;&gt;-->
 <!--                                <div-->
 <!--                                        v-if="bookingBlocks.calendar"-->
@@ -212,20 +154,7 @@ const showModalServices = inject(ShowModalServicesDispatch);
 <!--                                                v-html="errorTimeText"-->
 <!--                                        >-->
 <!--                                        </div>-->
-<!--                                        &lt;!&ndash;                <ec-button&ndash;&gt;-->
-<!--                                        &lt;!&ndash;                  large&ndash;&gt;-->
-<!--                                        &lt;!&ndash;                  class="primary"&ndash;&gt;-->
-<!--                                        &lt;!&ndash;                  @click="openCalendarWithSlots"&ndash;&gt;-->
-<!--                                        &lt;!&ndash;                >Выбрать другое время&ndash;&gt;-->
-<!--                                        &lt;!&ndash;                </ec-button>&ndash;&gt;-->
 <!--                                    </div>-->
-<!--                                    &lt;!&ndash;              <div&ndash;&gt;-->
-<!--                                    &lt;!&ndash;                v-show="!validateClinic"&ndash;&gt;-->
-<!--                                    &lt;!&ndash;                class="booking__dialog__card_error">&ndash;&gt;-->
-<!--                                    &lt;!&ndash;                <div class="v-messages theme&#45;&#45;light error&#45;&#45;text">&ndash;&gt;-->
-<!--                                    &lt;!&ndash;                  <div class="v-messages__message">Выберите клинику</div>&ndash;&gt;-->
-<!--                                    &lt;!&ndash;                </div>&ndash;&gt;-->
-<!--                                    &lt;!&ndash;              </div>&ndash;&gt;-->
 <!--                                </div>-->
 <!--                                &lt;!&ndash; choose clinic &ndash;&gt;-->
 <!--                                <div-->
@@ -307,7 +236,7 @@ const showModalServices = inject(ShowModalServicesDispatch);
 
 <!--                                </div>-->
 
-<!--                            </div>-->
+                            </div>
 <!--                            <div class="v-card-container button-container padding-c">-->
 <!--                                <div class="booking__dialog__error_wrap"-->
 <!--                                     v-if="errorText"-->
