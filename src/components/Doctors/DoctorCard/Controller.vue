@@ -11,18 +11,17 @@ import { useEventBus, injectLocal, provideLocal } from '@vueuse/core'
 import {
     EventClinicMapOpen,
     EventSelectedSlot,
-    EventSelectedWorkingDay,
     EventSelectClinic,
     EventServiceAddToCart, EventOpenBookingForm
 } from '../../../composables/useEvents'
-import {ShowModalBookingFormDispatch, ShowModalServicesDispatch} from '../../../composables/useDispatches'
+import {ShowModalBookingFormDispatch, ShowModalServicesDispatch, OpenBookingFormDispatch} from '../../../composables/useDispatches'
 
 
 import {
-    bookingServiceSymbol,
+    bookingServiceSymbol, clinicsOfDoctorReadonlyRefSymbol, clinicWorkingSelectedRefSymbol, currentWorkingDayRefSymbol,
     servicesInCartSymbol,
     servicesSelectedSymbol,
-    servicesSymbol
+    servicesSymbol, slotsRefSymbol, workDaysReadonlyRefSymbol
 } from '../../../composables/useSymbols'
 
 
@@ -87,37 +86,36 @@ doctorInfo.value.favoriteService = computed(() => {
 }).value;
 
 
-doctorInfo.value.clinics = computed(() => ClinicsService.getClinicsByIds(Object.values(doctorInfo.value.filials))).value;
+// doctorInfo.value.clinics = computed(() => ClinicsService.getClinicsByIds(Object.values(doctorInfo.value.filials))).value;
 
 
 
 
 const clinicWorkingSelected: Ref<ClinicInterface | null> = ref( (new DoctorsService()).clinicWorkingDefault(doctorInfo.value.id) as ClinicInterface ?? null);
+provide(clinicWorkingSelectedRefSymbol, clinicWorkingSelected);
+
+provide(clinicsOfDoctorReadonlyRefSymbol, readonly( ref(computed(() => ClinicsService.getClinicsByIds(Object.values(doctorInfo.value.filials))).value)))
+
+
 
 //add work days
-const workDays = computed( () => ScheduleService.workDays(doctorInfo.value.id, (clinicWorkingSelected.value) ? clinicWorkingSelected.value?.id : null));
+
+provide(workDaysReadonlyRefSymbol, readonly(ref(computed( () => ScheduleService.workDays(doctorInfo.value.id, (clinicWorkingSelected.value) ? clinicWorkingSelected.value?.id : null)).value)))
 
 const currentWorkingDay: Ref<number | null> = ref(    ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id) as number ?? null);
-
-// provide('clinicWorkingSelected', clinicWorkingSelected)
-
-
+provide(currentWorkingDayRefSymbol,  ref(currentWorkingDay))
 
 const slots = computed(() => {
     if (!currentWorkingDay.value || !clinicWorkingSelected?.value?.id) return null;
     const slotsDoctor = ScheduleService.getSlots(clinicWorkingSelected?.value?.id as number, doctorInfo.value.id, currentWorkingDay.value as number);
     return slotsDoctor ?? null;
-});
+}).value;
 
-
-
-const selectedSlot:Ref<number|null> = ref(null);
-
-provide('slots', slots);
+provide(slotsRefSymbol, readonly(ref(slots)))
 
 
 //handle services of doctor
-provide(bookingServiceSymbol, new BookingService());
+provide(bookingServiceSymbol, new BookingService().setWorkingDay(currentWorkingDay.value));
 
 
 provide(EventSelectClinic, (clinic:ClinicInterface) => {
@@ -125,18 +123,16 @@ provide(EventSelectClinic, (clinic:ClinicInterface) => {
     currentWorkingDay.value = ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id) as number ?? null
 })
 
-provide(EventSelectedWorkingDay, (day:number) => {
-    currentWorkingDay.value = day;
-})
-
-
-
 
 const showModalBooking = ref(false)
+
+
 provide(ShowModalBookingFormDispatch, (show:boolean) => {
     showModalServices.value = false;
     showModalBooking.value = show;
 })
+
+
 
 const showModalServices = ref(false)
 provide(ShowModalServicesDispatch, (show:boolean) => {
@@ -147,7 +143,7 @@ provide(ShowModalServicesDispatch, (show:boolean) => {
 const bookingFormViewProps:Ref<BookingFormViewProps> = ref({});
 
 
-provide(EventOpenBookingForm, (viewProps:BookingFormViewProps) => {
+provide(OpenBookingFormDispatch, (viewProps:BookingFormViewProps) => {
      showModalBooking.value = true;
     bookingFormViewProps.value = viewProps;
 })
@@ -158,7 +154,7 @@ provide(EventOpenBookingForm, (viewProps:BookingFormViewProps) => {
 
 <template>
     <Modal  v-model:visible="showModalBooking" v-if="showModalBooking" >
-          <BookingFormWithChoiceView v-bind="{doctor:doctorInfo,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot,
+          <BookingFormWithChoiceView v-bind="{doctor:doctorInfo,
           ...bookingFormViewProps}" >
           </BookingFormWithChoiceView>
     </Modal>
@@ -167,7 +163,7 @@ provide(EventOpenBookingForm, (viewProps:BookingFormViewProps) => {
     </Modal>
 
   <slot
-          v-bind="{doctor:doctorInfo,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot}"
+          v-bind="{ doctor:doctorInfo }"
 
   ></slot>
 </template>

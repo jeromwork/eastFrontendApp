@@ -3,109 +3,21 @@ import type {throttle} from "@antfu/utils";
 import type ServiceCartInterface from "../../interfaces/ServiceCartInterface";
 import {reactive} from "vue";
 import type { Ref, UnwrapNestedRefs } from 'vue';
-
-class Cart{
-    protected _cart:Ref<ServiceCartInterface>= ref({})
-
-    public toogleService( service:ServiceData ):this{
-        if(this.getGoodByService(service))   delete this._cart.value[service.id];
-        else this._cart.value[service.id] = {count:1, service:service}
-        return this;
-    }
-
-    public add ( service:ServiceData ):this {
-        if(this.getGoodByService(service)) this._cart.value[service.id].count++;
-        else this._cart.value[service.id] = {count:1, service:service}
-        return this;
-    };
-
-    public remove ( service:ServiceData ):this {
-        const good = this.getGoodByService(service);
-        if(good) {
-            if(good.count === 1) delete this._cart.value[service.id];
-            else this._cart.value[service.id].count--;
-        }
-        else this._cart.value[service.id] = {count:1, service:service}
-        return this;
-    };
-
-    public clear():this {
-        this._cart.value = {};
-        return this;
-    }
+import Patient from "./Patient";
+import Cart from "./Cart";
 
 
-    public get servicesList():ServiceData[]|null{
-        return ( Object.values( this._cart.value ).map((good) => good.service) ) ?? null;
-    }
+interface BookingDataInterface {
 
-    public get sum():number{
-        const sumServices = Object.values(this._cart.value).map((good) =>
-                ( good.service.custom_price > 0 ) ? good.service.custom_price * good.count  : good.service.price * good.count )
-        return sumServices.reduce((a, b) => a + b, 0);
-    }
-
-    public get count():number{
-        Object.keys( this._cart.value ).length
-        return ( Object.keys( this._cart.value ).length ) ?? 0;
-    }
-
-    public get goods():ServiceCartInterface {
-        return this._cart.value;
-    }
-
-
-
-
-    protected getGoodByService( service:ServiceData ):{count:number, service:ServiceData}|null{
-        return (this._cart.value[service.id]) ?? null;
-    }
-
-}
-
-interface PatientInterface{
-    setPhone(phone:string):this;
-    setFio(phone:string):this;
-}
-
-class Patient implements PatientInterface{
-    protected patientData:Ref = ref({fio:'', phone:''})
-    protected name:string = ''
-    protected surname:string = '';
-    protected lastname:string = '';
-    // public fio:string = '';
-    // public phone:string = '';
-
-    public get fio(){
-        return this.patientData.value.fio
-    }
-
-    public get phone(){
-        return this.patientData.value.phone
-    }
-
-    public setFio( fio:string ):this{
-        //todo check string
-        this.patientData.value.fio = fio;
-        return this;
-    }
-
-    public setPhone( phone:string ){
-        //todo check string by mask
-        this.patientData.value.phone = phone;
-        return this;
-    }
-
-
+    slot : number|null
+    workingDay : number|null
+    clinic : ClinicInterface|null
 
 }
 
 export default class BookingService{
-
+    protected data:Ref<BookingDataInterface> = ref({slot:null, workingDay:null, clinic:null});
     protected _doctor?:DoctorInterface
-    protected _slot?:number
-    protected _clinic?:ClinicInterface
-    protected _services:ServiceData[] = [];
     public Cart:Cart = new Cart();
     public Patient:Patient = new Patient()
 
@@ -115,36 +27,37 @@ export default class BookingService{
         this._doctor = doctor;
         return this;
     }
-    public withSlot(slot:number):this{
-        this._slot = slot;
+    public setWorkingSlot(slot:number):this{
+        this.data.value.slot = slot;
         return this;
     }
 
-    public withWorkingDay(day:number):this{
-        this._slot = day;
+    public setWorkingDay(day:number|null):this{
+        this.data.value.workingDay = day;
         return this;
     }
 
-    public withClinic(clinic:ClinicInterface|null):this{
-        if(clinic)        this._clinic = clinic;
+    public setClinic(clinic:ClinicInterface|null):this{
+        if(clinic)        this.data.value.clinic = clinic;
         return this;
     }
 
-
-    public withPatientName( name:string ):this {
-
-        return this;
-    }
 
     public get doctor():DoctorInterface|null{
         return (this._doctor) ?? null;
     }
 
     public get selectedClinic():ClinicInterface|null{
-        return (this._clinic) ?? null;
+        return (this.data.value.clinic) ?? null;
     }
 
+    public get selectedSlot():number|null{
+        return this.data.value.slot
+    }
 
+    public get selectedWorkDay():number|null{
+        return this.data.value.workingDay
+    }
 
 
 }

@@ -21,57 +21,20 @@ const fio = ref('')
             class="">
 
         <div class="booking__dialog__item">
-            <input type="text" name="fio" id="" @input="bookingService.Patient.setFio($event.target.value)">
-
-<!--            <v-text-field-->
-<!--                    autofocus-->
-<!--                    class="input full-width"-->
-<!--                    :class="{'text-color-main': isFilledFio}"-->
-<!--                    ref="fio"-->
-<!--                    validate-on-blur-->
-<!--                    v-mask="'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'"-->
-<!--                    :rules="[-->
-<!--                            rules.fio, rules.fioLength-->
-<!--                        ]"-->
-<!--                    @keydown="blockCharacters"-->
-<!--                    @paste="blockPaste"-->
-<!--                    @input="onFioChange($event)"-->
-<!--                    :error="fioError"-->
-<!--                    outlined-->
-<!--                    label="Ваше имя и фамилия"-->
-<!--                    placeholder="Введите имя и фамилию"-->
-<!--                    hide-details="auto"-->
-<!--                    v-model="fio"-->
-<!--            >-->
-<!--                <template v-slot:label>-->
-<!--                    <span class="v-label theme&#45;&#45;light ">Ваше имя и фамилия</span>-->
-<!--                </template>-->
+<!--            может быть вынести input в отдельный компонент-->
+            <input type="text" name="fio" @input="bookingService.Patient.setFio($event.target.value)"
+                   placeholder="Введите имя и фамилию"
+            >
+            <span v-if="bookingService.Patient.phoneError">{{bookingService.Patient.fioError}}</span>
 
 
-<!--            </v-text-field>-->
+
         </div>
         <div class="booking__dialog__item">
-<!--            <v-text-field-->
-<!--                    class="input full-width"-->
-<!--                    :class="{'text-color-main': isFilledPhone}"-->
-<!--                    label="Номер телефона"-->
-<!--                    ref="phone"-->
-<!--                    v-mask="'+# (###) ###-##-##'"-->
-<!--                    :error="phoneError"-->
-<!--                    :rules="[-->
-<!--                      rules.phoneContent-->
-<!--                    ]"-->
-<!--                    validate-on-blur-->
-<!--                    @input="onPhoneChange($event)"-->
-<!--                    outlined-->
-<!--                    hide-details="auto"-->
-<!--                    v-model="phone"-->
-<!--                    @blur="onPhoneComplete"-->
-<!--            >-->
-<!--                <template v-slot:label>-->
-<!--                    <span class="v-label theme&#45;&#45;light ">Номер телефона</span>-->
-<!--                </template>-->
-<!--            </v-text-field>-->
+            <input type="text" name="fio" @input="bookingService.Patient.setPhone($event.target.value)"
+              placeholder="Номер телефона"
+            >
+            <span v-if="bookingService.Patient.phoneError">{{bookingService.Patient.phoneError}}</span>
         </div>
 
 

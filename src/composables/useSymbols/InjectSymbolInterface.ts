@@ -1,1 +1,0 @@
-export default interface ProvideKey<T> extends Symbol {}

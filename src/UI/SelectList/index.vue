@@ -30,7 +30,6 @@ const isSelected = (option: Object): boolean => {
 
 
 const toggleServiceChoose = (option: Object) => {
-    console.log(111111111)
     const modelValue = model.value;
     emit('update:modelValue', option);
     if (Array.isArray(modelValue)) {

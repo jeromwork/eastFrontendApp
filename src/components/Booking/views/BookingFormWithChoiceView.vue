@@ -11,7 +11,7 @@ import ClinicsSelectView from "../../../UI/Clinics/views/ClinicsSelectView.vue";
 import ScheduleCardView from "../../../UI/Schedule/views/ScheduleCardView.vue";
 import type DoctorCardViewProps from "../../Doctors/Interfaces/DoctorCardViewProps";
 import DoctorCardBookingView from '../../Doctors/DoctorCard/views/Booking.vue'
-import { bookingServiceSymbol } from "../../../composables/useSymbols";
+import {bookingServiceSymbol, clinicWorkingSelectedRefSymbol} from "../../../composables/useSymbols";
 import ServicesCartListView from "../../../UI/Services/views/ServicesCartListView.vue";
 import type BookingFormViewProps from '../imterfaces/BookingFormViewProprs'
 import {ShowModalServicesDispatch} from "../../../composables/useDispatches";
@@ -29,7 +29,7 @@ const showChooseClinicScheduleBlock = ref(false)
 const toggleLeaveMessage = () =>{
     console.log(4343343)
 }
-
+const clinicWorkingSelected = inject(clinicWorkingSelectedRefSymbol)
 const bookingService = inject(bookingServiceSymbol) as BookingService
 if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
 
@@ -39,7 +39,6 @@ const showModalServices = inject(ShowModalServicesDispatch);
 </script>
 
 <template>
-    {{bookingService}}
     <div  :class="{'mobile': false}" class="booking__dialog__wrapper"    >
 
         <div
@@ -65,7 +64,7 @@ const showModalServices = inject(ShowModalServicesDispatch);
                 </div>
                 <div ref="booking_scroll_dialog" class="border-radius-30 scroll">
                     <div class="booking__dialog">
-
+<!--clinic schedule block-->
                         <div v-if="showChooseClinicScheduleBlock" class="v-card-container last">
                             <BackLink @click="showChooseClinicScheduleBlock=false" to=""/>
                             <div class="slots" style="margin: 0 auto">
@@ -76,11 +75,11 @@ const showModalServices = inject(ShowModalServicesDispatch);
 
                                 </div>
 
-                                <ClinicsSelectView v-if="doctor.clinics && props.clinicWorkingSelected" :clinics="doctor.clinics"  :current-clinic="props.clinicWorkingSelected"/>
+                                <ClinicsSelectView v-if="doctor.clinics && bookingService.selectedClinic"/>
                                 <div class="slots__header text-secondary">
                                     Записаться онлайн
                                 </div>
-                                <ScheduleCardView v-bind="{workDays, currentWorkingDay, slots, selectedSlot}"/>
+                                <ScheduleCardView/>
 
                             </div>
 
@@ -122,41 +121,41 @@ const showModalServices = inject(ShowModalServicesDispatch);
 
                             <div class="v-card-container last" id="booking-form">
                                 <!-- inputs -->
-                                <div class="booking__dialog__item">
+                                <div class="booking__dialog__item" v-if="showShortFormTitle">
                                     <div class="booking__dialog__item">
                                         <span class="annotation">Оператор колл-центра перезвонит Вам в течение 15 минут для уточнения деталей и подтверждения записи на прием. </span>
                                     </div>
                                     <PatientFormView/>
                                 </div>
-<!--                                &lt;!&ndash; choose time &ndash;&gt;-->
-<!--                                <div-->
-<!--                                        v-if="bookingBlocks.calendar"-->
-<!--                                        @click="openCalendarWithSlots"-->
-<!--                                        class="booking__dialog__item pointer">-->
-<!--                                    <div-->
-<!--                                            :class="{'error-border' : !validateClinic}"-->
-<!--                                            class="booking__dialog__card with-icon">-->
-<!--                                        <div>-->
-<!--                                            <div class="booking__dialog__label">-->
-<!--                                                Дата и время приема-->
-<!--                                            </div>-->
-<!--                                            <span v-if="date">{{date}}</span>-->
-<!--                                            <span class="booking__dialog__card_input-text" v-else>Выбрать время</span>-->
-<!--                                        </div>-->
+                                <!-- choose time -->
+                                <div
+                                        v-if="bookingBlocks.calendar"
+                                        @click="openCalendarWithSlots"
+                                        class="booking__dialog__item pointer">
+                                    <div
+                                            :class="{'error-border' : !validateClinic}"
+                                            class="booking__dialog__card with-icon">
+                                        <div>
+                                            <div class="booking__dialog__label">
+                                                Дата и время приема
+                                            </div>
+                                            <span v-if="date">{{date}}</span>
+                                            <span class="booking__dialog__card_input-text" v-else>Выбрать время</span>
+                                        </div>
 
-<!--                                        <span class="icons pen"></span>-->
-<!--                                    </div>-->
-<!--                                    <div class="booking__dialog__card_error"-->
-<!--                                         v-show="errorTimeText"-->
-<!--                                    >-->
-<!--                                        <div-->
-<!--                                                class="v-messages theme&#45;&#45;light error&#45;&#45;text"-->
-<!--                                                v-html="errorTimeText"-->
-<!--                                        >-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                &lt;!&ndash; choose clinic &ndash;&gt;-->
+                                        <span class="icons pen"></span>
+                                    </div>
+                                    <div class="booking__dialog__card_error"
+                                         v-show="errorTimeText"
+                                    >
+                                        <div
+                                                class="v-messages theme--light error--text"
+                                                v-html="errorTimeText"
+                                        >
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- choose clinic -->
 <!--                                <div-->
 <!--                                        v-if="bookingBlocks.chooseClinic"-->
 <!--                                        class="booking__dialog__item pointer">-->

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { defineProps, defineModel, ref } from 'vue'
+import { defineProps, defineModel, ref, inject } from 'vue'
 import ClinicCardSelectedView from './ClinicCardSelectedView.vue'
 import type { ClinicInterface } from '../../../EastclinicVueApi'
 import type {Ref} from "/vue";
@@ -9,32 +9,26 @@ import { EventClinicMapOpen, EventSelectClinic, } from '../../../composables/use
 import SelectList from '../../SelectList'
 import ClinicCardInSelectListView from './ClinicCardInSelectListView'
 import Modal from "../../../UI/Modal.vue";
+import {
+    bookingServiceSymbol,
+    clinicsOfDoctorReadonlyRefSymbol,
+    clinicWorkingSelectedRefSymbol
+} from "../../../composables/useSymbols";
+import {BookingService} from "../../../EastclinicVueApi";
 
-// import ServiceData from "#build/src/EastclinicVueApi/interfaces/ServiceData";
+const bookingService = inject(bookingServiceSymbol) as BookingService
+if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
 
-
-
-
-
-const props = defineProps<{
-    clinics : ClinicInterface[] | null,
-    currentClinic : ClinicInterface | null,
-}>();
 
 const visibleClinicsList = ref(false)
 
-// const clinics = inject('clinics') as ClinicInterface[];
-// const currentClinic = inject('clinicWorkingSelected') as ClinicInterface;
+const currentClinic = bookingService.selectedClinic
+
+const clinics = inject(clinicsOfDoctorReadonlyRefSymbol);
 
 
-const countClinics = computed(() => props.clinics?.length);
-// const currentClinicPrepared = computed(() => {
-//     if(!props.currentClinic) return null;
-//     return (isRef(props.currentClinic)) ?props.currentClinic.value : props.currentClinic
-// })
+const countClinics = computed(() => clinics?.value?.length);
 
-
-const currentClinic = computed(() =>  props.currentClinic )
 
 //listener of select clinic
 const selectedClinicOn = inject(EventSelectClinic);
@@ -42,7 +36,7 @@ const selectedClinicOn = inject(EventSelectClinic);
 
 const selectedClinic = (clinic:ClinicInterface) => {
     visibleClinicsList.value = false;
-    if(clinic.id === currentClinic?.value?.id) return;
+    if(clinic.id === currentClinic?.id) return;
     selectedClinicOn(clinic);
 }
 

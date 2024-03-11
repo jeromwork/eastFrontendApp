@@ -3,34 +3,37 @@
 import {    defineProps, reactive, ref, defineEmits, computed, onBeforeMount, onMounted, defineModel, inject} from "vue";
 
 import type {Ref} from 'vue'
-import {EventSelectedSlot} from "../../../composables/useEvents";
-import {useEventBus} from "@vueuse/core";
+import BookingFormViewProps from "../../../components/Booking/imterfaces/BookingFormViewProprs";
+import {bookingServiceSymbol} from "../../../composables/useSymbols";
+import {BookingService} from "../../../EastclinicVueApi";
+import { OpenBookingFormDispatch } from '../../../composables/useDispatches'
 
 const props = defineProps<{
     isDownloaded?: Boolean,
-    slots: number[] | null;
     countShowSlots?: number; // Update the type to number[]
-    selectedSlot: number | null;
 }>();
 
 
+const bookingService = inject(bookingServiceSymbol) as BookingService
+if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
 
-onMounted(async ()=>{
-});
 
 const countShowSlots = ref((props.countShowSlots) ?? 5 )
-const ss = inject(EventSelectedSlot);
 
-const slotSelected = ( slot:number )=>{
-    ss(slot)
-    //useEventBus(EventSelectedSlot).emit(slot);
+const slotSelect = ( slot:number )=>{
+
+    const viewProps:BookingFormViewProps = {
+        showDoctorBlock:true,
+        showClinicBlock:true,
+        showScheduleBlock:true,
+    }
+    const openBookingFormOn = inject(OpenBookingFormDispatch)
+    openBookingFormOn(viewProps);
 }
  const showRestSlots = () => {
      const slotsLength = (props.slots?.length) ? props.slots.length : 0;
      countShowSlots.value = (slotsLength === countShowSlots) ? 7 : slotsLength;
  }
-
-
 
 
 </script>
@@ -45,7 +48,7 @@ const slotSelected = ( slot:number )=>{
                 >
                     <button class="slots_item button primary slot"
                             v-if="j < countShowSlots || countShowSlots+1 === slots.length"
-                            @click.prevent="slotSelected(slot)"
+                            @click.prevent="slotSelect(slot)"
                     >
                         {{slot}}
                     </button>

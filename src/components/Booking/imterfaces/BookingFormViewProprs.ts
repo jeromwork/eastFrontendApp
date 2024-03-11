@@ -3,5 +3,6 @@ export default interface BookingFormViewProps{
     showServicesBlock?:boolean|string;
     showClinicBlock?:boolean|string;
     showScheduleBlock?:boolean|string;
+    showShortFormTitle?:boolean|string;
 
 }

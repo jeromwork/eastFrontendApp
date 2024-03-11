@@ -25,6 +25,7 @@ import type ServiceData from "../../../../EastclinicVueApi/interfaces/ServiceDat
 import ScheduleCardView from '../../../../UI/Schedule/views/ScheduleCardView.vue'
 import ClinicsSelectView from "../../../../UI/Clinics/views/ClinicsSelectView.vue";
 import {ShowModalServicesDispatch} from "../../../../composables/useDispatches";
+import {clinicsOfDoctorReadonlyRefSymbol, clinicWorkingSelectedRefSymbol} from "../../../../composables/useSymbols";
 
 //календарь это не зависимый от доктора компонент
 //он может принимать массив или объект disables days, что бы дни были неактивны
@@ -55,6 +56,10 @@ const mobileScreen = ref(false)
 const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Number })
 // const currentSlotModel = defineModel('currentSlotModel',{ type: Number })
 const showModalServices = inject(ShowModalServicesDispatch)
+
+
+const clinics = inject(clinicsOfDoctorReadonlyRefSymbol);
+const clinicWorkingSelected = inject(clinicWorkingSelectedRefSymbol)
 
 </script>
 
@@ -147,9 +152,9 @@ const showModalServices = inject(ShowModalServicesDispatch)
                         class="font-12 main-color pointer text-semibold">Другие услуги
                     </span>
 
-                    <ClinicsSelectView v-if="doctor.clinics && clinicWorkingSelected" :clinics="doctor.clinics"  :current-clinic="clinicWorkingSelected"/>
+                    <ClinicsSelectView v-if="clinics && clinicWorkingSelected"/>
 
-                    <ScheduleCardView v-bind="{workDays, currentWorkingDay, slots, selectedSlot}"/>
+                    <ScheduleCardView />
 
                 </div>
             </FixedBlock>
