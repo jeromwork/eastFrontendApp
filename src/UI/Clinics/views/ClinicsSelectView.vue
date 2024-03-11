@@ -10,28 +10,28 @@ import SelectList from '../../SelectList'
 import ClinicCardInSelectListView from './ClinicCardInSelectListView'
 import Modal from "../../../UI/Modal.vue";
 import {
-    bookingServiceSymbol, DoctorInfoSymbol
+    bookingServiceSymbol, DoctorCartStateSymbol, DoctorInfoSymbol
 } from "../../../composables/useSymbols";
 import {BookingService, DoctorsService} from "../../../EastclinicVueApi";
 
 const bookingService = inject(bookingServiceSymbol) as BookingService
 if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
 
+const doctorCardState = inject(DoctorCartStateSymbol);
+if(!doctorCardState) throw new Error('not have doctorCardState by DoctorCartStateSymbol');
 
 const visibleClinicsList = ref(false)
 
-const currentClinic = computed(() =>bookingService.selectedClinic)
+const currentClinic = computed(() =>doctorCardState.selectedClinic as ClinicInterface)
 
-const doctor = inject(DoctorInfoSymbol);
-const clinics = computed(() => doctor?.value.clinics);
+const doctor = doctorCardState.doctor;
+const clinics = computed(() => doctor?.value?.clinics);
 
 
 const countClinics = computed(() => clinics?.value?.length);
 
 
 //listener of select clinic
-const selectedClinicOn = inject(EventSelectClinic);
-
 
 const selectedClinic = (clinic:ClinicInterface) => {
     visibleClinicsList.value = false;
@@ -42,6 +42,7 @@ const selectedClinic = (clinic:ClinicInterface) => {
 </script>
 
 <template>
+
     <div>
         <div class="slots__clinic-changer " @click="visibleClinicsList = !visibleClinicsList">
             <div  v-if="countClinics > 0 && currentClinic">

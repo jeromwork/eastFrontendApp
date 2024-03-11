@@ -5,11 +5,10 @@ import SelectList from "../../SelectList/index.vue";
 import ServiceSelectOptionView from "./SelectOptionView.vue";
 import type { ServiceData } from "../../../EastclinicVueApi";
 import { BookingService } from "../../../EastclinicVueApi";
-import { bookingServiceSymbol } from "../../../composables/useSymbols";
+import {bookingServiceSymbol, DoctorCartStateSymbol} from "../../../composables/useSymbols";
 import EcButton from "../../../UI/Buttons/EcButton.vue";
 import {EventOpenBookingForm} from "../../../composables/useEvents";
 import type BookingFormViewProps from "../../../components/Booking/imterfaces/BookingFormViewProprs";
-import {ShowModalServicesDispatch} from "../../../composables/useDispatches";
 
 
 
@@ -23,11 +22,13 @@ const emit = defineEmits(['open-booking-form'])
 const bookingService = inject(bookingServiceSymbol) as BookingService
 if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
 
+const doctorCardState = inject( DoctorCartStateSymbol )
+if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');
+
 const servicesNames = computed(() => (bookingService.Cart.servicesList?.reverse().slice(-3).map((service) => service.name).join(' · ')) ?? '');
 
-const showModalServices = inject(ShowModalServicesDispatch);
 
-const openBookingFormOn = inject(EventOpenBookingForm)
+
 const openBookingForm = () =>{
     const viewProps:BookingFormViewProps = {
         showDoctorBlock:true,
@@ -35,8 +36,8 @@ const openBookingForm = () =>{
         // showClinicBlock:true,
         showScheduleBlock:true,
     }
-    openBookingFormOn(viewProps);
-    showModalServices(false);
+    doctorCardState?.setBookingFormBlocks( viewProps );
+    doctorCardState?.toogleModalServices(false );
 }
 
 </script>

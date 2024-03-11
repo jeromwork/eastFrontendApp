@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import {ref, defineProps, defineEmits, defineModel, inject} from 'vue';
 import type { ServiceData, ServiceCartInterface } from "../../../EastclinicVueApi";
-import {bookingServiceSymbol, servicesInCartSymbol} from "../../../composables/useSymbols";
+import {bookingServiceSymbol, DoctorCartStateSymbol, servicesInCartSymbol} from "../../../composables/useSymbols";
 import {BookingService} from "../../../EastclinicVueApi";
-import {ShowModalServicesDispatch} from "../../../composables/useDispatches";
+import DoctorCardState from "../../../components/Doctors/DoctorCardState";
 
 const bookingService = inject(bookingServiceSymbol) as BookingService
 if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
 
-const showModalServices = inject(ShowModalServicesDispatch)
+const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
+if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');
 
 
 </script>
@@ -57,7 +58,7 @@ const showModalServices = inject(ShowModalServicesDispatch)
     </div>
     <div
         v-show="bookingService.Cart.count"
-        @click="showModalServices(true)"
+        @click="doctorCardState.toogleModalServices(true)"
         class="booking__dialog__add-service mt-4">
         <div class="annotation d-flex align-center">
             <span class="mr-3 text-regular">Добавить услугу</span>

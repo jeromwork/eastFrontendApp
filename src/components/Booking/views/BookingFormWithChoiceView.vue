@@ -3,7 +3,7 @@
 
 import { defineProps,  ref, inject } from "vue";
 import type { Ref } from 'vue'
-import type {BookingService, ServiceCartInterface} from "../../../EastclinicVueApi";
+import type {BookingService, ServiceCartInterface, DoctorInterface} from "../../../EastclinicVueApi";
 import type { ServiceData} from "../../../EastclinicVueApi";
 import useIsMobile from "../../../composables/useIsMobile";
 import BackLink from "../../../UI/BackLink/BackLink.vue";
@@ -11,30 +11,30 @@ import ClinicsSelectView from "../../../UI/Clinics/views/ClinicsSelectView.vue";
 import ScheduleCardView from "../../../UI/Schedule/views/ScheduleCardView.vue";
 import type DoctorCardViewProps from "../../Doctors/Interfaces/DoctorCardViewProps";
 import DoctorCardBookingView from '../../Doctors/DoctorCard/views/Booking.vue'
-import {bookingServiceSymbol} from "../../../composables/useSymbols";
+import {bookingServiceSymbol, DoctorCartStateSymbol} from "../../../composables/useSymbols";
 import ServicesCartListView from "../../../UI/Services/views/ServicesCartListView.vue";
 import type BookingFormViewProps from '../imterfaces/BookingFormViewProprs'
-import {ShowModalServicesDispatch} from "../../../composables/useDispatches";
 import PatientFormView from "./PatientFormView.vue";
+import DoctorCardState from "../../Doctors/DoctorCardState";
 
 interface BookingFormProps extends DoctorCardViewProps, BookingFormViewProps {}
 
 const props = defineProps<BookingFormProps>();
 
 
-const doctor = computed(() => props.doctor).value
+
 
 const showChooseClinicScheduleBlock = ref(false)
-
-const toggleLeaveMessage = () =>{
-    console.log(4343343)
-}
 
 const bookingService = inject(bookingServiceSymbol) as BookingService
 if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
 
+const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
+if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');
 
-const showModalServices = inject(ShowModalServicesDispatch);
+const bookingBlocks = doctorCardState.bookingFormViewProps as BookingFormViewProps;
+
+const doctor = computed(() => doctorCardState.doctor as DoctorInterface)
 
 </script>
 
@@ -57,7 +57,7 @@ const showModalServices = inject(ShowModalServicesDispatch);
                         </span>
                         <span
                                 class="icons closesearch pointer modal-card-title_close"
-                                @click="toggleLeaveMessage"
+                                @click="doctorCardState.toggleBookingLeaveMessage(true)"
                         ></span>
                     </div>
                     <DoctorCardBookingView v-if="showDoctorBlock" :doctor="doctor"/>
@@ -96,7 +96,7 @@ const showModalServices = inject(ShowModalServicesDispatch);
                                 </div>
                                 <div v-if="!bookingService.Cart.count" class="services-full-width">
                                     <div class="doctor-info__services_wrap serv">
-                                        <div role="button" aria-haspopup="true" aria-expanded="false" class="doctor-info__services" @click="showModalServices( true )">
+                                        <div role="button" aria-haspopup="true" aria-expanded="false" class="doctor-info__services" @click="doctorCardState.toogleModalServices(true)">
                                             <div class="doctor-info__services_title serv-title">Выберите услугу</div>
                                             <div class="doctor-info__services_price serv-price"></div>
                                             <div class="doctor-info__services_more serv-more">
@@ -111,7 +111,7 @@ const showModalServices = inject(ShowModalServicesDispatch);
 
 
                                 <div v-if="!bookingService.Cart.count"
-                                     @click.prevent="showModalServices(true)"
+                                     @click.prevent="doctorCardState.toogleModalServices(true)"
                                      class="booking__dialog__item_row">
                                     <input type="checkbox" checked="checked"/>
                                     <span class="checkbox__label text-color-main">Записаться без услуги</span>
@@ -128,33 +128,33 @@ const showModalServices = inject(ShowModalServicesDispatch);
                                     <PatientFormView/>
                                 </div>
                                 <!-- choose time -->
-                                <div
-                                        v-if="bookingBlocks.calendar"
-                                        @click="openCalendarWithSlots"
-                                        class="booking__dialog__item pointer">
-                                    <div
-                                            :class="{'error-border' : !validateClinic}"
-                                            class="booking__dialog__card with-icon">
-                                        <div>
-                                            <div class="booking__dialog__label">
-                                                Дата и время приема
-                                            </div>
-                                            <span v-if="date">{{date}}</span>
-                                            <span class="booking__dialog__card_input-text" v-else>Выбрать время</span>
-                                        </div>
+<!--                                <div-->
+<!--                                        v-if="bookingBlocks.calendar"-->
+<!--                                        @click="openCalendarWithSlots"-->
+<!--                                        class="booking__dialog__item pointer">-->
+<!--                                    <div-->
+<!--                                            :class="{'error-border' : !validateClinic}"-->
+<!--                                            class="booking__dialog__card with-icon">-->
+<!--                                        <div>-->
+<!--                                            <div class="booking__dialog__label">-->
+<!--                                                Дата и время приема-->
+<!--                                            </div>-->
+<!--                                            <span v-if="date">{{date}}</span>-->
+<!--                                            <span class="booking__dialog__card_input-text" v-else>Выбрать время</span>-->
+<!--                                        </div>-->
 
-                                        <span class="icons pen"></span>
-                                    </div>
-                                    <div class="booking__dialog__card_error"
-                                         v-show="errorTimeText"
-                                    >
-                                        <div
-                                                class="v-messages theme--light error--text"
-                                                v-html="errorTimeText"
-                                        >
-                                        </div>
-                                    </div>
-                                </div>
+<!--                                        <span class="icons pen"></span>-->
+<!--                                    </div>-->
+<!--                                    <div class="booking__dialog__card_error"-->
+<!--                                         v-show="errorTimeText"-->
+<!--                                    >-->
+<!--                                        <div-->
+<!--                                                class="v-messages theme&#45;&#45;light error&#45;&#45;text"-->
+<!--                                                v-html="errorTimeText"-->
+<!--                                        >-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
                                 <!-- choose clinic -->
 <!--                                <div-->
 <!--                                        v-if="bookingBlocks.chooseClinic"-->

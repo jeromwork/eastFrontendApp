@@ -24,9 +24,10 @@ import FavoriteServiceCard from '../../../../UI/Services/views/FavoriteView.vue'
 import type ServiceData from "../../../../EastclinicVueApi/interfaces/ServiceData";
 import ScheduleCardView from '../../../../UI/Schedule/views/ScheduleCardView.vue'
 import ClinicsSelectView from "../../../../UI/Clinics/views/ClinicsSelectView.vue";
-import {ShowModalServicesDispatch} from "../../../../composables/useDispatches";
-import {bookingServiceSymbol, clinicsOfDoctorReadonlyRefSymbol} from "../../../../composables/useSymbols";
+
+import {bookingServiceSymbol, DoctorCartStateSymbol} from "../../../../composables/useSymbols";
 import {BookingService, DoctorsService} from '../../../../EastclinicVueApi'
+import DoctorCardState from "../../DoctorCardState";
 
 //календарь это не зависимый от доктора компонент
 //он может принимать массив или объект disables days, что бы дни были неактивны
@@ -51,17 +52,18 @@ const props = defineProps<DoctorCardViewProps>();
 
 
 
-const doctor = ref(props.doctor) as Ref<DoctorInterface>;
+
 const bookingService = inject(bookingServiceSymbol) as BookingService
 if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
 
+const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
+if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');
+
+const doctor = doctorCardState.doctor as Ref<DoctorInterface>;
+
 const mobileScreen = ref(false)
 
-const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Number })
-// const currentSlotModel = defineModel('currentSlotModel',{ type: Number })
-const showModalServices = inject(ShowModalServicesDispatch)
-
-const currentClinic = bookingService.selectedClinic
+const currentClinic = doctorCardState.selectedClinic
 const clinics = doctor.value.clinics;
 
 </script>
@@ -149,7 +151,7 @@ const clinics = doctor.value.clinics;
                         :service="doctor.favoriteService as ServiceData"
                     />
                     <span
-                        @click="showModalServices(true)"
+                        @click="doctorCardState.toogleModalServices(true)"
                         class="font-12 main-color pointer text-semibold">Другие услуги
                     </span>
 
