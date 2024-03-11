@@ -31,6 +31,11 @@ onMounted(async ()=>{
 });
 
 const doctors = computed(()=> doctorsService.items())
+
+
+
+
+
 const typeDoctorPage = doctorsService.typeDoctorPage()
 // const doctors = ref(doctorsList)
 const count = ref(0);

@@ -3,7 +3,7 @@
 import {    defineProps, reactive, ref, defineEmits, computed, onBeforeMount, onMounted, defineModel, inject} from "vue";
 
 import type {Ref} from 'vue'
-import BookingFormViewProps from "../../../components/Booking/imterfaces/BookingFormViewProprs";
+import type BookingFormViewProps from "../../../components/Booking/imterfaces/BookingFormViewProprs";
 import {bookingServiceSymbol} from "../../../composables/useSymbols";
 import {BookingService} from "../../../EastclinicVueApi";
 import { OpenBookingFormDispatch } from '../../../composables/useDispatches'

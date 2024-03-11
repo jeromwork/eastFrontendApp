@@ -160,8 +160,9 @@ export default interface DoctorInterface {
     specials_of_service?:Speciality[];
 
 
-    workDays?:number[]|Ref<number[]>;
-    clinics: ClinicInterface[]|null
+    // workDays?:Readonly<Ref<|number[]>>;
+    clinics: Readonly<ClinicInterface[]|null>
+    clinicWorkingSelected: Ref<ClinicInterface|null>
 
 }
 

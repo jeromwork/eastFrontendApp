@@ -11,17 +11,20 @@ import { useEventBus, injectLocal, provideLocal } from '@vueuse/core'
 import {
     EventClinicMapOpen,
     EventSelectedSlot,
-    EventSelectClinic,
     EventServiceAddToCart, EventOpenBookingForm
 } from '../../../composables/useEvents'
 import {ShowModalBookingFormDispatch, ShowModalServicesDispatch, OpenBookingFormDispatch} from '../../../composables/useDispatches'
 
 
 import {
-    bookingServiceSymbol, clinicsOfDoctorReadonlyRefSymbol, clinicWorkingSelectedRefSymbol, currentWorkingDayRefSymbol,
+    bookingServiceSymbol,
+    currentWorkingDayRefSymbol, DoctorCartStateSymbol,
+    DoctorInfoSymbol,
     servicesInCartSymbol,
     servicesSelectedSymbol,
-    servicesSymbol, slotsRefSymbol, workDaysReadonlyRefSymbol
+    servicesSymbol,
+    slotsRefSymbol,
+    workDaysReadonlyRefSymbol
 } from '../../../composables/useSymbols'
 
 
@@ -34,6 +37,7 @@ import BookingFormWithChoiceView from "../../Booking/views/BookingFormWithChoice
 import Modal from "../../../UI/Modal.vue";
 import type BookingFormViewProps from "../../Booking/imterfaces/BookingFormViewProprs";
 import ServicesSelectListView from "../../../UI/Services/views/ServicesSelectListView.vue";
+import DoctorCardState from "../DoctorCardState";
 
 
 //В этом компоненте обращаемся к сервису за данными по доктору
@@ -50,53 +54,12 @@ import ServicesSelectListView from "../../../UI/Services/views/ServicesSelectLis
 
 
 const props = defineProps<{    doctor: DoctorInterface }>();
+provide(DoctorCartStateSymbol, new DoctorCardState(props.doctor))
 
 const doctorInfo = toRef(props, 'doctor');
-const specials = computed(() => {
-    let specs = '';
-    if (doctorInfo.value?.main_specials) {
-        specs +=  doctorInfo.value.main_specials.map(special => special.name).join(' · ');
-    }
-    if (doctorInfo.value?.specials_of_service) {
-        specs += doctorInfo.value.specials_of_service.map(special => special.name).join(' · ');
-    }
-    return specs;
-});
-doctorInfo.value.specials = specials.value;
-
-
-const photo120x120 = computed(() => {
-    if ( doctorInfo.value?.content ){
-        for (const i in doctorInfo.value.content){
-            const img = doctorInfo.value.content[i]
-            if(img.type === '120x120' && img.typeFile === 'image') return img;
-        }
-        return doctorInfo.value.photos['120x120'][0] as ContentInterface
-    } else {
-        return { id : null, type:'120x120', typeFile:"image", url:'/images/photo_soon.png' } as ContentInterface;
-    }
-});
-doctorInfo.value.photo120x120 = photo120x120.value;
-
-//add favorite service
-doctorInfo.value.favoriteService = computed(() => {
-    let mainService = (doctorInfo.value?.choosen_service_data?.[0]) ?? null
-    if(!mainService && doctorInfo.value?.service_data?.[0]) mainService = doctorInfo.value.service_data[0];
-    return mainService as ServiceData;
-}).value;
-
-
-// doctorInfo.value.clinics = computed(() => ClinicsService.getClinicsByIds(Object.values(doctorInfo.value.filials))).value;
-
-
 
 
 const clinicWorkingSelected: Ref<ClinicInterface | null> = ref( (new DoctorsService()).clinicWorkingDefault(doctorInfo.value.id) as ClinicInterface ?? null);
-provide(clinicWorkingSelectedRefSymbol, clinicWorkingSelected);
-
-provide(clinicsOfDoctorReadonlyRefSymbol, readonly( ref(computed(() => ClinicsService.getClinicsByIds(Object.values(doctorInfo.value.filials))).value)))
-
-
 
 //add work days
 
@@ -115,13 +78,16 @@ provide(slotsRefSymbol, readonly(ref(slots)))
 
 
 //handle services of doctor
-provide(bookingServiceSymbol, new BookingService().setWorkingDay(currentWorkingDay.value));
+provide(bookingServiceSymbol, new BookingService().setWorkingDay(currentWorkingDay.value).setClinic(clinicWorkingSelected.value));
+
+provide(DoctorInfoSymbol, doctorInfo)
 
 
-provide(EventSelectClinic, (clinic:ClinicInterface) => {
-    clinicWorkingSelected.value = clinic;
-    currentWorkingDay.value = ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id) as number ?? null
-})
+//
+// provide(EventSelectClinic, (clinic:ClinicInterface) => {
+//     clinicWorkingSelected.value = clinic;
+//     currentWorkingDay.value = ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id) as number ?? null
+// })
 
 
 const showModalBooking = ref(false)

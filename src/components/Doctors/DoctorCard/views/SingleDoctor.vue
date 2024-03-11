@@ -25,7 +25,8 @@ import type ServiceData from "../../../../EastclinicVueApi/interfaces/ServiceDat
 import ScheduleCardView from '../../../../UI/Schedule/views/ScheduleCardView.vue'
 import ClinicsSelectView from "../../../../UI/Clinics/views/ClinicsSelectView.vue";
 import {ShowModalServicesDispatch} from "../../../../composables/useDispatches";
-import {clinicsOfDoctorReadonlyRefSymbol, clinicWorkingSelectedRefSymbol} from "../../../../composables/useSymbols";
+import {bookingServiceSymbol, clinicsOfDoctorReadonlyRefSymbol} from "../../../../composables/useSymbols";
+import {BookingService, DoctorsService} from '../../../../EastclinicVueApi'
 
 //календарь это не зависимый от доктора компонент
 //он может принимать массив или объект disables days, что бы дни были неактивны
@@ -51,21 +52,21 @@ const props = defineProps<DoctorCardViewProps>();
 
 
 const doctor = ref(props.doctor) as Ref<DoctorInterface>;
+const bookingService = inject(bookingServiceSymbol) as BookingService
+if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
+
 const mobileScreen = ref(false)
 
 const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Number })
 // const currentSlotModel = defineModel('currentSlotModel',{ type: Number })
 const showModalServices = inject(ShowModalServicesDispatch)
 
-
-const clinics = inject(clinicsOfDoctorReadonlyRefSymbol);
-const clinicWorkingSelected = inject(clinicWorkingSelectedRefSymbol)
+const currentClinic = bookingService.selectedClinic
+const clinics = doctor.value.clinics;
 
 </script>
 
 <template>
-
-
     <BackLink/>
     <slot name="body">
 
@@ -152,7 +153,7 @@ const clinicWorkingSelected = inject(clinicWorkingSelectedRefSymbol)
                         class="font-12 main-color pointer text-semibold">Другие услуги
                     </span>
 
-                    <ClinicsSelectView v-if="clinics && clinicWorkingSelected"/>
+                    <ClinicsSelectView v-if="clinics && currentClinic"/>
 
                     <ScheduleCardView />
 

@@ -11,7 +11,7 @@ import ClinicsSelectView from "../../../UI/Clinics/views/ClinicsSelectView.vue";
 import ScheduleCardView from "../../../UI/Schedule/views/ScheduleCardView.vue";
 import type DoctorCardViewProps from "../../Doctors/Interfaces/DoctorCardViewProps";
 import DoctorCardBookingView from '../../Doctors/DoctorCard/views/Booking.vue'
-import {bookingServiceSymbol, clinicWorkingSelectedRefSymbol} from "../../../composables/useSymbols";
+import {bookingServiceSymbol} from "../../../composables/useSymbols";
 import ServicesCartListView from "../../../UI/Services/views/ServicesCartListView.vue";
 import type BookingFormViewProps from '../imterfaces/BookingFormViewProprs'
 import {ShowModalServicesDispatch} from "../../../composables/useDispatches";
@@ -29,7 +29,7 @@ const showChooseClinicScheduleBlock = ref(false)
 const toggleLeaveMessage = () =>{
     console.log(4343343)
 }
-const clinicWorkingSelected = inject(clinicWorkingSelectedRefSymbol)
+
 const bookingService = inject(bookingServiceSymbol) as BookingService
 if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
 

@@ -5,16 +5,14 @@ import ClinicCardSelectedView from './ClinicCardSelectedView.vue'
 import type { ClinicInterface } from '../../../EastclinicVueApi'
 import type {Ref} from "/vue";
 import { useEventBus } from '@vueuse/core'
-import { EventClinicMapOpen, EventSelectClinic, } from '../../../composables/useEvents'
+import { EventClinicMapOpen, } from '../../../composables/useEvents'
 import SelectList from '../../SelectList'
 import ClinicCardInSelectListView from './ClinicCardInSelectListView'
 import Modal from "../../../UI/Modal.vue";
 import {
-    bookingServiceSymbol,
-    clinicsOfDoctorReadonlyRefSymbol,
-    clinicWorkingSelectedRefSymbol
+    bookingServiceSymbol, DoctorInfoSymbol
 } from "../../../composables/useSymbols";
-import {BookingService} from "../../../EastclinicVueApi";
+import {BookingService, DoctorsService} from "../../../EastclinicVueApi";
 
 const bookingService = inject(bookingServiceSymbol) as BookingService
 if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
@@ -22,9 +20,10 @@ if(!bookingService) throw new Error('not have BookingService by bookingServiceSy
 
 const visibleClinicsList = ref(false)
 
-const currentClinic = bookingService.selectedClinic
+const currentClinic = computed(() =>bookingService.selectedClinic)
 
-const clinics = inject(clinicsOfDoctorReadonlyRefSymbol);
+const doctor = inject(DoctorInfoSymbol);
+const clinics = computed(() => doctor?.value.clinics);
 
 
 const countClinics = computed(() => clinics?.value?.length);
@@ -36,8 +35,8 @@ const selectedClinicOn = inject(EventSelectClinic);
 
 const selectedClinic = (clinic:ClinicInterface) => {
     visibleClinicsList.value = false;
-    if(clinic.id === currentClinic?.id) return;
-    selectedClinicOn(clinic);
+    if(clinic.id === currentClinic.value?.id) return;
+    bookingService.setClinic(clinic);
 }
 
 </script>
