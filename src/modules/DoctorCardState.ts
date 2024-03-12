@@ -5,10 +5,6 @@ import { DoctorsService, ScheduleService, BookingService} from "../EastclinicVue
 import type BookingFormViewProps from "../components/Booking/imterfaces/BookingFormViewProprs";
 
 interface DoctorCardInterface {
-    BookingService: BookingService | null;  // Adjust the type here
-
-    Doctor: DoctorInterface | null;
-
     workDays: number[] | null;
     workingDay:number|null;
     slots: number[] | null;
@@ -25,9 +21,6 @@ interface DoctorCardInterface {
 
 export default class DoctorCardState {
     protected data: Ref<DoctorCardInterface> = ref({
-        BookingService: null,  // or provide a valid instance of BookingService
-        Doctor: null,
-
         slots: null,
         selectedSlot:null,
 
@@ -43,17 +36,20 @@ export default class DoctorCardState {
         showLeaveMessage:false,
         bookingFormViewProps:null,
     });
+    protected bookingService:BookingService | null = null;  // Adjust the type here
+    protected doctor: DoctorInterface | null = null;
+
 
 
 
     public withDoctor( doctor:DoctorInterface ):this{
-        this.data.value.Doctor = doctor;
+        this.doctor = doctor;
         this.initDoctorData(doctor);
         return this
     }
 
     public withBookingService( bookingService:BookingService ):this{
-        this.data.value.BookingService = bookingService;
+        this.bookingService = bookingService;
         return this
     }
 
@@ -121,13 +117,13 @@ export default class DoctorCardState {
 
 
     public get BookingService():BookingService{
-        if(!this.data.value.BookingService) throw new Error('Not set BookingService')
-        return this.data.value.BookingService ;
+        if(!this.bookingService) throw new Error('Not set BookingService')
+        return this.bookingService ;
     }
 
     public get Doctor():DoctorInterface{
-        if(!this.data.value.Doctor) throw new Error('Not set Doctor')
-        return this.data.value.Doctor;
+        if(!this.doctor) throw new Error('Not set Doctor')
+        return this.doctor;
     }
 
 
@@ -135,13 +131,19 @@ export default class DoctorCardState {
         return computed( () => ScheduleService.workDays(this.Doctor.id, ( this.selectedClinic ) ? this.selectedClinic.id : null)).value
     }
     public get workingDay():number | null{        return this.data.value.workingDay;    }
+
     public get slots():Readonly<number[]> | null{        return (this.data.value.slots) ? readonly(this.data.value.slots) : null;    }
+
+    public get selectedSlot():number | null{        return this.data.value.selectedSlot;    }
+
 
     public get selectedClinic():ClinicInterface | null{
         return this.data.value.selectedClinic;    }
 
     public get showModalBooking():boolean | null{        return this.data.value.showModalBooking;    }
+    public set showModalBooking( show){        this.data.value.showModalBooking = show as boolean;    }
     public get showModalServices():boolean | null{        return this.data.value.showModalServices;    }
+    public set showModalServices( show){        this.data.value.showModalServices = show as boolean;    }
     public get showLeaveMessage():boolean | null{        return this.data.value.showLeaveMessage;    }
     public get bookingFormViewProps():BookingFormViewProps | null{        return this.data.value.bookingFormViewProps;    }
 

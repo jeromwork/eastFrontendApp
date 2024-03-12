@@ -1,9 +1,13 @@
+import {ref} from "vue";
 import type {Ref} from "vue";
 import type ServiceCartInterface from "../../interfaces/ServiceCartInterface";
 import type {ServiceData} from "../../index";
 class Cart{
-    protected _cart:Ref<ServiceCartInterface>= ref({})
+    public _cart:Ref<ServiceCartInterface>;
 
+    constructor() {
+        this._cart = ref({})
+    }
     public toogleService( service:ServiceData ):this{
         if(this.getGoodByService(service))   delete this._cart.value[service.id];
         else this._cart.value[service.id] = {count:1, service:service}
@@ -32,7 +36,7 @@ class Cart{
     }
 
 
-    public get servicesList():ServiceData[]|null{
+    public get selectedServicesList():ServiceData[]|null{
         return ( Object.values( this._cart.value ).map((good) => good.service) ) ?? null;
     }
 
@@ -43,7 +47,6 @@ class Cart{
     }
 
     public get count():number{
-        Object.keys( this._cart.value ).length
         return ( Object.keys( this._cart.value ).length ) ?? 0;
     }
 

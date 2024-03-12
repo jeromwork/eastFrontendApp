@@ -56,13 +56,12 @@ provide(DoctorCartStateSymbol,doctorCardState)
 </script>
 
 <template>
-<!--    <Modal  v-model:visible="doctorCardState.showModalBooking" v-if="doctorCardState.showModalBooking" >-->
-<!--          <BookingFormWithChoiceView v-bind="{doctor:doctorInfo, ...doctorCardState.bookingFormViewProps}" >-->
-<!--          </BookingFormWithChoiceView>-->
-<!--    </Modal>-->
-<!--    <Modal v-model:visible="doctorCardState.showModalServices" v-if="doctorCardState.showModalServices">-->
-<!--        <ServicesSelectListView :services="doctor.service_data"/>-->
-<!--    </Modal>-->
+    <Modal  v-model:visible="doctorCardState.showModalBooking" v-if="doctorCardState.showModalBooking" >
+          <BookingFormWithChoiceView/>
+    </Modal>
+    <Modal v-model:visible="doctorCardState.showModalServices" v-if="doctorCardState.showModalServices">
+        <ServicesSelectListView :services="doctor.service_data"/>
+    </Modal>
 
   <slot></slot>
 </template>

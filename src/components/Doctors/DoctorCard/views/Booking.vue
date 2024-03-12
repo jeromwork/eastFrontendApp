@@ -4,11 +4,14 @@ import type DoctorCardViewProps from "../../Interfaces/DoctorCardViewProps";
 import { defineProps,  ref } from "vue";
 import type { Ref } from 'vue'
 import type {DoctorInterface} from "../../../../EastclinicVueApi";
+import {inject} from "vue";
+import {DoctorCartStateSymbol} from "../../../../composables/useSymbols";
+import DoctorCardState from "../../../../modules/DoctorCardState";
 
+const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
+if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');
 
-
-const props = defineProps<{doctor:DoctorInterface}>();
-const doctor = ref(props.doctor) as Ref<DoctorInterface>;
+const doctor = doctorCardState.Doctor as DoctorInterface
 
 </script>
 

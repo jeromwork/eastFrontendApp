@@ -3,7 +3,6 @@
 import {    defineProps, reactive, ref, defineEmits, computed, onBeforeMount, onMounted, defineModel, inject} from "vue";
 
 import type {Ref} from 'vue'
-import type BookingFormViewProps from "../../../components/Booking/imterfaces/BookingFormViewProprs";
 import {DoctorCartStateSymbol} from "../../../composables/useSymbols";
 
 import { OpenBookingFormDispatch } from '../../../composables/useDispatches'
@@ -24,15 +23,11 @@ if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardStat
 const countShowSlots = ref((props.countShowSlots) ?? 5 )
 
 const slotSelect = ( slot:number )=>{
-
-    const viewProps:BookingFormViewProps = {
-        showDoctorBlock:true,
-        showClinicBlock:true,
-        showScheduleBlock:true,
-    }
     doctorCardState
         .setSelectedSlot(slot)
-        .setBookingFormBlocks(viewProps)        //settings view booking form
+        .setBookingFormBlocks({ showDoctorBlock:true,
+            showClinicBlock:true,
+            showScheduleBlock:true,})        //settings view booking form
         .toogleModalBooking(true)
     console.log(doctorCardState)
 }

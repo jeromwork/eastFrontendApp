@@ -1,21 +1,21 @@
 <script setup lang="ts">
 
 import {inject, ref} from "vue";
-import {bookingServiceSymbol} from "../../../composables/useSymbols";
+import { DoctorCartStateSymbol} from "../../../composables/useSymbols";
 import {BookingService} from "../../../EastclinicVueApi";
+import DoctorCardState from "../../../modules/DoctorCardState";
 
-const bookingService = inject(bookingServiceSymbol) as BookingService
-if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
+const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
+if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');
 
-const fio = ref('')
-
+const bookingService = doctorCardState.BookingService;
 
 
 
 </script>
 
 <template>
-    {{bookingService.Patient.fio}}
+
     <form   ref="bookingForm"
             id="booking-inputs"
             class="">
