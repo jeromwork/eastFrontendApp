@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type ServiceData from "../../EastclinicVueApi/interfaces/ServiceData";
+import type ServiceData from "../../../EastclinicVueApi/interfaces/ServiceData";
 import {ref, defineProps} from 'vue'
-import {usePriceFormat} from "../../composables/usePriceFormat";
+import {usePriceFormat} from "../../../composables/usePriceFormat";
 
 
 const props = defineProps<{service: ServiceData}>()

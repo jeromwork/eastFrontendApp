@@ -1,5 +1,6 @@
 
 import {computed, reactive, ref, toRaw} from "vue";
+import type {Ref } from "vue";
 import DoctorsApi from './api/DoctorsApi';
 import DoctorsModxApi from './api/DoctorsModxApi';
 import MultiStateManager from "../../util/MultiStateManager";//probably to use one state manage for many services - its global state
@@ -12,7 +13,8 @@ import scheduleService from '../Schedule/ScheduleService'
 import type {ClinicInterface} from "../../index";
 import type {DoctorInterface} from "../../index";
 import ScheduleService from "../Schedule/ScheduleService";
-import {ClinicsService} from "../../index";
+import { ClinicsService } from "../../index";
+import type { ContentInterface, ServiceData }  from "../../index";
 
 
 const globalMultiState = new MultiStateManager();
@@ -48,7 +50,14 @@ export default class DoctorsService{
             this.state.set('typeDoctorPage', 'list');
         }
 
-        this.state.setItems(response.doctors);
+        let doctors = this.addSpecialsString(response.doctors)
+        doctors = this.addPhoto120x120(doctors);
+        doctors = this.addFavoriteService(doctors);
+        doctors = this.addClinicsForDoctors(doctors);
+        doctors = this.addClinicWorkingSelected(doctors);
+
+
+        this.state.setItems(doctors);
 
     // for legacy alg, schedules init in doctors request
         scheduleService.setSchedules((response.schedule) ?? [] );
@@ -83,5 +92,71 @@ export default class DoctorsService{
         }).value
 
         }
+
+    protected addSpecialsString(doctors:DoctorInterface[]):DoctorInterface[]{
+        for (const d in doctors){
+            const doctorInfo = doctors[d];
+            let specs = '';
+            if (doctorInfo.main_specials) {
+                specs +=  doctorInfo.main_specials.map(special => special.name).join(' · ');
+            }
+            if (doctorInfo.specials_of_service) {
+                specs += doctorInfo.specials_of_service.map(special => special.name).join(' · ');
+            }
+            doctors[d].specials = specs;
+        }
+
+        return doctors;
+    }
+
+    protected addPhoto120x120(doctors:DoctorInterface[]):DoctorInterface[]{
+        for (const d in doctors){
+            const doctorInfo = doctors[d];
+            let photo120x120 = null;
+                if ( doctorInfo.content ){
+                    for (const i in doctorInfo.content){
+                        const img = doctorInfo.content[i]
+                        if(img.type === '120x120' && img.typeFile === 'image') photo120x120 =  img;
+                    }
+                    photo120x120 = { id : null, type:'120x120', typeFile:"image", url:doctorInfo.photos['120x120'][0] } as ContentInterface;
+                } else {
+                    photo120x120 =  { id : null, type:'120x120', typeFile:"image", url:'/images/photo_soon.png' } as ContentInterface;
+                }
+            doctors[d].photo120x120 = photo120x120  as ContentInterface;
+        }
+
+        return doctors;
+    }
+
+    protected addFavoriteService(doctors:DoctorInterface[]):DoctorInterface[]{
+        for (const d in doctors) {
+            const doctorInfo = doctors[d];
+            doctors[d].favoriteService = computed(() => {
+                let mainService = (doctorInfo.choosen_service_data?.[0]) ?? null
+                if(!mainService && doctorInfo.service_data?.[0]) mainService = doctorInfo.service_data[0];
+                return mainService as ServiceData;
+            }).value
+
+        }
+        return doctors;
+    }
+
+    protected addClinicWorkingSelected(doctors:DoctorInterface[]):DoctorInterface[]{
+        for (const d in doctors) {
+            const doctorInfo = doctors[d];
+            doctors[d].clinicWorkingSelected = ref( this.clinicWorkingDefault(doctorInfo.id) as ClinicInterface ?? null);
+        }
+        return doctors;
+    }
+    protected addClinicsForDoctors(doctors:DoctorInterface[]):DoctorInterface[]{
+        for (const d in doctors) {
+            const doctorInfo = doctors[d];
+            doctors[d].clinics = ClinicsService.getClinicsByIds(Object.values(doctorInfo.filials));
+        }
+        return doctors;
+    }
+
+
+
 
 }

@@ -1,28 +1,38 @@
 <script setup lang="ts">
-import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, provide } from "vue";
-import type { Ref } from "vue";
+import { defineProps, reactive, ref, toRef, defineEmits, computed, toRaw, provide, watch, watchEffect } from "vue";
+import type { Ref, InjectionKey } from "vue";
 
-import type DoctorInterface from "../../../EastclinicVueApi/interfaces/DoctorInterface";
-import type ContentInterface from "../../../EastclinicVueApi/interfaces/ContentInterface";
-import type ServiceData from "../../../EastclinicVueApi/interfaces/ServiceData";
-import type {ClinicInterface} from "#build/src/EastclinicVueApi";
+import type {DoctorInterface, ContentInterface, ServiceData, ServiceCartInterface, ClinicInterface} from "../../../EastclinicVueApi";
 import {ScheduleService,
     ClinicsService
 } from "../../../EastclinicVueApi";
 
-import { useEventBus } from '@vueuse/core'
 import {
-    EventClinicMapOpen,
-    EventSelectedSlot,
-    EventSelectedWorkingDay,
-    EventSetCurrentClinic
-} from '../../../composables/useEvents'
+    bookingServiceSymbol,
+    currentWorkingDayRefSymbol, DoctorCartStateSymbol,
+    DoctorInfoSymbol,
+    servicesInCartSymbol,
+    servicesSelectedSymbol,
+    servicesSymbol,
+    slotsRefSymbol,
+    workDaysReadonlyRefSymbol
+} from '../../../composables/useSymbols'
+
+
+
 import {DoctorsService} from "../../../EastclinicVueApi";
+import DoctorCardBooking from '../DoctorCard/views/Booking.vue'
+import {BookingService} from "../../../EastclinicVueApi";
+import BookingController from "../../Booking/BookingController.vue";
+import BookingFormWithChoiceView from "../../Booking/views/BookingFormWithChoiceView.vue";
+import Modal from "../../../UI/Modal.vue";
+import type BookingFormViewProps from "../../Booking/imterfaces/BookingFormViewProprs";
+import ServicesSelectListView from "../../../UI/Services/views/ServicesSelectListView.vue";
+import DoctorCardState from "../../../modules/DoctorCardState";
 
 
 //В этом компоненте обращаемся к сервису за данными по доктору
 //Возможно доктора уже загружены - в списке докторов, тогда просто отображаем данные доктора
-//кроме сервиса Doctors ничего более не знаем (СЕО? Клиники?)
 
 //данные из этого контроллера передаются в index.vue - это view.
 //в этой view ничего не обрабатываем - только отобржаем/
@@ -33,119 +43,27 @@ import {DoctorsService} from "../../../EastclinicVueApi";
  * Данные по рейтингу приходят с данными доктора*/
 
 
-interface DoctorCardViewProps {
-    doctor: DoctorInterface;
-}
+
+const props = defineProps<{    doctor: DoctorInterface }>();
 
 
-const props = defineProps<DoctorCardViewProps>();
-
-const doctorInfo = toRef(props, 'doctor');
-const specials = computed(() => {
-    let specs = '';
-    if (doctorInfo.value?.main_specials) {
-        specs +=  doctorInfo.value.main_specials.map(special => special.name).join(' · ');
-    }
-    if (doctorInfo.value?.specials_of_service) {
-        specs += doctorInfo.value.specials_of_service.map(special => special.name).join(' · ');
-    }
-    return specs;
-});
-doctorInfo.value.specials = specials.value;
+//handle services of doctor
 
 
-const photo120x120 = computed(() => {
-    if ( doctorInfo.value?.content ){
-        for (const i in doctorInfo.value.content){
-            const img = doctorInfo.value.content[i]
-            if(img.type === '120x120' && img.typeFile === 'image') return img;
-        }
-        return doctorInfo.value.photos['120x120'][0] as ContentInterface
-    } else {
-        return { id : null, type:'120x120', typeFile:"image", url:'/images/photo_soon.png' } as ContentInterface;
-    }
-});
-doctorInfo.value.photo120x120 = photo120x120.value;
-
-//add favorite service
-doctorInfo.value.favoriteService = computed(() => {
-    let mainService = (doctorInfo.value?.choosen_service_data?.[0]) ?? null
-    if(!mainService && doctorInfo.value?.service_data?.[0]) mainService = doctorInfo.value.service_data[0];
-    return mainService as ServiceData;
-}).value;
-
-
-doctorInfo.value.clinics = computed(() => ClinicsService.getClinicsByIds(Object.values(doctorInfo.value.filials))).value;
-provide('clinics', doctorInfo.value.clinics)
-
-
-
-
-
-
-const clinicWorkingSelected: Ref<ClinicInterface | null> = ref( (new DoctorsService()).clinicWorkingDefault(doctorInfo.value.id) as ClinicInterface ?? null);
-
-//add work days
-const workDays = computed( () => ScheduleService.workDays(doctorInfo.value.id, (clinicWorkingSelected.value) ? clinicWorkingSelected.value?.id : null));
-
-const currentWorkingDay: Ref<number | null> = ref(    ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id) as number ?? null);
-
-// provide('clinicWorkingSelected', clinicWorkingSelected)
-
-
-
-const slots = computed(() => {
-    if (!currentWorkingDay.value || !clinicWorkingSelected?.value?.id) return null;
-    const slotsDoctor = ScheduleService.getSlots(clinicWorkingSelected?.value?.id as number, doctorInfo.value.id, currentWorkingDay.value as number);
-    return slotsDoctor ?? null;
-});
-
-
-
-const selectedSlot:Ref<number|null> = ref(null);
-
-provide('slots', slots);
-
-
-
-const servicesSelected = ref([])
-
-
-
-const timeAppointment:Ref<number> = ref(0)
-
-onMounted(()=>{
-})
-
-//handle events from child
-useEventBus(EventClinicMapOpen).on((e) => {
-
-    console.log(e)
-})
-useEventBus(EventSetCurrentClinic).on((clinic) => {
-
-    clinicWorkingSelected.value = clinic;
-    currentWorkingDay.value = ScheduleService.nearestWorkDayForDoctor(doctorInfo.value.id) as number ?? null
-})
-useEventBus(EventSelectedWorkingDay).on((day) => {
-    currentWorkingDay.value = day;
-})
-
-useEventBus(EventSelectedSlot).on((slot) => {
-    selectedSlot.value = slot;
-    //todo booking!!!!
-    alert('BOOKING!!')
-})
-
-
+const doctorCardState =  new DoctorCardState().withDoctor(props.doctor).withBookingService(new BookingService())
+provide(DoctorCartStateSymbol,doctorCardState)
 
 </script>
 
 <template>
-  <slot
-          v-bind="{doctor:doctorInfo, servicesSelected,  workDays, clinicWorkingSelected, slots, currentWorkingDay, selectedSlot}"
+    <Modal  v-model:visible="doctorCardState.showModalBooking" v-if="doctorCardState.showModalBooking" >
+          <BookingFormWithChoiceView/>
+    </Modal>
+    <Modal v-model:visible="doctorCardState.showModalServices" v-if="doctorCardState.showModalServices">
+        <ServicesSelectListView :services="doctor.service_data"/>
+    </Modal>
 
-  ></slot>
+  <slot></slot>
 </template>
 
 

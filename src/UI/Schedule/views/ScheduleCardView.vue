@@ -6,30 +6,6 @@ import CalendarCarouselView from "../Calendar/CalendarCarouselView.vue";
 import SlotsListView from "../Slots/SlotsListView.vue";
 
 
-interface ScheduleCardViewProps {
-    workDays: number[] | null;
-
-    currentWorkingDay: number|null;
-
-    slots: number[]|null;
-    selectedSlot: number|null;
-
-}
-
-
-
-const props = defineProps<ScheduleCardViewProps>();
-
-const currentWorkingDayModel = defineModel('currentDayModel',{ type: Number })
-const currentSlotModel = defineModel('currentSlotModel',{ type: Number })
-
-const emit = defineEmits(['slotSelected'])
-
-onMounted(async ()=>{
-});
-
-// const schedules = computed(()=> ScheduleService.schedules)
-
 
 </script>
 
@@ -39,11 +15,9 @@ onMounted(async ()=>{
 
         <div class="doctor-card-2__slots">
 
-            <CalendarCarouselView :workDays :currentWorkingDay >
+            <CalendarCarouselView />
 
-            </CalendarCarouselView>
-
-            <SlotsListView v-bind="{slots, selectedSlot}"></SlotsListView>
+            <SlotsListView />
         </div>
     </div>
 

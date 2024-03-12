@@ -1,50 +1,49 @@
 <script setup lang="ts">
 
-import { defineProps, defineModel, ref } from 'vue'
+import { defineProps, defineModel, ref, inject } from 'vue'
 import ClinicCardSelectedView from './ClinicCardSelectedView.vue'
 import type { ClinicInterface } from '../../../EastclinicVueApi'
 import type {Ref} from "/vue";
 import { useEventBus } from '@vueuse/core'
-import { EventClinicMapOpen, EventSetCurrentClinic, } from '../../../composables/useEvents'
+import { EventClinicMapOpen, } from '../../../composables/useEvents'
 import SelectList from '../../SelectList'
 import ClinicCardInSelectListView from './ClinicCardInSelectListView'
 import Modal from "../../../UI/Modal.vue";
+import {
+    bookingServiceSymbol, DoctorCartStateSymbol, DoctorInfoSymbol
+} from "../../../composables/useSymbols";
+import {BookingService, DoctorsService} from "../../../EastclinicVueApi";
+import DoctorCardState from "../../../modules/DoctorCardState";
 
-// import ServiceData from "#build/src/EastclinicVueApi/interfaces/ServiceData";
 
 
+const doctorCardState = inject(DoctorCartStateSymbol)  as DoctorCardState;
+if(!doctorCardState) throw new Error('not have doctorCardState by DoctorCartStateSymbol');
 
-
-
-const props = defineProps<{
-    clinics : ClinicInterface[] | null,
-    currentClinic : ClinicInterface | null,
-}>();
 
 const visibleClinicsList = ref(false)
 
-// const clinics = inject('clinics') as ClinicInterface[];
-// const currentClinic = inject('clinicWorkingSelected') as ClinicInterface;
+const currentClinic = computed(() =>doctorCardState.selectedClinic as ClinicInterface)
+
+const doctor = doctorCardState.Doctor;
+const clinics = computed(() => doctor?.clinics);
 
 
-const countClinics = computed(() => props.clinics?.length);
-// const currentClinicPrepared = computed(() => {
-//     if(!props.currentClinic) return null;
-//     return (isRef(props.currentClinic)) ?props.currentClinic.value : props.currentClinic
-// })
+const countClinics = computed(() => clinics?.value?.length);
 
 
-const currentClinic = computed(() =>  props.currentClinic )
+//listener of select clinic
+
 const selectedClinic = (clinic:ClinicInterface) => {
     visibleClinicsList.value = false;
-    if(clinic.id === currentClinic?.value?.id) return;
-    useEventBus(EventSetCurrentClinic).emit(clinic)
-
+    if(clinic.id === currentClinic.value?.id) return;
+    doctorCardState.setSelectedClinic(clinic);
 }
 
 </script>
 
 <template>
+
     <div>
         <div class="slots__clinic-changer " @click="visibleClinicsList = !visibleClinicsList">
             <div  v-if="countClinics > 0 && currentClinic">

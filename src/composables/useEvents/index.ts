@@ -1,27 +1,19 @@
-// useEventBus.js
+import type { ClinicInterface } from '../../EastclinicVueApi'
 
-import { useEventBus } from '@vueuse/core'
 
+import type { EventBusKey } from '@vueuse/core'
+
+const eventSelectClinic: EventBusKey<ClinicInterface> = Symbol('event-select-clinic')
 
 import EventClinicMapOpen from "./events/EventClinicMapOpen";
-import EventSetCurrentClinic from "./events/EventSetCurrentClinic";
-import EventSelectedWorkingDay from "./events/EventSelectedWorkingDay";
 import EventSelectedSlot from "./events/EventSelectedSlot";
-import type {EventBusKey} from "@vueuse/core";
-import exp from "constants";
-
-// import ClinicsService from './modules/Clinics/ClinicsService';
-
-// export function eventBus<T> (name:EventBusKey<T>|string) {
-//     console.log(name)
-//     return useEventBus<T>(name);
-// }
-export default useEventBus;
+import EventServiceAddToCart from "./events/EventServiceAddToCart";
+import EventOpenBookingForm from "./events/EventOpenBookingForm";
 
 export {
     EventClinicMapOpen,
-    EventSetCurrentClinic,
-    EventSelectedWorkingDay,
     EventSelectedSlot,
+    EventServiceAddToCart,
+    EventOpenBookingForm,
 }
 

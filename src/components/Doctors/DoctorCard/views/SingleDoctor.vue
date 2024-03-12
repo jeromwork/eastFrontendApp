@@ -2,9 +2,10 @@
 //в этом компоненте только прием пропсов, проверка, и их отображение
 //в том числе во вложенных компонентах
 
-import { defineProps, withDefaults, reactive, ref, toRef, defineEmits, computed, toRaw, defineOptions, defineModel } from "vue";
+import { defineProps, withDefaults, reactive, ref, toRef, defineEmits, computed, toRaw, defineOptions, defineModel, inject } from "vue";
 import type { Ref } from 'vue'
 import type {DoctorInterface} from "../../../../EastclinicVueApi";
+import type DoctorCardViewProps from "../../Interfaces/DoctorCardViewProps";
 
 import BackLink from "../../../../UI/BackLink/BackLink.vue";
 import BackLinkMobile from "../../../../UI/BackLink/BackLinkMobile.vue";
@@ -14,19 +15,19 @@ import Reviews from '../../../Reviews/Controller.vue'
 import ReviewCardController from '../../../Reviews/ReviewCard/Controller.vue'
 import ReviewCardXL from '../../../Reviews/ReviewCard/views/XL.vue'
 import AwardCardWithIcon from "../../../../UI/Awards/AwardCardWithIcon.vue";
-import Rating from '../../../../UI/Rating/Controller.vue'
-import RatingDetailView from '../../../../UI/Rating/RatingDetailView.vue'
-import type RatingViewProps from "../../../../UI/Rating/RatingViewProps";
-import Gallery from "../../Gallery.vue";
+// import Rating from '../../../../UI/Rating/Controller.vue'
+// import RatingDetailView from '../../../../UI/Rating/RatingDetailView.vue'
+// import type RatingViewProps from "../../../../UI/Rating/RatingViewProps";
+// import Gallery from "../../Gallery.vue";
 import FixedBlock from "../../../../UI/FixedBlock.vue";
-import FavoriteServiceCard from '../../../../UI/ServiceCard/FavoriteView.vue'
+import FavoriteServiceCard from '../../../../UI/Services/views/FavoriteView.vue'
 import type ServiceData from "../../../../EastclinicVueApi/interfaces/ServiceData";
-import Modal from '../../../../UI/Modal.vue'
-import ServicesDialog from '../../ServicesDialog.vue'
 import ScheduleCardView from '../../../../UI/Schedule/views/ScheduleCardView.vue'
-import ClinicCardSelectedView from "../../../../UI/Clinics/views/ClinicCardSelectedView.vue";
 import ClinicsSelectView from "../../../../UI/Clinics/views/ClinicsSelectView.vue";
-import type {ClinicInterface} from "../../../../EastclinicVueApi";
+
+import {bookingServiceSymbol, DoctorCartStateSymbol} from "../../../../composables/useSymbols";
+import {BookingService, DoctorsService} from '../../../../EastclinicVueApi'
+import DoctorCardState from "../../../../modules/DoctorCardState";
 
 //календарь это не зависимый от доктора компонент
 //он может принимать массив или объект disables days, что бы дни были неактивны
@@ -48,33 +49,15 @@ import type {ClinicInterface} from "../../../../EastclinicVueApi";
 
 
 
+const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
+if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');
 
+const doctor = doctorCardState.Doctor as DoctorInterface;
 
-
-interface DoctorCardViewProps {
-    doctor?: DoctorInterface | Ref<DoctorInterface>
-    //calendar
-    workDays: number[]|Ref<number[]>|null
-    currentWorkingDay: number | null,
-    clinicWorkingSelected: ClinicInterface | null
-//slots
-    slots: number[]|null,
-    selectedSlot: number | null,
-
-}
-
-const props = defineProps<DoctorCardViewProps>();
-const servicesSelected =  defineModel('servicesSelected' )
-
-
-
-const doctor = ref(props.doctor) as Ref<DoctorInterface>;
 const mobileScreen = ref(false)
-const showModalServices = ref(false);
 
-const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Number })
-// const currentSlotModel = defineModel('currentSlotModel',{ type: Number })
-
+const currentClinic = doctorCardState.selectedClinic
+const clinics = doctor.clinics;
 
 </script>
 
@@ -90,14 +73,14 @@ const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Numb
                 <div class="doctor__top__info__desc desc">
                     <h1 class="doctor__top__info__desc_fio" itemprop="name">{{doctor.fullname}}</h1>
                     <div class="doctor__top__info__desc_specials" itemprop="medicalSpecialty">{{doctor.specials}}</div>
-                    <Rating v-if="doctor.rating"
-                            :reviews-count="doctor.comments"
-                            :level="doctor.rating"
-                            :uri="'/'+doctor.uri"
-                            #default="ratingInfo"
-                    >
-                        <RatingDetailView v-bind="ratingInfo as RatingViewProps"></RatingDetailView>
-                    </Rating>
+                    <!--                    <Rating v-if="doctor.rating"-->
+                    <!--                            :reviews-count="doctor.comments"-->
+                    <!--                            :level="doctor.rating"-->
+                    <!--                            :uri="'/'+doctor.uri"-->
+                    <!--                            #default="ratingInfo"-->
+                    <!--                    >-->
+                    <!--                        <RatingDetailView v-bind="ratingInfo as RatingViewProps"></RatingDetailView>-->
+                    <!--                    </Rating>-->
                 </div>
 
                 <div
@@ -161,17 +144,12 @@ const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Numb
                         :service="doctor.favoriteService as ServiceData"
                     />
                     <span
-                        @click="showModalServices=true"
+                        @click="doctorCardState.toogleModalServices(true)"
                         class="font-12 main-color pointer text-semibold">Другие услуги
                     </span>
+                    <ClinicsSelectView v-if="clinics && currentClinic"/>
 
-                    <ServicesDialog v-model:visible="showModalServices" v-model:servicesSelected="servicesSelected" :services="doctor.service_data" />
-
-                    <ClinicsSelectView v-if="doctor.clinics && clinicWorkingSelected" :clinics="doctor.clinics"  :current-clinic="clinicWorkingSelected">
-
-                    </ClinicsSelectView>
-
-                    <ScheduleCardView v-bind="{workDays, currentWorkingDay, slots, selectedSlot}"/>
+                    <ScheduleCardView />
 
                 </div>
             </FixedBlock>

@@ -22,7 +22,7 @@ const buildRequest = () => {
     return (new DoctorsRequest).forCurrentUrl(currentRoute)
 
 }
-await doctorsService.getItemsFromServer( buildRequest().forPage(1).perPage(50));
+await doctorsService.getItemsFromServer( buildRequest().forPage(1).perPage(10));
 
 onMounted(async ()=>{
 
@@ -31,6 +31,11 @@ onMounted(async ()=>{
 });
 
 const doctors = computed(()=> doctorsService.items())
+
+
+
+
+
 const typeDoctorPage = doctorsService.typeDoctorPage()
 // const doctors = ref(doctorsList)
 const count = ref(0);

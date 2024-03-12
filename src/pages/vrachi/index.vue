@@ -3,8 +3,8 @@
 <script setup>
 import Doctors from "../../components/Doctors/Controller";
 import DoctorCardController from '../../components/Doctors/DoctorCard/Controller'
-import DoctorCardSingleDoctor from '../../components/Doctors/DoctorCard/views/SingleDoctor.vue'
-import DoctorCardXL from '../../components/Doctors/DoctorCard/views/XL.vue'
+import SingleDoctor from '../../components/Doctors/DoctorCard/views/SingleDoctor.vue'
+// import DoctorCardXL from '../../components/Doctors/DoctorCard/views/XL.vue'
 import {PageInfoService} from "~/EastclinicVueApi";
 
 const pageInfo = PageInfoService.getPageInfo
@@ -31,14 +31,15 @@ onMounted(() => {
 
         <NuxtLayout name="doctors">
             <Doctors>
-                <template #doctorsList="doctorInfo">
-                    <DoctorCardController v-bind="doctorInfo" #default="doctorInfoPrepared" >
-                        <DoctorCardXL v-bind="doctorInfoPrepared"/>
+                <template #doctorsList="{doctor}">
+
+                    <DoctorCardController v-bind="{doctor}" #default="doctorInfoPrepared" >
+                        <SingleDoctor v-bind="doctorInfoPrepared"/>
                     </DoctorCardController>
                 </template>
-                <template #singleDoctor="doctorInfo">
-                    <DoctorCardController v-bind="doctorInfo" #default="doctorInfoPrepared">
-                        <DoctorCardSingleDoctor v-bind="doctorInfoPrepared"/>
+                <template #singleDoctor="{doctor}">
+                    <DoctorCardController v-bind="{doctor}" #default="doctorInfoPrepared">
+                        <SingleDoctor v-bind="doctorInfoPrepared"/>
                     </DoctorCardController>
                 </template>
 

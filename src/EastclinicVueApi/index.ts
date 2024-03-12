@@ -18,6 +18,7 @@ import ScheduleRequest from "./modules/Schedule/api/ScheduleRequest";
 import ClinicsService from './modules/Clinics/ClinicsService';
 import ClinicsRequest from './modules/Clinics/api/ClinicsRequest';
 
+import BookingService from './modules/Booking/BookingService'
 
 
 
@@ -28,6 +29,8 @@ import type DoctorInterface from "./interfaces/DoctorInterface";
 import type ContentInterface from "./interfaces/ContentInterface";
 import type ScheduleInterface from "./interfaces/ScheduleInterface";
 import type ClinicInterface from "./interfaces/ClinicInterface";
+import type ServiceData from "./interfaces/ServiceData";
+import type ServiceCartInterface from "./interfaces/ServiceCartInterface";
 
 
 
@@ -45,7 +48,9 @@ export {
     ClinicsRequest,
 
     ScheduleService,
-    ScheduleRequest
+    ScheduleRequest,
+
+    BookingService,
 
 };
 
@@ -60,4 +65,7 @@ export type {
 
     ScheduleInterface,
     ClinicInterface,
+
+    ServiceData,
+    ServiceCartInterface,
 }

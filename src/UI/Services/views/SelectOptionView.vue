@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ServiceData from "../../EastclinicVueApi/interfaces/ServiceData";
+import type ServiceData from "../../../EastclinicVueApi/interfaces/ServiceData";
 import {ref, defineProps} from 'vue'
 
 
@@ -11,6 +11,7 @@ onMounted(()=>{
 
 <template>
     <div class="doctor-info__services list" :class="(service.favorite) ? 'chosen' : ''">
+        <slot></slot>
         <div class="doctor-info__services_title serv-title">{{service.name}}
             <span class="text-secondary text-no-wrap">{{ service.option }}</span>
             <div
