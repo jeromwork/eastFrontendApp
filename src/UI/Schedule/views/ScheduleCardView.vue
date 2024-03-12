@@ -5,6 +5,8 @@ import type {Ref} from 'vue'
 import CalendarCarouselView from "../Calendar/CalendarCarouselView.vue";
 import SlotsListView from "../Slots/SlotsListView.vue";
 
+
+
 </script>
 
 <template>

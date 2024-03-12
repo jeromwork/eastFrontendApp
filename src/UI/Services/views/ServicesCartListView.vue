@@ -3,13 +3,13 @@ import {ref, defineProps, defineEmits, defineModel, inject} from 'vue';
 import type { ServiceData, ServiceCartInterface } from "../../../EastclinicVueApi";
 import {bookingServiceSymbol, DoctorCartStateSymbol, servicesInCartSymbol} from "../../../composables/useSymbols";
 import {BookingService} from "../../../EastclinicVueApi";
-import DoctorCardState from "../../../components/Doctors/DoctorCardState";
+import DoctorCardState from "../../../modules/DoctorCardState";
 
-const bookingService = inject(bookingServiceSymbol) as BookingService
-if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
 
 const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
 if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');
+
+const bookingService = doctorCardState.BookingService
 
 
 </script>

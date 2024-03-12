@@ -27,7 +27,7 @@ import ClinicsSelectView from "../../../../UI/Clinics/views/ClinicsSelectView.vu
 
 import {bookingServiceSymbol, DoctorCartStateSymbol} from "../../../../composables/useSymbols";
 import {BookingService, DoctorsService} from '../../../../EastclinicVueApi'
-import DoctorCardState from "../../DoctorCardState";
+import DoctorCardState from "../../../../modules/DoctorCardState";
 
 //календарь это не зависимый от доктора компонент
 //он может принимать массив или объект disables days, что бы дни были неактивны
@@ -48,23 +48,16 @@ import DoctorCardState from "../../DoctorCardState";
 
 
 
-const props = defineProps<DoctorCardViewProps>();
-
-
-
-
-const bookingService = inject(bookingServiceSymbol) as BookingService
-if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
 
 const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
 if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');
 
-const doctor = doctorCardState.doctor as Ref<DoctorInterface>;
+const doctor = doctorCardState.Doctor as DoctorInterface;
 
 const mobileScreen = ref(false)
 
 const currentClinic = doctorCardState.selectedClinic
-const clinics = doctor.value.clinics;
+const clinics = doctor.clinics;
 
 </script>
 

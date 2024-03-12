@@ -28,7 +28,7 @@ import BookingFormWithChoiceView from "../../Booking/views/BookingFormWithChoice
 import Modal from "../../../UI/Modal.vue";
 import type BookingFormViewProps from "../../Booking/imterfaces/BookingFormViewProprs";
 import ServicesSelectListView from "../../../UI/Services/views/ServicesSelectListView.vue";
-import DoctorCardState from "../DoctorCardState";
+import DoctorCardState from "../../../modules/DoctorCardState";
 
 
 //В этом компоненте обращаемся к сервису за данными по доктору
@@ -46,19 +46,12 @@ import DoctorCardState from "../DoctorCardState";
 
 const props = defineProps<{    doctor: DoctorInterface }>();
 
-const doctorCardState =  new DoctorCardState(props.doctor)
-provide(DoctorCartStateSymbol,doctorCardState)
-
-const doctorInfo = toRef(props, 'doctor');
-
-
 
 //handle services of doctor
-provide(bookingServiceSymbol, new BookingService());
-
-provide(DoctorInfoSymbol, doctorInfo)
 
 
+const doctorCardState =  new DoctorCardState().withDoctor(props.doctor).withBookingService(new BookingService())
+provide(DoctorCartStateSymbol,doctorCardState)
 
 </script>
 
@@ -71,10 +64,7 @@ provide(DoctorInfoSymbol, doctorInfo)
 <!--        <ServicesSelectListView :services="doctor.service_data"/>-->
 <!--    </Modal>-->
 
-  <slot
-          v-bind="{ doctor:doctorInfo }"
-
-  ></slot>
+  <slot></slot>
 </template>
 
 

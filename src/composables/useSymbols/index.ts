@@ -2,7 +2,7 @@
 import type {InjectionKey, Ref} from "vue";
 import type {ServiceCartInterface, ServiceData, ClinicInterface, DoctorInterface } from "../../EastclinicVueApi";
 import { BookingService } from "../../EastclinicVueApi";
-import type DoctorCardState from "../../components/Doctors/DoctorCardState";
+import type DoctorCardState from "#build/src/modules/DoctorCardState";
 
 export const bookingServiceSymbol:InjectionKey<BookingService> = Symbol.for('booking-service')
 export const DoctorInfoSymbol:InjectionKey<Ref<DoctorInterface>> = Symbol.for('DoctorInfo')

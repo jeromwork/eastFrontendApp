@@ -14,18 +14,20 @@ import {
 } from "../../../composables/useSymbols";
 import {BookingService, DoctorsService} from "../../../EastclinicVueApi";
 
-const bookingService = inject(bookingServiceSymbol) as BookingService
-if(!bookingService) throw new Error('not have BookingService by bookingServiceSymbol');
+
 
 const doctorCardState = inject(DoctorCartStateSymbol);
 if(!doctorCardState) throw new Error('not have doctorCardState by DoctorCartStateSymbol');
+
+const bookingService = doctorCardState.BookingService
+
 
 const visibleClinicsList = ref(false)
 
 const currentClinic = computed(() =>doctorCardState.selectedClinic as ClinicInterface)
 
-const doctor = doctorCardState.doctor;
-const clinics = computed(() => doctor?.value?.clinics);
+const doctor = doctorCardState.Doctor;
+const clinics = computed(() => doctor?.clinics);
 
 
 const countClinics = computed(() => clinics?.value?.length);

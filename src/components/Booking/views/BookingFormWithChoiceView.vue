@@ -15,7 +15,7 @@ import {bookingServiceSymbol, DoctorCartStateSymbol} from "../../../composables/
 import ServicesCartListView from "../../../UI/Services/views/ServicesCartListView.vue";
 import type BookingFormViewProps from '../imterfaces/BookingFormViewProprs'
 import PatientFormView from "./PatientFormView.vue";
-import DoctorCardState from "../../Doctors/DoctorCardState";
+import DoctorCardState from "../../../modules/DoctorCardState";
 
 interface BookingFormProps extends DoctorCardViewProps, BookingFormViewProps {}
 
