@@ -14,6 +14,7 @@ interface DoctorCardInterface {
     showModalBooking:boolean;
     showModalServices:boolean;
     showLeaveMessage:boolean;
+    showBookingScheduleBlock:boolean;
     bookingFormViewProps:BookingFormViewProps | null;
 }
 
@@ -34,7 +35,10 @@ export default class DoctorCardState {
         showModalBooking:false,
         showModalServices:false,
         showLeaveMessage:false,
+        showBookingScheduleBlock:false,
         bookingFormViewProps:null,
+
+
     });
     protected bookingService:BookingService | null = null;  // Adjust the type here
     protected doctor: DoctorInterface | null = null;
@@ -75,6 +79,7 @@ export default class DoctorCardState {
 
     public toogleModalBooking( show:boolean ):this{
         this.data.value.showModalBooking = show;
+        if(show) this.data.value.showBookingScheduleBlock = false;
         return this;
     }
 
@@ -86,6 +91,11 @@ export default class DoctorCardState {
     public toggleBookingLeaveMessage( show:boolean ):this{
         this.data.value.showLeaveMessage = show;
         return this;
+    }
+
+    public toogleBookingScheduleBlock(show:boolean):this{
+        this.data.value.showBookingScheduleBlock = show;
+        return this
     }
 
     public setBookingFormBlocks( viewProps:BookingFormViewProps ):this{
@@ -144,6 +154,10 @@ export default class DoctorCardState {
     public set showModalBooking( show){        this.data.value.showModalBooking = show as boolean;    }
     public get showModalServices():boolean | null{        return this.data.value.showModalServices;    }
     public set showModalServices( show){        this.data.value.showModalServices = show as boolean;    }
+    public get showBookingScheduleBlock():boolean | null{        return this.data.value.showBookingScheduleBlock;    }
+    public set showBookingScheduleBlock( show){        this.data.value.showBookingScheduleBlock = show as boolean;    }
+
+
     public get showLeaveMessage():boolean | null{        return this.data.value.showLeaveMessage;    }
     public get bookingFormViewProps():BookingFormViewProps | null{        return this.data.value.bookingFormViewProps;    }
 

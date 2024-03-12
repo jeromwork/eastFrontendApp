@@ -25,7 +25,8 @@ const countShowSlots = ref((props.countShowSlots) ?? 5 )
 const slotSelect = ( slot:number )=>{
     doctorCardState
         .setSelectedSlot(slot)
-        .setBookingFormBlocks({ showDoctorBlock:true,
+        .setBookingFormBlocks({
+            showDoctorBlock:true,
             showClinicBlock:true,
             showScheduleBlock:true,})        //settings view booking form
         .toogleModalBooking(true)
