@@ -13,13 +13,12 @@ import {
     bookingServiceSymbol, DoctorCartStateSymbol, DoctorInfoSymbol
 } from "../../../composables/useSymbols";
 import {BookingService, DoctorsService} from "../../../EastclinicVueApi";
+import DoctorCardState from "../../../modules/DoctorCardState";
 
 
 
-const doctorCardState = inject(DoctorCartStateSymbol);
+const doctorCardState = inject(DoctorCartStateSymbol)  as DoctorCardState;
 if(!doctorCardState) throw new Error('not have doctorCardState by DoctorCartStateSymbol');
-
-const bookingService = doctorCardState.BookingService
 
 
 const visibleClinicsList = ref(false)
@@ -38,7 +37,7 @@ const countClinics = computed(() => clinics?.value?.length);
 const selectedClinic = (clinic:ClinicInterface) => {
     visibleClinicsList.value = false;
     if(clinic.id === currentClinic.value?.id) return;
-    bookingService.setClinic(clinic);
+    doctorCardState.setSelectedClinic(clinic);
 }
 
 </script>

@@ -50,8 +50,8 @@ class ScheduleService{
         return schedules.map((shd:ScheduleInterface) => shd.date );
     }
 
-    public nearestWorkDayForDoctor(doctorId:number):number|null{
-        return (this.workDays(doctorId)?.[0]) ?? null;
+    public nearestWorkDay(doctorId:number, clinicId:number|null = null):number|null{
+        return (this.workDays(doctorId, clinicId)?.[0]) ?? null;
     }
     public workDayInfoForDoctorDayClinic( clinicId:number, doctorId:number, day:number ):ScheduleInterface{
 

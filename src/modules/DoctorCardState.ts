@@ -63,8 +63,8 @@ export default class DoctorCardState {
         const selectedClinicInit = (new DoctorsService()).clinicWorkingDefault(doctor.id) as ClinicInterface ?? null;
         this.data.value.selectedClinic = selectedClinicInit;
 
-        this.data.value.workDays = computed( () => ScheduleService.workDays(doctor.id, ( selectedClinicInit ) ? selectedClinicInit.id : null)).value
-        const workingDay = ScheduleService.nearestWorkDayForDoctor(doctor.id) as number ?? null
+
+        const workingDay = ScheduleService.nearestWorkDay(doctor.id) as number ?? null
         this.data.value.workingDay = workingDay;
 
         this.data.value.slots = computed(() => {
@@ -99,11 +99,17 @@ export default class DoctorCardState {
 
     public setSelectedClinic( clinic:ClinicInterface):this{
         this.data.value.selectedClinic = clinic;
+        //recalc working day
+        this.setWorkingDay(ScheduleService.nearestWorkDay(this.Doctor.id, clinic.id) as number ?? null)
         return this;
     }
 
     public setWorkingDay(day:number|null):this{
         this.data.value.workingDay = day;
+        //recalc slots for day
+        if (!day || !this.selectedClinic?.id) this.data.value.slots =  null;
+        const slotsDoctor = ScheduleService.getSlots(this.selectedClinic?.id as number, this.Doctor.id, day as number);
+        this.data.value.slots = slotsDoctor ?? null;
         return this;
     }
 
@@ -125,11 +131,14 @@ export default class DoctorCardState {
     }
 
 
-    public get workDays():number[] | null{        return this.data.value.workDays;    }
+    public get workDays():number[] | null{
+        return computed( () => ScheduleService.workDays(this.Doctor.id, ( this.selectedClinic ) ? this.selectedClinic.id : null)).value
+    }
     public get workingDay():number | null{        return this.data.value.workingDay;    }
     public get slots():Readonly<number[]> | null{        return (this.data.value.slots) ? readonly(this.data.value.slots) : null;    }
 
-    public get selectedClinic():ClinicInterface | null{        return this.data.value.selectedClinic;    }
+    public get selectedClinic():ClinicInterface | null{
+        return this.data.value.selectedClinic;    }
 
     public get showModalBooking():boolean | null{        return this.data.value.showModalBooking;    }
     public get showModalServices():boolean | null{        return this.data.value.showModalServices;    }
