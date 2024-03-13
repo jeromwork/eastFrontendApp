@@ -9,52 +9,43 @@ import { EventClinicMapOpen, } from '../../../composables/useEvents'
 import SelectList from '../../SelectList'
 import ClinicCardInSelectListView from './ClinicCardInSelectListView'
 import Modal from "../../../UI/Modal.vue";
-import {
-    bookingServiceSymbol, DoctorCartStateSymbol, DoctorInfoSymbol
-} from "../../../composables/useSymbols";
-import {BookingService, DoctorsService} from "../../../EastclinicVueApi";
-import DoctorCardState from "../../../state/DoctorCardState";
 
 
 
-const doctorCardState = inject(DoctorCartStateSymbol)  as DoctorCardState;
-if(!doctorCardState) throw new Error('not have doctorCardState by DoctorCartStateSymbol');
+const props = defineProps<{clinics: Readonly<ClinicInterface[]|null>}>()
+
+const currentClinic = defineModel<ClinicInterface>() as Ref<ClinicInterface>;
+
+const emit = defineEmits(['update:modelValue'])
 
 
 const visibleClinicsList = ref(false)
 
-const currentClinic = computed(() =>doctorCardState.selectedClinic as ClinicInterface)
-
-const doctor = doctorCardState.Doctor;
-const clinics = computed(() => doctor?.clinics);
-
-
-const countClinics = computed(() => clinics?.value?.length);
+const countClinics = computed(() => props.clinics?.length);
 
 
 //listener of select clinic
 
-const selectedClinic = (clinic:ClinicInterface) => {
+const selectClinic = (clinic:ClinicInterface) => {
     visibleClinicsList.value = false;
-    if(clinic.id === currentClinic.value?.id) return;
-    doctorCardState.setSelectedClinic(clinic);
+    if(clinic.id === currentClinic?.value?.id) return;
+    emit('update:modelValue', clinic)
 }
 
 </script>
 
 <template>
-
     <div>
-        <div class="slots__clinic-changer " @click="visibleClinicsList = !visibleClinicsList">
-            <div  v-if="countClinics > 0 && currentClinic">
-                <div class="slots__clinic-changer_dropdown-input dropdown-wrapper">
+        <div class="slots__clinic-changer " v-if="currentClinic">
+            <div  v-if="countClinics > 1"  @click="visibleClinicsList = !visibleClinicsList">
+                <div class="slots__clinic-changer_dropdown-input dropdown-wrapper ">
                     <div class="slots__clinic-changer_metro font-14">
                         <ClinicCardSelectedView :clinic="currentClinic as ClinicInterface"/>
                     </div>
                     <span class="icons down justify-self-end"></span>
                 </div>
             </div>
-            <div v-else-if="countClinics === 0 && currentClinic">
+            <div v-else-if="countClinics === 1">
                 <div class="slots__clinic-changer_metro-noclick">
                     <ClinicCardSelectedView :clinic="currentClinic as ClinicInterface"/>
                 </div>
@@ -62,7 +53,7 @@ const selectedClinic = (clinic:ClinicInterface) => {
             </div>
         </div>
 
-
+<!--<span> todo add no clinic block </span>-->
 
 
         <div v-if="currentClinic"
@@ -91,7 +82,7 @@ const selectedClinic = (clinic:ClinicInterface) => {
         <Modal v-model:visible="visibleClinicsList">
             <template #default>
                 <SelectList :options="clinics as any[]" #default="{option, selected}" optionValue="id" v-model="currentClinic" >
-                    <ClinicCardInSelectListView v-bind="{clinic:option, selected}" @click="selectedClinic(option)"></ClinicCardInSelectListView>
+                    <ClinicCardInSelectListView v-bind="{clinic:option, selected}" @click="selectClinic(option)"></ClinicCardInSelectListView>
                 </SelectList>
             </template>
         </Modal>

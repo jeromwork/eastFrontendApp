@@ -138,7 +138,13 @@ const doctor = doctorCardState.Doctor as DoctorInterface
                                     <span v-else>в клинике:</span>
 
                                 </div>
-                                <ClinicsSelectView v-if="doctor.clinics && doctorCardState.selectedClinic"/>
+                                <ClinicsSelectView
+                                    v-if="doctor.clinics && doctorCardState.selectedClinic"
+                                    :clinics="doctor.clinics"
+                                    :modelValue = "doctorCardState.selectedClinic"
+                                    @update:modelValue="doctorCardState.setSelectedClinic($event);"
+
+                                />
                                 <div class="slots__header text-secondary">
                                     Записаться онлайн
                                 </div>
