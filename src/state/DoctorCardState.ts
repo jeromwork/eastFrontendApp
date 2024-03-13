@@ -161,5 +161,31 @@ export default class DoctorCardState {
     public get bookingFormViewProps():BookingFormViewProps | null{        return this.data.value.bookingFormViewProps;    }
 
 
+
+
+    public async book(){
+        //todo #captha_enable
+        //todo check fill form
+
+        //if error form, scroll here
+        //scroll('booking-form')
+
+        //check patient
+
+
+
+        await this.BookingService
+            .withDoctor(this.Doctor)
+            .withClinic(this.selectedClinic)
+            .withSlot(this.selectedSlot)
+            .book()
+
+        //todo show success or error message
+
+        console.log('book')
+    }
+
+
+
 }
 
