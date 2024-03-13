@@ -59,6 +59,10 @@ const mobileScreen = ref(false)
 const currentClinic = doctorCardState.selectedClinic
 const clinics = doctor.clinics;
 
+const asd = (e) => {
+    console.log(e)
+}
+
 </script>
 
 <template>
@@ -147,7 +151,10 @@ const clinics = doctor.clinics;
                         @click="doctorCardState.toogleModalServices(true)"
                         class="font-12 main-color pointer text-semibold">Другие услуги
                     </span>
-                    <ClinicsSelectView v-if="clinics && currentClinic"/>
+                    <ClinicsSelectView
+                        v-if="clinics && currentClinic" :clinics="clinics"
+                        :modelValue = "doctorCardState.selectedClinic"
+                        @update:modelValue="doctorCardState.setSelectedClinic($event);"/>
 
                     <ScheduleCardView />
 
