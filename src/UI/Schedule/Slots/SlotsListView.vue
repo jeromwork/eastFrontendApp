@@ -6,7 +6,8 @@ import type {Ref} from 'vue'
 import {DoctorCartStateSymbol} from "../../../composables/useSymbols";
 
 import { OpenBookingFormDispatch } from '../../../composables/useDispatches'
-import DoctorCardState from "../../../modules/DoctorCardState";
+import DoctorCardState from "../../../state/DoctorCardState";
+import {useDateFormat} from "@vueuse/core";
 
 
 const props = defineProps<{
@@ -30,7 +31,6 @@ const slotSelect = ( slot:number )=>{
             showClinicBlock:true,
             showScheduleBlock:true,})        //settings view booking form
         .toogleModalBooking(true)
-    console.log(doctorCardState)
 }
 
 
@@ -54,7 +54,7 @@ const slotSelect = ( slot:number )=>{
                             v-if="j < countShowSlots || countShowSlots+1 === doctorCardState.slots.length"
                             @click.prevent="slotSelect(slot)"
                     >
-                        {{slot}}
+                        {{useDateFormat(slot * 1000, 'HH:mm').value}}
                     </button>
                     <button class="slots_item button primary slot"
                             v-else-if="j === countShowSlots && countShowSlots+1 !== doctorCardState.slots?.length"

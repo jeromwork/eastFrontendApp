@@ -144,7 +144,10 @@ export default class DoctorCardState {
 
     public get slots():Readonly<number[]> | null{        return (this.data.value.slots) ? readonly(this.data.value.slots) : null;    }
 
-    public get selectedSlot():number | null{        return this.data.value.selectedSlot;    }
+    public get selectedSlot():number | null{
+
+        console.log(this.data.value.selectedSlot);
+        return this.data.value.selectedSlot;    }
 
 
     public get selectedClinic():ClinicInterface | null{

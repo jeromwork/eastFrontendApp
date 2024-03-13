@@ -3,7 +3,7 @@ import {ref, defineProps, defineEmits, defineModel, inject} from 'vue';
 import type { ServiceData, ServiceCartInterface } from "../../../EastclinicVueApi";
 import {bookingServiceSymbol, DoctorCartStateSymbol, servicesInCartSymbol} from "../../../composables/useSymbols";
 import {BookingService} from "../../../EastclinicVueApi";
-import DoctorCardState from "../../../modules/DoctorCardState";
+import DoctorCardState from "../../../state/DoctorCardState";
 
 
 const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState

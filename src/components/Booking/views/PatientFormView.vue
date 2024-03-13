@@ -3,7 +3,7 @@
 import {inject, ref} from "vue";
 import { DoctorCartStateSymbol} from "../../../composables/useSymbols";
 import {BookingService} from "../../../EastclinicVueApi";
-import DoctorCardState from "../../../modules/DoctorCardState";
+import DoctorCardState from "../../../state/DoctorCardState";
 
 const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
 if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');

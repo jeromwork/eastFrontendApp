@@ -17,7 +17,7 @@ import ServicesCartListView from "../../../UI/Services/views/ServicesCartListVie
 import type BookingFormViewProps from '../imterfaces/BookingFormViewProprs'
 import PatientFormView from "./PatientFormView.vue";
 import ServicesBlockView from "./ServicesBlockView.vue";
-import DoctorCardState from "../../../modules/DoctorCardState";
+import DoctorCardState from "../../../state/DoctorCardState";
 import ClinicCardSelectedBookingView from "../../../UI/Clinics/views/ClinicCardSelectedBookingView.vue";
 
 
@@ -86,7 +86,6 @@ const doctor = doctorCardState.Doctor as DoctorInterface
 
 
 
-
                                 <!-- choose time -->
                                 <div
                                         v-if="bookingBlocks.showScheduleBlock"
@@ -94,10 +93,12 @@ const doctor = doctorCardState.Doctor as DoctorInterface
                                         class="booking__dialog__item pointer">
                                     <div class="booking__dialog__card with-icon">
                                         <div>
+
                                             <div class="booking__dialog__label">
                                                 Дата и время приема
                                             </div>
-                                            <span v-if="doctorCardState.selectedSlot">{{ useDateFormat(DoctorCardState.selectedSlot, 'YYYY-MM-DD HH:mm:ss')}}</span>
+
+                                            <span v-if="doctorCardState.selectedSlot">{{ useDateFormat(doctorCardState.selectedSlot *1000, 'YYYY-MM-DD HH:mm:ss').value}}</span>
                                             <span class="booking__dialog__card_input-text" v-else>Выбрать время</span>
                                         </div>
 

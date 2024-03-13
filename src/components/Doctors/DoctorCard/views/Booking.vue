@@ -6,7 +6,7 @@ import type { Ref } from 'vue'
 import type {DoctorInterface} from "../../../../EastclinicVueApi";
 import {inject} from "vue";
 import {DoctorCartStateSymbol} from "../../../../composables/useSymbols";
-import DoctorCardState from "../../../../modules/DoctorCardState";
+import DoctorCardState from "../../../../state/DoctorCardState";
 
 const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
 if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');

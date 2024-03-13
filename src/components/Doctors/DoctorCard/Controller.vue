@@ -28,7 +28,7 @@ import BookingFormWithChoiceView from "../../Booking/views/BookingFormWithChoice
 import Modal from "../../../UI/Modal.vue";
 import type BookingFormViewProps from "../../Booking/imterfaces/BookingFormViewProprs";
 import ServicesSelectListView from "../../../UI/Services/views/ServicesSelectListView.vue";
-import DoctorCardState from "../../../modules/DoctorCardState";
+import DoctorCardState from "../../../state/DoctorCardState";
 
 
 //В этом компоненте обращаемся к сервису за данными по доктору

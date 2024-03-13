@@ -13,7 +13,7 @@ import {
     bookingServiceSymbol, DoctorCartStateSymbol, DoctorInfoSymbol
 } from "../../../composables/useSymbols";
 import {BookingService, DoctorsService} from "../../../EastclinicVueApi";
-import DoctorCardState from "../../../modules/DoctorCardState";
+import DoctorCardState from "../../../state/DoctorCardState";
 
 
 
@@ -90,9 +90,9 @@ const selectedClinic = (clinic:ClinicInterface) => {
 
         <Modal v-model:visible="visibleClinicsList">
             <template #default>
-        <SelectList :options="clinics as any[]" #default="{option, selected}" optionValue="id" v-model="currentClinic" >
-            <ClinicCardInSelectListView v-bind="{clinic:option, selected}" @click="selectedClinic(option)"></ClinicCardInSelectListView>
-        </SelectList>
+                <SelectList :options="clinics as any[]" #default="{option, selected}" optionValue="id" v-model="currentClinic" >
+                    <ClinicCardInSelectListView v-bind="{clinic:option, selected}" @click="selectedClinic(option)"></ClinicCardInSelectListView>
+                </SelectList>
             </template>
         </Modal>
 
