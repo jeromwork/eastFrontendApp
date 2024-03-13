@@ -9,7 +9,7 @@ import {bookingServiceSymbol, DoctorCartStateSymbol} from "../../../composables/
 import EcButton from "../../../UI/Buttons/EcButton.vue";
 import {EventOpenBookingForm} from "../../../composables/useEvents";
 import type BookingFormViewProps from "../../../components/Booking/imterfaces/BookingFormViewProprs";
-import DoctorCardState from "../../../modules/DoctorCardState";
+import DoctorCardState from "../../../state/DoctorCardState";
 
 
 

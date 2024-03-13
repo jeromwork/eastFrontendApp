@@ -2,7 +2,7 @@
 import {defineProps, inject} from 'vue'
 import type { ClinicInterface } from '../../../EastclinicVueApi'
 import {DoctorCartStateSymbol} from "../../../composables/useSymbols";
-import DoctorCardState from "../../../modules/DoctorCardState";
+import DoctorCardState from "../../../state/DoctorCardState";
 
 const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
 if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');

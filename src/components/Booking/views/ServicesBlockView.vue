@@ -4,7 +4,7 @@ import {inject, ref} from "vue";
 import {bookingServiceSymbol, DoctorCartStateSymbol} from "../../../composables/useSymbols";
 import {BookingService} from "../../../EastclinicVueApi";
 import ServicesCartListView from "../../../UI/Services/views/ServicesCartListView.vue";
-import DoctorCardState from "../../../modules/DoctorCardState";
+import DoctorCardState from "../../../state/DoctorCardState";
 
 const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
 if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');

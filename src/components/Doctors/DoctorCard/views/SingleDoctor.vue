@@ -27,7 +27,7 @@ import ClinicsSelectView from "../../../../UI/Clinics/views/ClinicsSelectView.vu
 
 import {bookingServiceSymbol, DoctorCartStateSymbol} from "../../../../composables/useSymbols";
 import {BookingService, DoctorsService} from '../../../../EastclinicVueApi'
-import DoctorCardState from "../../../../modules/DoctorCardState";
+import DoctorCardState from "../../../../state/DoctorCardState";
 
 //календарь это не зависимый от доктора компонент
 //он может принимать массив или объект disables days, что бы дни были неактивны
