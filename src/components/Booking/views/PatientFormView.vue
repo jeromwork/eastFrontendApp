@@ -42,7 +42,7 @@ const setPhone = (e) => {
                    name="fio"
                    @input="setFio"
                    :value="bookingService.Patient.fio"
-                   @blur="bookingService.Patient.checkFioResume($event.target.value)"
+                   @blur="bookingService.Patient.checkFioResume()"
                    placeholder="Введите имя и фамилию"
             >
             <span v-if="bookingService.Patient.fioError">{{bookingService.Patient.fioError}}</span>
@@ -55,7 +55,7 @@ const setPhone = (e) => {
                    id="phone"
                    name="phone"
                    @input="setPhone"
-                   @blur="bookingService.Patient.checkPhoneResume($event.target.value)"
+                   @blur="bookingService.Patient.checkPhoneResume()"
                    :value="bookingService.Patient.phone"
                    :class="{'text-color-main': bookingService.Patient.isFilledPhone}"
               placeholder="Номер телефона"

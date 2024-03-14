@@ -39,9 +39,10 @@ class Patient implements PatientInterface{
     }
 
 
-    public checkFioResume( fio:string ):boolean{
-        if ( fio.replace(/[^аА-яЯaA-zZ]/g, '').length === 0 ) this.patientData.value.phoneError =  'Пожалуйста, введите имя';
-        return (this.checkFio(fio));
+    public checkFioResume():boolean{
+        this.checkFio(this.fio)
+        if ( this.fio.replace(/[^аА-яЯaA-zZ]/g, '').length === 0 ) this.patientData.value.fioError =  'Пожалуйста, введите имя';
+        return !(this.patientData.value.fioError);
     }
     public checkFio( fio:string ):boolean{
         this.patientData.value.fioError = '';
@@ -61,11 +62,11 @@ class Patient implements PatientInterface{
     }
 
 
-    public checkPhoneResume( phone:string ):boolean{
-        this.checkPhone(phone)
+    public checkPhoneResume():boolean{
+        this.checkPhone(this.phone)
         this.patientData.value.phoneError = ''
-        if (phone.replace(/[^0-9]/g, '').length !== 11) this.patientData.value.phoneError =  'Пожалуйста, введите корректный телефон';
-        return !!(this.patientData.value.phoneError);
+        if (this.phone.replace(/[^0-9]/g, '').length !== 11) this.patientData.value.phoneError =  'Пожалуйста, введите корректный телефон';
+        return !(this.patientData.value.phoneError);
     }
     public checkPhone( phone:string ):boolean{
 

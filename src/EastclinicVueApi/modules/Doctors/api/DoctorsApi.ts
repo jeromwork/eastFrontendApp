@@ -7,7 +7,6 @@ export default class DoctorsApi {
     protected _url:string = '/doctors';
     public async get(requestData: Object): Promise<ApiResponseInterface> {
         try {
-            console.log(BASE_URL + API_URL + this._url)
             const res = await postToServer(BASE_URL + API_URL + this._url, { ...requestData });
             // Assuming postToServer returns a Promise, you should await it
 

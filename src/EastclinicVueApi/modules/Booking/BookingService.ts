@@ -6,6 +6,7 @@ import type { Ref, UnwrapNestedRefs } from 'vue';
 import Patient from "./Patient";
 import Cart from "./Cart";
 import type BookingResponseInterface from "./api/BookingResponseInterface";
+import BookingApi from "./api/BookingApi";
 
 
 interface BookingDataInterface {
@@ -64,7 +65,7 @@ export default class BookingService{
         // if (!this.doctor) throw new Error('Not set doctor to booking')
         // if (!this.selectedClinic) throw new Error('Not set clinic to booking')
         // if(!this.Patient.patientName) throw new Error('Not set patient name to booking')
-        if( !this.Patient.fio ) return null;
+        if(!this.Patient.checkFioResume() || !this.Patient.checkPhoneResume() )  return null;
 
 
         const bookData:BookingResponseInterface = {
@@ -85,9 +86,9 @@ export default class BookingService{
         if(this.doctor?.is_cabinet){
             bookData.onlyMessages = true;
         }
+        return await (new BookingApi).book(bookData);
 
 
-        console.log(bookData)
     }
 
 

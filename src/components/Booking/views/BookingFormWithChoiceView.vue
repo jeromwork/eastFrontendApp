@@ -20,6 +20,8 @@ import ServicesBlockView from "./ServicesBlockView.vue";
 import DoctorCardState from "../../../state/DoctorCardState";
 import ClinicCardSelectedBookingView from "../../../UI/Clinics/views/ClinicCardSelectedBookingView.vue";
 import EcButton from "../../../UI/Buttons/EcButton.vue";
+import BookingSuccessMessageView from '../views/BookingSuccessMessageView.vue'
+import Modal from "../../../UI/Modal.vue";
 
 
 const props = defineProps<BookingFormViewProps>();
@@ -43,6 +45,11 @@ const doctor = doctorCardState.Doctor as DoctorInterface
 </script>
 
 <template>
+    {{doctorCardState.showBookingSuccessMessage}}
+<!--    <Modal v-model:visible="doctorCardState.showBookingSuccessMessage">-->
+<!--        <BookingSuccessMessageView/>-->
+<!--    </Modal>-->
+
     <div  :class="{'mobile': false}" class="booking__dialog__wrapper"    >
 
         <div
