@@ -1,5 +1,5 @@
 import type {Ref} from "vue";
-import usePhoneCheck from "../../../composables/usePhoneCheck";
+import usePhoneFormat from "../../../composables/usePhoneFormat";
 
 interface PatientInterface{
     setPhone(phone:string):this;
@@ -38,40 +38,51 @@ class Patient implements PatientInterface{
 
     }
 
-    protected checkFio( fio:string ):string{
-        if(!fio || !!fio.match(/[аА-яЯaA-zZ]/gm)) return 'Пожалуйста, введите имя';
-        if(fio.length < 51) return 'Введите более короткое имя';
-        if(!!fio.match(/[аА-яЯaA-zZ]+ [аА-яЯaA-zZ]+/gm)) 'Пожалуйста, заполните фамилию'
-        return '';
+
+    public checkFioResume( fio:string ):boolean{
+        if ( fio.replace(/[^аА-яЯaA-zZ]/g, '').length === 0 ) this.patientData.value.phoneError =  'Пожалуйста, введите имя';
+        return (this.checkFio(fio));
+    }
+    public checkFio( fio:string ):boolean{
+        this.patientData.value.fioError = '';
+        if(!fio || fio === '' || !fio.match(/[аА-яЯaA-zZ]/gm)) {
+            this.patientData.value.fioError = 'Пожалуйста, введите имя';
+        }
+        if(fio.length > 51) this.patientData.value.fioError = 'Введите более короткое имя';
+        if(!!fio.match(/[аА-яЯaA-zZ]+ [аА-яЯaA-zZ]+/gm)) this.patientData.value.fioError = 'Пожалуйста, заполните фамилию'
+        return !!(this.patientData.value.fioError);
     }
     public setFio( fio:string ):this{
         //todo check string
+        this.checkFio(fio);
+        this.patientData.value.fio = fio.replace(/[^аА-яЯaA-zZ]/g, '');
 
-        const fioError = this.checkFio(fio);
-        if( fioError ) {
-            this.patientData.value.fioError = fioError;
-            return this;
-        }
-        this.patientData.value.fio = fio;
         return this;
     }
 
 
-    protected checkPhone( phone:string ):string{
-        if( !phone ) return 'Пожалуйста, введите телефон';
-        if( phone.length > 17 ) return 'Пожалуйста, введите корректный телефон';
-        return '';
+    public checkPhoneResume( phone:string ):boolean{
+        this.checkPhone(phone)
+        this.patientData.value.phoneError = ''
+        if (phone.replace(/[^0-9]/g, '').length !== 11) this.patientData.value.phoneError =  'Пожалуйста, введите корректный телефон';
+        return !!(this.patientData.value.phoneError);
+    }
+    public checkPhone( phone:string ):boolean{
+
+        let rawPhone = phone;
+        const dirtySymbols = rawPhone.replace(/[+0-9()-]/g, '')
+        if (dirtySymbols.length) this.patientData.value.phoneError =  'Пожалуйста, введите корректный телефон';
+        phone = usePhoneFormat(phone);
+        this.patientData.value.phoneError = '';
+        if( !phone || phone === '+7(' ) this.patientData.value.phoneError =  'Пожалуйста, введите корректный телефон';
+        if( phone.length > 17 ) this.patientData.value.phoneError = 'Пожалуйста, введите корректный телефон';
+
+
+        return !!(this.patientData.value.phoneError);
     }
     public setPhone( phone:string ){
-        //todo check string by mask
-        const phoneError = this.checkPhone(phone);
-        phone = usePhoneCheck(phone);
-
-        console.log(phone)
-        if(!phone) phone = '+7('
-
-        this.patientData.value.phone =  phone;
-        this.patientData.value.phoneError = phoneError;
+        this.checkPhone(phone);
+        this.patientData.value.phone =  usePhoneFormat(phone);
 
 
         return this;

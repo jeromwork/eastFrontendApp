@@ -13,6 +13,13 @@ const bookingService = doctorCardState.BookingService as BookingService;
 // const phone = computed(() => bookingService.Patient.phone)
 
 //its inpassible!! not working :value = bookingService.Patient.phone
+
+
+const setFio = (e) => {
+    bookingService.Patient.setFio(e.target.value)
+    e.target.value = bookingService.Patient.fio
+};
+
 const setPhone = (e) => {
     bookingService.Patient.setPhone(e.target.value)
     e.target.value = bookingService.Patient.phone
@@ -33,10 +40,12 @@ const setPhone = (e) => {
             <input type="text"
                    id="fio"
                    name="fio"
-                   @input="bookingService.Patient.setFio($event.target)"
+                   @input="setFio"
+                   :value="bookingService.Patient.fio"
+                   @blur="bookingService.Patient.checkFioResume($event.target.value)"
                    placeholder="Введите имя и фамилию"
             >
-            <span v-if="bookingService.Patient.phoneError">{{bookingService.Patient.fioError}}</span>
+            <span v-if="bookingService.Patient.fioError">{{bookingService.Patient.fioError}}</span>
 
 
 
@@ -46,6 +55,7 @@ const setPhone = (e) => {
                    id="phone"
                    name="phone"
                    @input="setPhone"
+                   @blur="bookingService.Patient.checkPhoneResume($event.target.value)"
                    :value="bookingService.Patient.phone"
                    :class="{'text-color-main': bookingService.Patient.isFilledPhone}"
               placeholder="Номер телефона"

@@ -168,7 +168,6 @@ export default class DoctorCardState {
         //todo check fill form
 
         //if error form, scroll here
-        //scroll('booking-form')
 
         //check patient
 

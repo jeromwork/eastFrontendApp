@@ -41,13 +41,7 @@ const slotSelect = ( slot:number )=>{
  }
  //useDateFormat(slot, 'HH:mm')
 
-for (const c in doctorCardState.slots){
-    const d = doctorCardState.slots?.[c]
-    console.log(useNow())
-    console.log(d)
-    console.log(useDateFormat(d, 'HH:mm').value
-    )
-}
+
 
 </script>
 
