@@ -7,7 +7,7 @@ interface PatientInterface{
 }
 
 class Patient implements PatientInterface{
-    protected patientData:Ref = ref({fio:'', phone:'', fioError:'', phoneError:'', surname:'', patientName:'', refs:{} })
+    protected patientData:Ref = ref({fio:'', phone:'+7(', fioError:'', phoneError:'', surname:'', patientName:'', refs:{} })
     // protected name:string = ''
     // protected surname:string = '';
     protected lastname:string = '';
@@ -64,11 +64,13 @@ class Patient implements PatientInterface{
     }
     public setPhone( phone:string ){
         //todo check string by mask
-        // phone = usePhoneCheck(phone);
         const phoneError = this.checkPhone(phone);
-        console.log(phone)
+        phone = usePhoneCheck(phone);
 
-        this.patientData.value.phone = '+7 999 999';
+        console.log(phone)
+        if(!phone) phone = '+7('
+
+        this.patientData.value.phone =  phone;
         this.patientData.value.phoneError = phoneError;
 
 

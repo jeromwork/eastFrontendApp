@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {inject, ref} from "vue";
+import {inject, ref, nextTick} from "vue";
 import { DoctorCartStateSymbol} from "../../../composables/useSymbols";
 import {BookingService} from "../../../EastclinicVueApi";
 import DoctorCardState from "../../../state/DoctorCardState";
@@ -10,7 +10,14 @@ if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardStat
 
 const bookingService = doctorCardState.BookingService as BookingService;
 
-const formattedPhone = ref('+7 999 999')
+// const phone = computed(() => bookingService.Patient.phone)
+
+//its inpassible!! not working :value = bookingService.Patient.phone
+const setPhone = (e) => {
+    bookingService.Patient.setPhone(e.target.value)
+    e.target.value = bookingService.Patient.phone
+};
+
 
 
 </script>
@@ -26,7 +33,7 @@ const formattedPhone = ref('+7 999 999')
             <input type="text"
                    id="fio"
                    name="fio"
-                   @input="bookingService.Patient.setFio($event.target.value)"
+                   @input="bookingService.Patient.setFio($event.target)"
                    placeholder="Введите имя и фамилию"
             >
             <span v-if="bookingService.Patient.phoneError">{{bookingService.Patient.fioError}}</span>
@@ -34,14 +41,12 @@ const formattedPhone = ref('+7 999 999')
 
 
         </div>
-        {{bookingService.Patient.phone}}
         <div class="booking__dialog__item">
             <input type="tel"
-                   pattern="[0-9]{1}([0-9]{3})-[0-9]{3}-[0-9]{4}"
                    id="phone"
                    name="phone"
-                   @keydown.stop="bookingService.Patient.setPhone($event.target.value)"
-                   v-model="formattedPhone"
+                   @input="setPhone"
+                   :value="bookingService.Patient.phone"
                    :class="{'text-color-main': bookingService.Patient.isFilledPhone}"
               placeholder="Номер телефона"
             >
