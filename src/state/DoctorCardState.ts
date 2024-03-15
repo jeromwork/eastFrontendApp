@@ -1,7 +1,7 @@
 import type {DoctorInterface, ClinicInterface} from "../EastclinicVueApi";
 import type {Ref} from 'vue'
 import {computed, ref} from "vue";
-import { DoctorsService, ScheduleService, BookingService} from "../EastclinicVueApi";
+import { DoctorsService, ScheduleService, BookingService, ScheduleRequest} from "../EastclinicVueApi";
 import type BookingFormViewProps from "../components/Booking/imterfaces/BookingFormViewProprs";
 
 interface DoctorCardInterface {
@@ -9,6 +9,7 @@ interface DoctorCardInterface {
     workingDay:number|null;
     slots: number[] | null;
     selectedSlot:number|null;
+    selectedSlotError?:string;
     selectedClinic: ClinicInterface | null;
 
     showModalBooking:boolean;
@@ -45,8 +46,6 @@ export default class DoctorCardState {
     protected doctor: DoctorInterface | null = null;
 
 
-
-
     public withDoctor( doctor:DoctorInterface ):this{
         this.doctor = doctor;
         this.initDoctorData(doctor);
@@ -78,9 +77,9 @@ export default class DoctorCardState {
 
 
 
+
     public toogleModalBooking( show:boolean ):this{
-        this.data.value.showModalBooking = show;
-        if(show) this.data.value.showBookingScheduleBlock = false;
+        this.setShowModalBooking(show);
         return this;
     }
 
@@ -127,6 +126,7 @@ export default class DoctorCardState {
 
     public setSelectedSlot(slot:number|null):this{
         this.data.value.selectedSlot = slot;
+        this.data.value.selectedSlotError = '';
         return this;
     }
 
@@ -151,13 +151,14 @@ export default class DoctorCardState {
     public get slots():Readonly<number[]> | null{        return (this.data.value.slots) ? readonly(this.data.value.slots) : null;    }
 
     public get selectedSlot():number | null{        return this.data.value.selectedSlot;    }
+    public get selectedSlotError():string | undefined{        return this.data.value.selectedSlotError;    }
 
 
     public get selectedClinic():ClinicInterface | null{
         return this.data.value.selectedClinic;    }
 
     public get showModalBooking():boolean | null{        return this.data.value.showModalBooking;    }
-    public set showModalBooking( show){        this.data.value.showModalBooking = show as boolean;    }
+    public set showModalBooking( show){     this.setShowModalBooking(!!(show));   }
     public get showModalServices():boolean | null{        return this.data.value.showModalServices;    }
     public set showModalServices( show){        this.data.value.showModalServices = show as boolean;    }
     public get showBookingScheduleBlock():boolean | null{        return this.data.value.showBookingScheduleBlock;    }
@@ -165,7 +166,6 @@ export default class DoctorCardState {
 
     public get showBookingSuccessMessage():boolean | null{        return this.data.value.showBookingSuccessMessage;    }
     public set showBookingSuccessMessage( show){
-        console.log(1111111111)
         this.data.value.showBookingSuccessMessage = show as boolean;
     }
 
@@ -180,30 +180,51 @@ export default class DoctorCardState {
         //todo check fill form
 
         //if error form, scroll here
-
-        //check patient
-
-        const response = await this.BookingService
-            .withDoctor(this.Doctor)
-            .withClinic(this.selectedClinic)
-            .withSlot(this.selectedSlot)
-            .book()
-
-
-        if(response?.ok) {
-            this.toogleModalBooking(false);
-            this.toogleBookingSuccessMessage(true);
-
+        if(!this.selectedSlot) {
+            this.data.value.selectedSlotError = 'Выберите время для записи';
+            return null;
         }
 
 
-        console.log(response)
+        //check patient
+        this.BookingService
+            .withDoctor(this.Doctor)
+            .withClinic(this.selectedClinic)
+            .withSlot(this.selectedSlot);
+        const res = await this.BookingService.book()
+
+
+        if(res?.ok) {
+            this.toogleModalBooking(false);
+            this.toogleBookingSuccessMessage(true);
+            //clear form data
+            this.data.value.selectedSlot = null;
+            this.data.value.selectedSlotError = '';
+            this.data.value.workingDay = null;
+            this.data.value.selectedClinic = null;
+            this.bookingService = null;
+
+        }else {
+            if ( res?.code === 24 || res?.code === 25 ){  //handle busy slot
+                this.data.value.selectedSlot = null;
+                this.data.value.selectedSlotError = res.error;
+            }
+        }
+
+
+
         //todo show success or error message
 
-        console.log('book')
     }
 
-
+    protected setShowModalBooking(show:boolean){
+        this.data.value.showModalBooking = show as boolean;
+        if(!show){
+            this.data.value.selectedSlot = null;
+            this.data.value.selectedSlotError = '';
+            this.data.value.workingDay = null;
+        }else  this.data.value.showBookingScheduleBlock = false;
+    }
 
 }
 

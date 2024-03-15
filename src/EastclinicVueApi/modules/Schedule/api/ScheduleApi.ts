@@ -8,9 +8,8 @@ import type ApiScheduleResponseInterface from "./ApiScheduleResponseInterface";
 
 export default class ScheduleApi {
 
-    public async get(requestData: Object): Promise<ApiScheduleResponseInterface> {
+    public async get(requestData: Object): Promise< ApiScheduleResponseInterface > {
         try {
-            console.log('refreshPageInfoFromServer')
 
              const res = await postToServer(API_MODX_URL, { ...requestData });
 

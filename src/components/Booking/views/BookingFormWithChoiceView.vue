@@ -92,7 +92,7 @@ const doctor = doctorCardState.Doctor as DoctorInterface
                                         v-if="bookingBlocks.showScheduleBlock"
                                         @click="doctorCardState.toogleBookingScheduleBlock(true )"
                                         class="booking__dialog__item pointer">
-                                    <div class="booking__dialog__card with-icon">
+                                    <div class="booking__dialog__card with-icon" :class="{'error-border':!!(doctorCardState.selectedSlotError)}">
                                         <div>
 
                                             <div class="booking__dialog__label">
@@ -105,15 +105,13 @@ const doctor = doctorCardState.Doctor as DoctorInterface
 
                                         <span class="icons pen"></span>
                                     </div>
-<!--                                    <div class="booking__dialog__card_error"-->
-<!--                                         v-show="errorTimeText"-->
-<!--                                    >-->
-<!--                                        <div-->
-<!--                                                class="v-messages theme&#45;&#45;light error&#45;&#45;text"-->
-<!--                                                v-html="errorTimeText"-->
-<!--                                        >-->
-<!--                                        </div>-->
-<!--                                    </div>-->
+                                    <div class="booking__dialog__card_error" v-show="doctorCardState.selectedSlotError"  >
+                                        <div
+                                                class="v-messages theme--light error--text"
+                                                v-html="doctorCardState.selectedSlotError"
+                                        >
+                                        </div>
+                                    </div>
                                 </div>
 
 
@@ -130,7 +128,8 @@ const doctor = doctorCardState.Doctor as DoctorInterface
                                     <span>Записаться</span>
 
                                 </EcButton>
-
+                                <div class="mt-4 booking__annotation annotation">Нажимая «Записаться», я даю <a target="_blank" href="https://eastclinic.ru/assets-new/docs/soglasie-na-obrabotku.pdf">согласие на обработку персональных данных</a>
+                                    и принимаю <a target="_blank" href="https://yandex.ru/legal/smartcaptcha_notice/">политику обработки данных</a>.</div>
                             </div>
                         </div>
 

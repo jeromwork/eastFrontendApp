@@ -23,7 +23,6 @@ import {
 import {DoctorsService} from "../../../EastclinicVueApi";
 import DoctorCardBooking from '../DoctorCard/views/Booking.vue'
 import {BookingService} from "../../../EastclinicVueApi";
-import BookingController from "../../Booking/BookingController.vue";
 import BookingFormWithChoiceView from "../../Booking/views/BookingFormWithChoiceView.vue";
 import Modal from "../../../UI/Modal.vue";
 import type BookingFormViewProps from "../../Booking/imterfaces/BookingFormViewProprs";

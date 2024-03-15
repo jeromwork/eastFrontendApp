@@ -16,11 +16,11 @@ class ScheduleService{
 
     public async getSchedulesFromServer( request:ScheduleRequest ){
         //add modx api data
-        request.with('component', 'east_schedule').with('action', 'getSchedule')
+        request.with('component', 'east_schedule').with('action', 'schedule')
 
-        const { schedules } = await (new ScheduleApi).get(request.with('component', 'east').getRequestData()) ;
+        const res = await (new ScheduleApi).get(request.getRequestData()) ;
 
-        this.setSchedules( schedules );
+        this.setSchedules( res.data );
     }
 
 
@@ -33,6 +33,7 @@ class ScheduleService{
 
     protected setSchedulesByDoctorsDays( schedules: ScheduleInterface[]):this{
         const workDaysByDoctorsDaysClinics:any = {};
+        console.log(schedules)
         for (const s in schedules.sort(this.sortAsc)){
             const schedule = schedules[s];
             workDaysByDoctorsDaysClinics[schedule.doctorId] ??= {};
