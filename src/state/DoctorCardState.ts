@@ -166,7 +166,7 @@ export default class DoctorCardState {
     public get showBookingSuccessMessage():boolean | null{        return this.data.value.showBookingSuccessMessage;    }
     public set showBookingSuccessMessage( show){
         console.log(1111111111)
-        this.data.value.showBookingScheduleBlock = show as boolean;
+        this.data.value.showBookingSuccessMessage = show as boolean;
     }
 
     public get showLeaveMessage():boolean | null{        return this.data.value.showLeaveMessage;    }
@@ -182,8 +182,6 @@ export default class DoctorCardState {
         //if error form, scroll here
 
         //check patient
-
-
 
         const response = await this.BookingService
             .withDoctor(this.Doctor)
