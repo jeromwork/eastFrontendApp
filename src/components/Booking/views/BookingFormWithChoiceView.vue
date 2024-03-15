@@ -92,7 +92,6 @@ const doctor = doctorCardState.Doctor as DoctorInterface
                                         v-if="bookingBlocks.showScheduleBlock"
                                         @click="doctorCardState.toogleBookingScheduleBlock(true )"
                                         class="booking__dialog__item pointer">
-                                    {{doctorCardState.selectedSlotError}}222
                                     <div class="booking__dialog__card with-icon" :class="{'error-border':!!(doctorCardState.selectedSlotError)}">
                                         <div>
 
@@ -129,7 +128,8 @@ const doctor = doctorCardState.Doctor as DoctorInterface
                                     <span>Записаться</span>
 
                                 </EcButton>
-
+                                <div class="mt-4 booking__annotation annotation">Нажимая «Записаться», я даю <a target="_blank" href="https://eastclinic.ru/assets-new/docs/soglasie-na-obrabotku.pdf">согласие на обработку персональных данных</a>
+                                    и принимаю <a target="_blank" href="https://yandex.ru/legal/smartcaptcha_notice/">политику обработки данных</a>.</div>
                             </div>
                         </div>
 

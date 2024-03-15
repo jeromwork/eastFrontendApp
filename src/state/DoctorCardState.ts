@@ -46,8 +46,6 @@ export default class DoctorCardState {
     protected doctor: DoctorInterface | null = null;
 
 
-
-
     public withDoctor( doctor:DoctorInterface ):this{
         this.doctor = doctor;
         this.initDoctorData(doctor);
@@ -79,9 +77,9 @@ export default class DoctorCardState {
 
 
 
+
     public toogleModalBooking( show:boolean ):this{
-        this.data.value.showModalBooking = show;
-        if(show) this.data.value.showBookingScheduleBlock = false;
+        this.setShowModalBooking(show);
         return this;
     }
 
@@ -128,6 +126,7 @@ export default class DoctorCardState {
 
     public setSelectedSlot(slot:number|null):this{
         this.data.value.selectedSlot = slot;
+        this.data.value.selectedSlotError = '';
         return this;
     }
 
@@ -159,7 +158,7 @@ export default class DoctorCardState {
         return this.data.value.selectedClinic;    }
 
     public get showModalBooking():boolean | null{        return this.data.value.showModalBooking;    }
-    public set showModalBooking( show){        this.data.value.showModalBooking = show as boolean;    }
+    public set showModalBooking( show){     this.setShowModalBooking(!!(show));   }
     public get showModalServices():boolean | null{        return this.data.value.showModalServices;    }
     public set showModalServices( show){        this.data.value.showModalServices = show as boolean;    }
     public get showBookingScheduleBlock():boolean | null{        return this.data.value.showBookingScheduleBlock;    }
@@ -181,6 +180,11 @@ export default class DoctorCardState {
         //todo check fill form
 
         //if error form, scroll here
+        if(!this.selectedSlot) {
+            this.data.value.selectedSlotError = 'Выберите время для записи';
+            return null;
+        }
+
 
         //check patient
         this.BookingService
@@ -193,7 +197,12 @@ export default class DoctorCardState {
         if(res?.ok) {
             this.toogleModalBooking(false);
             this.toogleBookingSuccessMessage(true);
-
+            //clear form data
+            this.data.value.selectedSlot = null;
+            this.data.value.selectedSlotError = '';
+            this.data.value.workingDay = null;
+            this.data.value.selectedClinic = null;
+            this.bookingService = null;
 
         }else {
             if ( res?.code === 24 || res?.code === 25 ){  //handle busy slot
@@ -206,10 +215,16 @@ export default class DoctorCardState {
 
         //todo show success or error message
 
-        console.log('book')
     }
 
-
+    protected setShowModalBooking(show:boolean){
+        this.data.value.showModalBooking = show as boolean;
+        if(!show){
+            this.data.value.selectedSlot = null;
+            this.data.value.selectedSlotError = '';
+            this.data.value.workingDay = null;
+        }else  this.data.value.showBookingScheduleBlock = false;
+    }
 
 }
 
