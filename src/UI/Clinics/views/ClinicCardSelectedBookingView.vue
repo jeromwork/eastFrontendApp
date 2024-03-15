@@ -14,7 +14,7 @@ const chosenClinicNow = doctorCardState.selectedClinic
 <template>
     <div
         @click="doctorCardState.toogleBookingScheduleBlock(true)"
-        class="booking__dialog__card with-icon" style="padding-bottom: 7px; padding-top: 7px">
+        class="booking__dialog__card with-icon" style="padding-bottom: 7px; padding-top: 7px" :class="{'error-border':!!(doctorCardState.selectedSlotError)}">
         <div>
             <div class="booking__dialog__label">
                 Клиника

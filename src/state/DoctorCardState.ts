@@ -1,7 +1,7 @@
 import type {DoctorInterface, ClinicInterface} from "../EastclinicVueApi";
 import type {Ref} from 'vue'
 import {computed, ref} from "vue";
-import { DoctorsService, ScheduleService, BookingService} from "../EastclinicVueApi";
+import { DoctorsService, ScheduleService, BookingService, ScheduleRequest} from "../EastclinicVueApi";
 import type BookingFormViewProps from "../components/Booking/imterfaces/BookingFormViewProprs";
 
 interface DoctorCardInterface {
@@ -9,6 +9,7 @@ interface DoctorCardInterface {
     workingDay:number|null;
     slots: number[] | null;
     selectedSlot:number|null;
+    selectedSlotError?:string;
     selectedClinic: ClinicInterface | null;
 
     showModalBooking:boolean;
@@ -151,6 +152,7 @@ export default class DoctorCardState {
     public get slots():Readonly<number[]> | null{        return (this.data.value.slots) ? readonly(this.data.value.slots) : null;    }
 
     public get selectedSlot():number | null{        return this.data.value.selectedSlot;    }
+    public get selectedSlotError():string | undefined{        return this.data.value.selectedSlotError;    }
 
 
     public get selectedClinic():ClinicInterface | null{
@@ -165,7 +167,6 @@ export default class DoctorCardState {
 
     public get showBookingSuccessMessage():boolean | null{        return this.data.value.showBookingSuccessMessage;    }
     public set showBookingSuccessMessage( show){
-        console.log(1111111111)
         this.data.value.showBookingSuccessMessage = show as boolean;
     }
 
@@ -182,22 +183,27 @@ export default class DoctorCardState {
         //if error form, scroll here
 
         //check patient
-
-        const response = await this.BookingService
+        this.BookingService
             .withDoctor(this.Doctor)
             .withClinic(this.selectedClinic)
-            .withSlot(this.selectedSlot)
-            .book()
+            .withSlot(this.selectedSlot);
+        const res = await this.BookingService.book()
 
 
-        if(response?.ok) {
+        if(res?.ok) {
             this.toogleModalBooking(false);
             this.toogleBookingSuccessMessage(true);
 
+
+        }else {
+            if ( res?.code === 24 || res?.code === 25 ){  //handle busy slot
+                this.data.value.selectedSlot = null;
+                this.data.value.selectedSlotError = res.error;
+            }
         }
 
 
-        console.log(response)
+
         //todo show success or error message
 
         console.log('book')
