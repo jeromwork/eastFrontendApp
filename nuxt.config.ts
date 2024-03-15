@@ -1,12 +1,24 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
+
 const path = require('path');
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  dev:false,
   modules: [
     '@vueuse/nuxt',
 
   ],
+  yandexMetrika:      {
+    id: 19981279,
+    options: {
+      clickmap:true,
+      trackLinks:true,
+      accurateTrackBounce:true,
+      webvisor: true,
+      ecommerce:"dataLayer"
+    }
+  },
   css:[
       '~/public/scss/main.scss'
   ],

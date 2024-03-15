@@ -16,8 +16,7 @@
     "v-mask": "^2.3.0",
     "vue": "^3.4.15",
     "vue-flickity": "^1.2.1",
-    "vue-router": "^4.2.5",
-    "vue-yandex-metrika-ts": "^1.0.6"
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@nuxt/types": "^2.17.3",

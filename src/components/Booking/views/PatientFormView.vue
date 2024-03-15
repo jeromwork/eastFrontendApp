@@ -52,7 +52,7 @@ const setFio = (e) => {
                 <input type="tel"
                        id="phone"
                        name="phone"
-                       v-mask="'+# (####) ###-##-##'"
+                       v-mask="'+# (###) ###-##-##'"
                        @input=" bookingService.Patient.setPhone($event.target.value)"
                        @blur="bookingService.Patient.checkPhoneResume()"
                        v-model="bookingService.Patient.phone"

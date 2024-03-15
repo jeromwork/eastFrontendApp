@@ -38,8 +38,14 @@ const bookingService = doctorCardState.BookingService;
 const bookingBlocks = doctorCardState.bookingFormViewProps as BookingFormViewProps;
 
 const doctor = doctorCardState.Doctor as DoctorInterface
-
-
+const { $ym } = useNuxtApp()
+// if ($ym) {
+//     $ym('hit', '/', {
+//         referer: '/',
+//         title: 'test'
+//     })
+// }
+$ym?.reachGoal('sdfwe');
 </script>
 
 <template>
