@@ -1,8 +1,9 @@
 import type {ClinicInterface} from "../../../EastclinicVueApi";
 
-export default class Ecommerce{
+export class Ecommerce {
 
     protected clinic?:ClinicInterface
+    protected
     public sendData(){
         let goal = 'service';
         let clinic = this.clinic;
@@ -10,4 +11,8 @@ export default class Ecommerce{
 
     }
 
+    public withDoctor():{
+
+
+    }
 }

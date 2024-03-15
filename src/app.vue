@@ -12,8 +12,6 @@ if(pageInfo.value){
 }
 
 
-
-
 </script>
 <template>
         <NuxtPage />

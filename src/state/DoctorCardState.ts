@@ -3,6 +3,7 @@ import type {Ref} from 'vue'
 import {computed, ref} from "vue";
 import { DoctorsService, ScheduleService, BookingService, ScheduleRequest} from "../EastclinicVueApi";
 import type BookingFormViewProps from "../components/Booking/imterfaces/BookingFormViewProprs";
+import {Ecommerce} from "#build/src/EastclinicVueApi/modules/Ecommerce";
 
 interface DoctorCardInterface {
     workDays: number[] | null;
@@ -193,6 +194,7 @@ export default class DoctorCardState {
             .withSlot(this.selectedSlot);
         const res = await this.BookingService.book()
 
+        // Ecommerce.withDoctor(this.Doctor).purchase();
 
         if(res?.ok) {
             this.toogleModalBooking(false);

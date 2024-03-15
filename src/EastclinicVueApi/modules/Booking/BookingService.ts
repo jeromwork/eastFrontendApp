@@ -20,7 +20,6 @@ interface BookingDataInterface {
 
 export default class BookingService{
     protected data:Ref<BookingDataInterface> = ref({slot:null, clinic:null, doctor:null, sessionId:null});
-    protected _doctor?:DoctorInterface
     public Cart:Cart = new Cart();
     public Patient:Patient = new Patient()
 
@@ -67,7 +66,7 @@ export default class BookingService{
         // if (!this.selectedClinic) throw new Error('Not set clinic to booking')
         // if(!this.Patient.patientName) throw new Error('Not set patient name to booking')
         if(!this.Patient.checkFioResume() || !this.Patient.checkPhoneResume() )  return null;
-        if (!this.doctor) return null;
+        // if (!this.doctor) return null;
 
         const bookData:BookingResponseInterface = {
             key : 'a56f164d50be6d6164c6117a6b75cafe93cc3d43dc698861bdda75ab1d23809d',
