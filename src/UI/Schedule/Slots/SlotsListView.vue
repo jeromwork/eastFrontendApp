@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import {    defineProps, reactive, ref, defineEmits, computed, onBeforeMount, onMounted, defineModel, inject} from "vue";
 
+
 import type {Ref} from 'vue'
 import {DoctorCartStateSymbol} from "../../../composables/useSymbols";
 
@@ -38,6 +39,8 @@ const slotSelect = ( slot:number )=>{
      const slotsLength = (doctorCardState.slots?.length) ? doctorCardState.slots.length : 0;
      countShowSlots.value = (slotsLength === countShowSlots) ? 7 : slotsLength;
  }
+ //useDateFormat(slot, 'HH:mm')
+
 
 
 </script>
@@ -50,6 +53,7 @@ const slotSelect = ( slot:number )=>{
                 <template
                     v-for="(slot, j) in doctorCardState.slots"
                 >
+
                     <button class="slots_item button primary slot"
                             v-if="j < countShowSlots || countShowSlots+1 === doctorCardState.slots.length"
                             @click.prevent="slotSelect(slot)"

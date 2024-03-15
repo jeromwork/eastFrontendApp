@@ -29,7 +29,7 @@ import Modal from "../../../UI/Modal.vue";
 import type BookingFormViewProps from "../../Booking/imterfaces/BookingFormViewProprs";
 import ServicesSelectListView from "../../../UI/Services/views/ServicesSelectListView.vue";
 import DoctorCardState from "../../../state/DoctorCardState";
-
+import BookingSuccessMessageView from '../../Booking/views/BookingSuccessMessageView.vue'
 
 //В этом компоненте обращаемся к сервису за данными по доктору
 //Возможно доктора уже загружены - в списке докторов, тогда просто отображаем данные доктора
@@ -62,7 +62,9 @@ provide(DoctorCartStateSymbol,doctorCardState)
     <Modal v-model:visible="doctorCardState.showModalServices" v-if="doctorCardState.showModalServices">
         <ServicesSelectListView :services="doctor.service_data"/>
     </Modal>
-
+    <Modal v-model:visible="doctorCardState.showBookingSuccessMessage"  v-if="doctorCardState.showBookingSuccessMessage">
+        <BookingSuccessMessageView/>
+    </Modal>
   <slot></slot>
 </template>
 

@@ -51,7 +51,7 @@ export async function fetchToServer<T>(url: string, options?: RequestInit) {
         options = addJwtTokenToRequest(options);
 
         const response = await fetch(url, options);
-
+        console.log(response)
         if (!response.ok) {
             throw new Error(`Request failed with status: ${response.status}`);
         }

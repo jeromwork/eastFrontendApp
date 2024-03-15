@@ -15,6 +15,7 @@ interface DoctorCardInterface {
     showModalServices:boolean;
     showLeaveMessage:boolean;
     showBookingScheduleBlock:boolean;
+    showBookingSuccessMessage:boolean;
     bookingFormViewProps:BookingFormViewProps | null;
 }
 
@@ -35,6 +36,7 @@ export default class DoctorCardState {
         showModalServices:false,
         showLeaveMessage:false,
         showBookingScheduleBlock:false,
+        showBookingSuccessMessage:false,
         bookingFormViewProps:null,
 
 
@@ -97,6 +99,11 @@ export default class DoctorCardState {
         return this
     }
 
+    public toogleBookingSuccessMessage(show:boolean):this{
+        this.data.value.showBookingSuccessMessage = show;
+        return this
+    }
+
     public setBookingFormBlocks( viewProps:BookingFormViewProps ):this{
         this.data.value.bookingFormViewProps = viewProps;
         return this;
@@ -154,11 +161,48 @@ export default class DoctorCardState {
     public get showModalServices():boolean | null{        return this.data.value.showModalServices;    }
     public set showModalServices( show){        this.data.value.showModalServices = show as boolean;    }
     public get showBookingScheduleBlock():boolean | null{        return this.data.value.showBookingScheduleBlock;    }
-    public set showBookingScheduleBlock( show){        this.data.value.showBookingScheduleBlock = show as boolean;    }
+    // public set showBookingScheduleBlock( show){        this.data.value.showBookingScheduleBlock = show as boolean;    }
 
+    public get showBookingSuccessMessage():boolean | null{        return this.data.value.showBookingSuccessMessage;    }
+    public set showBookingSuccessMessage( show){
+        console.log(1111111111)
+        this.data.value.showBookingSuccessMessage = show as boolean;
+    }
 
     public get showLeaveMessage():boolean | null{        return this.data.value.showLeaveMessage;    }
     public get bookingFormViewProps():BookingFormViewProps | null{        return this.data.value.bookingFormViewProps;    }
+
+
+
+
+    public async book(){
+        //todo #captha_enable
+        //todo check fill form
+
+        //if error form, scroll here
+
+        //check patient
+
+        const response = await this.BookingService
+            .withDoctor(this.Doctor)
+            .withClinic(this.selectedClinic)
+            .withSlot(this.selectedSlot)
+            .book()
+
+
+        if(response?.ok) {
+            this.toogleModalBooking(false);
+            this.toogleBookingSuccessMessage(true);
+
+        }
+
+
+        console.log(response)
+        //todo show success or error message
+
+        console.log('book')
+    }
+
 
 
 }

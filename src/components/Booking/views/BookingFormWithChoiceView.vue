@@ -19,6 +19,7 @@ import PatientFormView from "./PatientFormView.vue";
 import ServicesBlockView from "./ServicesBlockView.vue";
 import DoctorCardState from "../../../state/DoctorCardState";
 import ClinicCardSelectedBookingView from "../../../UI/Clinics/views/ClinicCardSelectedBookingView.vue";
+import EcButton from "../../../UI/Buttons/EcButton.vue";
 
 
 const props = defineProps<BookingFormViewProps>();
@@ -123,6 +124,12 @@ const doctor = doctorCardState.Doctor as DoctorInterface
 
                                 </div>
 
+
+                                <EcButton class="primary full-width shadow-button services-button-container"
+                                          @click="doctorCardState.book()">
+                                    <span>Записаться</span>
+
+                                </EcButton>
 
                             </div>
                         </div>
