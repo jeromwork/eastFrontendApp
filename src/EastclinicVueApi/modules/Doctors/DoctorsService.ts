@@ -55,6 +55,7 @@ export default class DoctorsService{
         doctors = this.addFavoriteService(doctors);
         doctors = this.addClinicsForDoctors(doctors);
         doctors = this.addClinicWorkingSelected(doctors);
+        doctors = this.addShortFio(doctors);
 
 
         this.state.setItems(doctors);
@@ -156,6 +157,14 @@ export default class DoctorsService{
         return doctors;
     }
 
+    public addShortFio(doctors:DoctorInterface[]):DoctorInterface[]{
+        for (const d in doctors) {
+            const doctorInfo = doctors[d];
+            let fio = doctorInfo.fullname;
+            doctors[d].shortFio = ( fio ) ? fio.split(' ').map((part, index) => index !== 0 ? part.charAt(0) + '.' : part).join(' '): fio;
+        }
+        return doctors;
+    }
 
 
 

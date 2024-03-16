@@ -157,6 +157,7 @@ export default interface DoctorInterface {
 
     appointmentOnline:boolean,
     specials?:string,
+    shortFio?:string,
     specials_of_service?:Speciality[];
 
 
