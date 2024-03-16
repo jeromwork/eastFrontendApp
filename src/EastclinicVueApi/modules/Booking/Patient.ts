@@ -1,9 +1,11 @@
 import type {Ref} from "vue";
-import usePhoneFormat from "../../../composables/usePhoneFormat";
+import usePhoneFormat from "../../util/usePhoneFormat";
 
 interface PatientInterface{
     setPhone(phone:string):this;
     setFio(phone:string):this;
+    fio:string;
+    phone:string;
 }
 
 class Patient implements PatientInterface{
@@ -103,17 +105,17 @@ class Patient implements PatientInterface{
 
     public validate(){
         if(!this.fio) {
-            this.scroll('fio');
+            //this.scroll('fio');
             this.patientData.value.fioError
             return;
         }
 
     }
 
-    protected scroll(id:string) {
-        const el = (window?.document?.getElementById(id))
-        if(el) el.scrollIntoView({ behavior: "smooth" });
-    }
+    // protected scroll(id:string) {
+    //     const el = (window?.document?.getElementById(id))
+    //     if(el) el.scrollIntoView({ behavior: "smooth" });
+    // }
 
 
 }

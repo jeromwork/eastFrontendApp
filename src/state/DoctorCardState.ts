@@ -4,6 +4,8 @@ import {computed, ref} from "vue";
 import { DoctorsService, ScheduleService, BookingService, ScheduleRequest} from "../EastclinicVueApi";
 import type BookingFormViewProps from "../components/Booking/imterfaces/BookingFormViewProprs";
 import { YandexMetrika } from "../composables/useYandexMetrika";
+import useCalltouch from "../composables/useCalltouch";
+import {Patient} from "#build/src/EastclinicVueApi";
 // import {Ecommerce} from "#build/src/EastclinicVueApi/modules/Ecommerce";
 
 interface DoctorCardInterface {
@@ -182,6 +184,7 @@ export default class DoctorCardState {
         //todo #captha_enable
         //todo check fill form
 
+
         //if error form, scroll here
         if(!this.selectedSlot) {
             this.data.value.selectedSlotError = 'Выберите время для записи';
@@ -205,6 +208,12 @@ export default class DoctorCardState {
             if(this.bookingService && this.bookingService.Cart?.count > 0){
                 YandexMetrika.reachGoal('service_booking_done')
             }
+
+            useCalltouch()
+                .forPatient(this.bookingService?.Patient as Patient)
+                .withTags([this.Doctor.shortFio as string, this.selectedClinic?.node_address as string])
+                .booking()
+
             //clear form data
             this.data.value.selectedSlot = null;
             this.data.value.selectedSlotError = '';
