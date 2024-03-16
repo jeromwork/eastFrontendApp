@@ -20,6 +20,7 @@ import ServicesBlockView from "./ServicesBlockView.vue";
 import DoctorCardState from "../../../state/DoctorCardState";
 import ClinicCardSelectedBookingView from "../../../UI/Clinics/views/ClinicCardSelectedBookingView.vue";
 import EcButton from "../../../UI/Buttons/EcButton.vue";
+import { YandexMetrika } from "../../../composables/useYandexMetrika";
 
 
 const props = defineProps<BookingFormViewProps>();
@@ -39,6 +40,10 @@ const bookingBlocks = doctorCardState.bookingFormViewProps as BookingFormViewPro
 
 const doctor = doctorCardState.Doctor as DoctorInterface
 
+const book = () => {
+    YandexMetrika.reachGoal('sdafwe')
+    doctorCardState.book()
+}
 
 </script>
 
@@ -124,7 +129,7 @@ const doctor = doctorCardState.Doctor as DoctorInterface
 
 
                                 <EcButton class="primary full-width shadow-button services-button-container"
-                                          @click="doctorCardState.book()">
+                                          @click="book">
                                     <span>Записаться</span>
 
                                 </EcButton>

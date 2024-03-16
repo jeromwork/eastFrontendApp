@@ -20,6 +20,9 @@ class Patient implements PatientInterface{
     public get phone(){
         return this.patientData.value.phone
     }
+    public set phone(phone:string){
+        this.patientData.value.phone = phone;
+    }
 
     public get isFilledPhone():boolean{
         return (this.patientData.value?.phone.length > 5)
@@ -82,10 +85,10 @@ class Patient implements PatientInterface{
         return !!(this.patientData.value.phoneError);
     }
     public setPhone( phone:string ){
-        this.checkPhone(phone);
-        this.patientData.value.phone =  usePhoneFormat(phone);
+        // this.checkPhone(phone);
+        // this.patientData.value.phone =  usePhoneFormat(phone);
 
-
+        this.patientData.value.phone = phone;
         return this;
     }
 

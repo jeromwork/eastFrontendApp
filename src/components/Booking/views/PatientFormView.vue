@@ -15,16 +15,13 @@ const bookingService = doctorCardState.BookingService as BookingService;
 
 //its inpassible!! not working :value = bookingService.Patient.phone
 
-
+const dsd = ref('')
 const setFio = (e) => {
     bookingService.Patient.setFio(e.target.value)
     e.target.value = bookingService.Patient.fio
 };
 
-const setPhone = (e) => {
-    bookingService.Patient.setPhone(e.target.value)
-    e.target.value = bookingService.Patient.phone
-};
+
 
 
 
@@ -55,9 +52,10 @@ const setPhone = (e) => {
                 <input type="tel"
                        id="phone"
                        name="phone"
-                       @input="setPhone"
+                       v-mask="'+# (###) ###-##-##'"
+                       @input=" bookingService.Patient.setPhone($event.target.value)"
                        @blur="bookingService.Patient.checkPhoneResume()"
-                       :value="bookingService.Patient.phone"
+                       v-model="bookingService.Patient.phone"
                        :class="{'text-color-main': bookingService.Patient.isFilledPhone}"
                        placeholder="Номер телефона"
                 >

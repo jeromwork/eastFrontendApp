@@ -33,7 +33,6 @@ class ScheduleService{
 
     protected setSchedulesByDoctorsDays( schedules: ScheduleInterface[]):this{
         const workDaysByDoctorsDaysClinics:any = {};
-        console.log(schedules)
         for (const s in schedules.sort(this.sortAsc)){
             const schedule = schedules[s];
             workDaysByDoctorsDaysClinics[schedule.doctorId] ??= {};

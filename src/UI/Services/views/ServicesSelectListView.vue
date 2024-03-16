@@ -10,7 +10,7 @@ import EcButton from "../../../UI/Buttons/EcButton.vue";
 import {EventOpenBookingForm} from "../../../composables/useEvents";
 import type BookingFormViewProps from "../../../components/Booking/imterfaces/BookingFormViewProprs";
 import DoctorCardState from "../../../state/DoctorCardState";
-
+import { YandexMetrika } from "../../../composables/useYandexMetrika";
 
 
 const props = defineProps({
@@ -28,6 +28,7 @@ const servicesNames = computed(() => (bookingService.Cart.selectedServicesList?.
 
 
 const openBookingForm = () =>{
+    YandexMetrika?.reachGoal('service_booking');
     doctorCardState.setBookingFormBlocks( {showDoctorBlock:true,
         showServicesBlock:true,
         showScheduleBlock:true,} );
