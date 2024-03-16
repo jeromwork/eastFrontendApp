@@ -3,7 +3,8 @@ import type {Ref} from 'vue'
 import {computed, ref} from "vue";
 import { DoctorsService, ScheduleService, BookingService, ScheduleRequest} from "../EastclinicVueApi";
 import type BookingFormViewProps from "../components/Booking/imterfaces/BookingFormViewProprs";
-import {Ecommerce} from "#build/src/EastclinicVueApi/modules/Ecommerce";
+import { YandexMetrika } from "../composables/useYandexMetrika";
+// import {Ecommerce} from "#build/src/EastclinicVueApi/modules/Ecommerce";
 
 interface DoctorCardInterface {
     workDays: number[] | null;
@@ -43,6 +44,7 @@ export default class DoctorCardState {
 
 
     });
+    protected bookingYAMetrikaGoal = '';
     protected bookingService:BookingService | null = null;  // Adjust the type here
     protected doctor: DoctorInterface | null = null;
 
@@ -199,12 +201,17 @@ export default class DoctorCardState {
         if(res?.ok) {
             this.toogleModalBooking(false);
             this.toogleBookingSuccessMessage(true);
+            YandexMetrika.reachGoal('booking_done')
+            if(this.bookingService && this.bookingService.Cart?.count > 0){
+                YandexMetrika.reachGoal('service_booking_done')
+            }
             //clear form data
             this.data.value.selectedSlot = null;
             this.data.value.selectedSlotError = '';
             this.data.value.workingDay = null;
             this.data.value.selectedClinic = null;
-            this.bookingService = null;
+            this.bookingService = null; //???
+
 
         }else {
             if ( res?.code === 24 || res?.code === 25 ){  //handle busy slot
@@ -221,11 +228,19 @@ export default class DoctorCardState {
 
     protected setShowModalBooking(show:boolean){
         this.data.value.showModalBooking = show as boolean;
-        if(!show){
+        if(!show){ //if close booking form
             this.data.value.selectedSlot = null;
             this.data.value.selectedSlotError = '';
             this.data.value.workingDay = null;
-        }else  this.data.value.showBookingScheduleBlock = false;
+        }else  { //if open booking form
+            this.data.value.showBookingScheduleBlock = false;
+            //set goal for yam
+            if(this.bookingService && this.bookingService.Cart?.count > 0){
+                this.bookingYAMetrikaGoal = 'service_booking_done';
+            }
+
+
+        }
     }
 
 }

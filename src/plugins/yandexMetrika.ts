@@ -23,7 +23,6 @@ export interface YandexMetrikaOptions extends ModuleOptions {
   partytown?: boolean;
 }
 export default defineNuxtPlugin(async ({ _ }) => {
-  console.log(22222)
   const { id, isDev, consoleLog, metrikaUrl, partytown, ...metrikaOptions } = {
     id: '19981279',
     clickmap:true,
@@ -33,7 +32,7 @@ export default defineNuxtPlugin(async ({ _ }) => {
     ecommerce:"dataLayer",
     isDev:false,
     consoleLog:true,
-    metrikaUrl:'https://mc.yandex.ru/watch/19981279',
+    metrikaUrl:'https://mc.yandex.ru/metrika/tag.js',
   } as YandexMetrikaOptions;
   let ready = false;
   useRouter().isReady().then(() => {
@@ -82,7 +81,6 @@ export default defineNuxtPlugin(async ({ _ }) => {
   return {
     provide: {
       ym: (method, ...args) => {
-        debugger;
         if (window.ym) {
           window.ym.apply(null, [id, method, ...args]);
           if (consoleLog) {
@@ -101,6 +99,7 @@ export default defineNuxtPlugin(async ({ _ }) => {
             console.log(`Yandex Metrika is not initialized! Failed to execute: ym("${id}", "${method}", ${argumentsText})`);
           }
         }
+        return window.ym;
       }
     }
   };

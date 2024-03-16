@@ -20,6 +20,7 @@ import ServicesBlockView from "./ServicesBlockView.vue";
 import DoctorCardState from "../../../state/DoctorCardState";
 import ClinicCardSelectedBookingView from "../../../UI/Clinics/views/ClinicCardSelectedBookingView.vue";
 import EcButton from "../../../UI/Buttons/EcButton.vue";
+import { YandexMetrika } from "../../../composables/useYandexMetrika";
 
 
 const props = defineProps<BookingFormViewProps>();
@@ -38,14 +39,12 @@ const bookingService = doctorCardState.BookingService;
 const bookingBlocks = doctorCardState.bookingFormViewProps as BookingFormViewProps;
 
 const doctor = doctorCardState.Doctor as DoctorInterface
-const { $ym } = useNuxtApp()
-// if ($ym) {
-//     $ym('hit', '/', {
-//         referer: '/',
-//         title: 'test'
-//     })
-// }
-$ym?.reachGoal('sdfwe');
+
+const book = () => {
+    YandexMetrika.reachGoal('sdafwe')
+    doctorCardState.book()
+}
+
 </script>
 
 <template>
@@ -130,7 +129,7 @@ $ym?.reachGoal('sdfwe');
 
 
                                 <EcButton class="primary full-width shadow-button services-button-container"
-                                          @click="doctorCardState.book()">
+                                          @click="book">
                                     <span>Записаться</span>
 
                                 </EcButton>
