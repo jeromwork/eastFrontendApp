@@ -1,7 +1,7 @@
 import type {DoctorInterface, ClinicInterface} from "../EastclinicVueApi";
 import type {Ref} from 'vue'
 import {computed, ref} from "vue";
-import {ClinicsService} from "../EastclinicVueApi";
+import {ClinicsService, PlaceLocationsService, SearchService} from "../EastclinicVueApi";
 import { useRoute } from 'vue-router'
 // import { DoctorsService, ScheduleService, BookingService, ScheduleRequest} from "../EastclinicVueApi";
 // import type BookingFormViewProps from "../components/Booking/imterfaces/BookingFormViewProprs";
@@ -9,11 +9,18 @@ import { useRoute } from 'vue-router'
 // import useCalltouch from "../composables/useCalltouch";
 
 
-
+type SearchSeoResult = {
+    title: string;
+    id: number;
+    type: string;
+    url: string;
+}
 
 export default class SearchState {
     public currentClinic:Ref<ClinicInterface|null> = ref(null);
     public clinics?:Ref<ClinicInterface>;
+
+    public searchSeoResults:Ref<SearchSeoResult[]> = ref([])
 
 
 
@@ -28,8 +35,10 @@ export default class SearchState {
 
 
     constructor() {
+        //init search data from url
         if(ClinicsService.currentClinic) this.currentClinic.value = ClinicsService.currentClinic;
         if(ClinicsService.clinics)    this.clinics = ClinicsService.clinics;
+        this.searchSeoResults.value = SearchService.foundItems() as SearchSeoResult[];
     }
 
 
@@ -38,27 +47,28 @@ export default class SearchState {
         if (clinic.url){
 
         }
+        url = PlaceLocationsService.getUrlWithPlace(url, (clinic?.url) ?? '');
+        this.showResultsPanel = false;
 
-        if( selectedClinic?.url ){
-            url = this.$store.getters['PlaceLocations/getUrlByPlace'](this.$route.path, selectedClinic.url);
-        }else{
-            url = this.$store.getters['PlaceLocations/getUrlWithoutPlace'](this.$route.path);
-        }
-
-        if(this.$router.history.$url === url) {
-            this.hideClinicOverlay();
-        }else{
-            if(this.$router.history.$url === '/') {
-                url = '/vrachi' + url;
-            }
-            this.$router.push({path: url});
-        }
+        // if(this.$router.history.$url === url) {
+        //     this.hideClinicOverlay();
+        // }else{
+        //     if(this.$router.history.$url === '/') {
+        //         url = '/vrachi' + url;
+        //     }
+        //     this.$router.push({path: url});
+        // }
     }
 
 
 
-    public set searchSeoString(search:string){this._searchSeoString.value = search}
+    public set searchSeoString(search:string){
+        this._searchSeoString.value = search
+            //todo clear symbols
+        SearchService.searchFetch(search);
+    }
     public get searchSeoString():string{return this._searchSeoString.value;}
+
 
 
     public toggleShowClinicsList(show:boolean):this{

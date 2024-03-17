@@ -9,6 +9,17 @@ import {postToServer} from "../../util/UseFetchToServer";
 import {API_MODX_URL} from "../../config";
 
 const state = new StateManager();
+
+
+type IPlace = {
+    id:number,
+    name:string
+}
+
+type IPlaceResponse = {
+    data:IPlace[]
+}
+
 class PlaceLocationsService {
     private state: StateManager;
 
@@ -19,8 +30,20 @@ class PlaceLocationsService {
     public async getPlacesFromServer( ){
         try {
 
-            const res = await postToServer(API_MODX_URL, { component: 'placeslocations', action: 'get_places' });
-            this.state.set('places', res);
+            const res = await postToServer(API_MODX_URL, { component: 'placeslocations', action: 'get_places' }) as IPlaceResponse;
+
+            console.log(res?.data)
+            if(res?.data?.length ){
+                const places: { [key: string]: IPlace } = {};
+                res.data.map( place=>{
+                    places[place.name] = place;
+                });
+                this.state.set('places', places);
+            }else {
+                throw new Error('not have places from server')
+            }
+
+
         } catch (error) {
             console.log('error')
             // Handle the error if needed
@@ -32,17 +55,37 @@ class PlaceLocationsService {
     }
 
 
-    public get places():PlaceInterface[]{
-        return this.state.get('places') as PlaceInterface[];
+    public get places():{ [key: string]: IPlace }{
+        return this.state.get('places') as { [key: string]: IPlace };
     }
 
+    public place( name:string):IPlace|null{
+        return (this.places?.[name]) ?? null
+    }
 
-    // public getClinic( id:number):ClinicInterface|null{
-    //     return (this.state.get('clinics')?.[id]) ? this.state.get('clinics')[id] : null
-    // }
+    public getUrlWithPlace (url:string, placeName:string = ''):string{
+
+        if(!url){
+            throw new Error('Necessarily get {url}');
+        }
+        let urlParts = this.getUrlPartsWithoutPlace(url);
+        //add placeName to url
+        if(placeName && this.place(placeName)) {
+            urlParts.push(placeName);
+        } else {
+            return url;
+        }
+
+        return '/' + urlParts.join('/');
+        }
 
 
-
-
+    public getUrlPartsWithoutPlace(url:string):string[]{
+        //clear url for previous place
+        let urlParts = url.split('/')
+        if(urlParts.length === 0) return [url];
+        urlParts = urlParts.filter( part => part !== '' && !this.places[part] );
+        return urlParts;
+    }
 }
 export default new PlaceLocationsService()
