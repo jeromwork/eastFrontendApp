@@ -7,7 +7,7 @@ import SearchInput from "../../../UI/SearchInput.vue";
 import {defineProps} from "vue";
 import SearchState from "../../../state/SearchState";
 import ClinicCardSelectedView from "../../../UI/Clinics/views/ClinicCardSelectedView.vue";
-import {ClinicInterface} from "../../../EastclinicVueApi";
+import type {ClinicInterface} from "../../../EastclinicVueApi";
 import useIsMobile from "../../../composables/useIsMobile";
 
 const props = defineProps<{ state:SearchState }>()
@@ -19,7 +19,6 @@ const mobile = useIsMobile()
 </script>
 
 <template>
-
     <div
         class="fake-search-input right"
         :class="{'mobile': mobile}"

@@ -34,9 +34,13 @@ export default defineNuxtConfig({
       // add a route
       pages.push({
         name: 'vrachi',
-        //WTF??
-        path: '/vrachi/:slug1?/:slug2?/:slug3?/:slug4?/:slug5?/:slug6?/:slug7?',
+        path: '/vrachi/:slug1?/:slug2?/:slug3?/:slug4?/:slug5?/:slug6?/:slug7?',//WTF??
         file: '~/pages/vrachi/index.vue',
+      });
+      pages.push({
+        name: 'index',
+        path: '/:slug1?/:slug2?/:slug3?/:slug4?/:slug5?/:slug6?/:slug7?',//WTF??
+        file: '~/pages/index.vue',
       })
 
 
