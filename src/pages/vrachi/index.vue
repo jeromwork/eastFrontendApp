@@ -11,6 +11,7 @@ const pageInfo = PageInfoService.getPageInfo
 // const route = useRoute();
 
 import { onMounted, ref, defineAsyncComponent } from 'vue';
+import MainPageSearch from "../../components/SearchPanel/MainPageSearch.vue";
 
 
 
@@ -30,6 +31,9 @@ onMounted(() => {
     <div>
 
         <NuxtLayout name="doctors">
+
+            <MainPageSearch/>
+
             <Doctors>
                 <template #doctorsList="{doctor}">
 

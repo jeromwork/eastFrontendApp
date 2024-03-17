@@ -22,9 +22,9 @@ class SearchService {
         this.state = state;
     }
 
-    public async searchFetch( searchString:string ){
+    public async searchFetch( searchString:string = '' ){
 
-        const {data} = await postToServer(API_MODX_URL, { component: 'placeslocations', action: 'get_places' }) as TSearchResponse;
+        const {data} = await postToServer(API_MODX_URL, { component: 'health', action: 'search' }) as TSearchResponse;
 
         this.state.set('searchSeo', data);
     }

@@ -30,7 +30,7 @@ export default class SearchState {
     protected _showSeoList:Ref<boolean> = ref(false);
     protected _showResultsPanel:Ref<boolean> = ref(false);
 
-    protected _noResults:Ref<boolean> = ref(true);
+    protected _noResults:Ref<boolean> = ref(false);
 
 
 
@@ -44,21 +44,10 @@ export default class SearchState {
 
 
     public selectClinic(clinic:ClinicInterface){
-        let url = useRoute().path;
-        if (clinic.url){
-
-        }
+        let url = window.location.pathname;
         url = PlaceLocationsService.getUrlWithPlace(url, (clinic?.url) ?? '');
         this.showResultsPanel = false;
-
-        // if(this.$router.history.$url === url) {
-        //     this.hideClinicOverlay();
-        // }else{
-        //     if(this.$router.history.$url === '/') {
-        //         url = '/vrachi' + url;
-        //     }
-        //     this.$router.push({path: url});
-        // }
+        useNuxtApp().$router.push(url)
     }
 
 
@@ -110,13 +99,13 @@ export default class SearchState {
     protected setShowClinicsList( show?:boolean ){
         if(show === undefined) show = !this._showClinicsList.value
         this._showClinicsList.value = show;
-        this._showSeoList.value = !show;
+        this._showSeoList.value = false;
         this._showResultsPanel.value = show;
     }
     protected setShowSeoList(show?:boolean){
         if(show === undefined) show = !this._showSeoList.value
         this._showSeoList.value = show;
-        this._showClinicsList.value = !show;
+        this._showClinicsList.value = false;
         this._showResultsPanel.value = show;
     }
 

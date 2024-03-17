@@ -26,9 +26,6 @@ const goToDoctorsPage = () => {
     state.showResultsPanel = false;
     useRouter().push('/vrachi');
 }
-const sdfw = () => {
-    console.log(2222222222)
-}
 
 </script>
 
@@ -37,11 +34,11 @@ const sdfw = () => {
 <template>
     <section class="searchpanel">
         <div class="searchpanel__inputs-group text-center">
-{{state.searchSeoString}}
             <!--found seo-->
             <SearchInput class="search-input left"
                          placeholder="Врачи, Болезни, Услуги"
                          v-model="state.searchSeoString"
+                         @click="state.toggleShowSeoList()"
 
             >
                 <template #leftIcon>
@@ -55,9 +52,9 @@ const sdfw = () => {
             <SearchClinicView :state="state"  @click="state.toggleShowClinicsList()"></SearchClinicView>
 
         </div>
-{{state.showResultsPanel}}
+
 <!--search results panel-->
-            <transition name="fade">
+<!--            <transition name="fade">-->
             <div
                 v-show="state.showResultsPanel"
                 class="searchpanel__results">
@@ -67,7 +64,7 @@ const sdfw = () => {
 
                             <div class="searchpanel__results__items">
                                 <div
-                                    v-for="item in items"
+                                    v-for="item in state.searchSeoResults"
                                     @click="chooseItem(item)"
                                     v-html="textHighlighting(item.title)"
                                     class="dropdown-panel__items-list__item pointer"></div>
@@ -75,7 +72,7 @@ const sdfw = () => {
                     </div>
                 </div>
                 <!--no results-->
-                <div v-else-if="state.noResults" class="searchpanel__results__no-results">
+                <div v-else-if="state.noResults  && state.showSeoList" class="searchpanel__results__no-results">
                     <div class="searchpanel__results__no-results__search-image"></div>
                     <div class="searchpanel__results__no-results__search-header text-semibold">По вашему запросу ничего не найдено</div>
                     <div class="searchpanel__results__no-results__search-desc text-secondary">Попробуйте изменить запрос или перейдите на страницу врачей</div>
@@ -87,8 +84,7 @@ const sdfw = () => {
                     </div>
                 </div>
 <!--clinic results-->
-                <div
-                    v-show="state.clinics"
+                <div  v-show="state.clinics && state.showClinicsList"
                     class="searchpanel__results__right-side">
                     <div
                         v-for="clinic in clinics"
@@ -119,13 +115,7 @@ const sdfw = () => {
 
 
             </div>
-            </transition>
-
-
-
-
-
-
+<!--            </transition>-->
 
     </section>
 

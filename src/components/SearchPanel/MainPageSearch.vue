@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import SearchPanelController from './SearchPanel/Controller.vue'
-import MainSearchView from './SearchPanel/views/MainSearchView.vue';
+import SearchPanelController from './Controller.vue'
+import MainSearchView from './views/MainSearchView.vue';
 
 
 </script>
