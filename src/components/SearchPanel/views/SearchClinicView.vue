@@ -22,7 +22,6 @@ const mobile = useIsMobile()
     <div
         class="fake-search-input right"
         :class="{'mobile': mobile}"
-        @click="state.toggleShowClinicsList"
     >
         <svg class="fake-search-input__prepend" width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9.05365 18.9473C9.05365 19.5287 8.58144 20 7.99895 20C7.41645 20 6.94424 19.5287 6.94424 18.9473C6.94424 18.3658 7.41645 17.8945 7.99895 17.8945C8.58144 17.8945 9.05365 18.3658 9.05365 18.9473Z" fill="#878FA2"/>

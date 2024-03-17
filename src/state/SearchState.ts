@@ -38,6 +38,7 @@ export default class SearchState {
         //init search data from url
         if(ClinicsService.currentClinic) this.currentClinic.value = ClinicsService.currentClinic;
         if(ClinicsService.clinics)    this.clinics = ClinicsService.clinics;
+
         this.searchSeoResults.value = SearchService.foundItems() as SearchSeoResult[];
     }
 
@@ -71,13 +72,13 @@ export default class SearchState {
 
 
 
-    public toggleShowClinicsList(show:boolean):this{
-        this.setShowClinicsList(show);
+    public toggleShowClinicsList():this{
+        this.setShowClinicsList();
         return this;
     }
 
-    public toggleShowSeoList(show:boolean):this{
-        this.setShowClinicsList(show);
+    public toggleShowSeoList():this{
+        this.setShowSeoList();
         return this;
     }
 
@@ -90,6 +91,7 @@ export default class SearchState {
 
     public get showResultsPanel():boolean{   return this._showResultsPanel.value; }
     public set showResultsPanel( show:boolean ){
+        console.log(show)
         this._showResultsPanel.value = show;
         if (!show){
             this.setShowSeoList(false);
@@ -105,15 +107,17 @@ export default class SearchState {
 
 
 
-    protected setShowClinicsList( show:boolean ){
+    protected setShowClinicsList( show?:boolean ){
+        if(show === undefined) show = !this._showClinicsList.value
         this._showClinicsList.value = show;
         this._showSeoList.value = !show;
-        this._showResultsPanel.value = true;
+        this._showResultsPanel.value = show;
     }
-    protected setShowSeoList( show:boolean ){
+    protected setShowSeoList(show?:boolean){
+        if(show === undefined) show = !this._showSeoList.value
         this._showSeoList.value = show;
         this._showClinicsList.value = !show;
-        this._showResultsPanel.value = true;
+        this._showResultsPanel.value = show;
     }
 
 

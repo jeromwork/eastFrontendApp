@@ -51,12 +51,11 @@ const sdfw = () => {
                     </svg>
                 </template>
             </SearchInput>
-
             <!--found clinic-->
-            <SearchClinicView :state="state"></SearchClinicView>
+            <SearchClinicView :state="state"  @click="state.toggleShowClinicsList()"></SearchClinicView>
 
         </div>
-
+{{state.showResultsPanel}}
 <!--search results panel-->
             <transition name="fade">
             <div
@@ -97,7 +96,7 @@ const sdfw = () => {
                     >
                         <div v-if="clinic.id !== 42"
                             class="dropdown-panel__items-list__item clinic pointer"
-                            :class="{'active': (currentClinic.id === clinic.id && mobile)}"
+                            :class="{'active': (currentClinic?.id === clinic.id && mobile)}"
 
                         >
                             <ClinicCardInSelectListView :clinic="clinic"/>
