@@ -1,31 +1,59 @@
 <script setup lang="ts">
-import {defineProps } from 'vue'
+import {defineProps, ref } from 'vue'
+import type { Ref } from 'vue'
 import { useRouter } from 'vue-router'
-import type SearchState from '../../../state/SearchState'
+import SeoState from '../../../state/Search/SeoState'
+import ClinicsState from '../../../state/Search/ClinicsState'
 import ClinicCardSelectedView from "../../../UI/Clinics/views/ClinicCardSelectedView.vue";
 import useIsMobile from "../../../composables/useIsMobile";
 import type {ClinicInterface} from "../../../EastclinicVueApi";
 import SearchClinicView from "./SearchClinicView.vue";
-import EcButton from "../../../UI/Buttons/EcButton.vue";
-import SearchInput from "../../../UI/SearchInput.vue";
+
+
 import ClinicCardInSelectListView from "../../../UI/Clinics/views/ClinicCardInSelectListView.vue";
 import {SearchService, useTextHighLight} from "../../../EastclinicVueApi";
 import type {SearchResultInterface} from "../../../EastclinicVueApi";
+import SeoSearchInputView from "./SeoSearchInputView.vue";
+import SeoSearchResultsView from "./SeoSearchResultsView.vue";
+import { onClickOutside } from '@vueuse/core'
 
-const props = defineProps<{ state:SearchState }>(
-)
+//here use 2 state for possibility use them partly
+
+const seoSearchState = new SeoState();
+const clinicsSearchState = new ClinicsState();
 
 
-
-
-const state = props.state
-const currentClinic = computed(() => props.state.currentClinic).value as ClinicInterface
-const clinics = state.clinics as ClinicInterface[]
+const currentClinic = computed(() => clinicsSearchState.currentClinic).value as ClinicInterface
+const clinics = clinicsSearchState.clinics as ClinicInterface[]
 
 const mobile = useIsMobile()
-const goToDoctorsPage = () => {
-    state.showResultsPanel = false;
-    useRouter().push('/vrachi');
+const showResultsPanel:Ref<boolean> = ref(false);
+const showSeoSearchResults:Ref<boolean> = ref(false);
+const showClinics:Ref<boolean> = ref(false);
+
+const toggleShowClinics = (show?:boolean) => {
+    if(show === undefined) show = !showClinics.value
+    showClinics.value = show;
+    showResultsPanel.value = show
+    if(show) showSeoSearchResults.value = !show;
+}
+
+const refResultPanel = ref(null)
+
+onClickOutside(refResultPanel, event => {
+    showResultsPanel.value = showSeoSearchResults.value = showClinics.value = false;
+})
+const toogleShowSeoSearchResults = ( ) =>{
+    showSeoSearchResults.value = true;
+    showResultsPanel.value = true;
+    showClinics.value = false;
+}
+
+const selectClinic = (clinic) =>{
+    clinicsSearchState.selectClinic(clinic)
+    showResultsPanel.value = false;
+    showSeoSearchResults.value = false;
+    showClinics.value = false;
 }
 
 </script>
@@ -35,63 +63,28 @@ const goToDoctorsPage = () => {
 <template>
     <section class="searchpanel">
         <div class="searchpanel__inputs-group text-center">
-            <!--found seo-->
-            <SearchInput class="search-input left"
-                         placeholder="Врачи, Болезни, Услуги"
-                         v-model="state.searchSeoString"
-                         @click="state.toggleShowSeoList()"
 
-            >
-                <template #leftIcon>
-                    <svg
-                        class="search-input__search" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                        <path d="M12.5 11H11.71L11.43 10.73C12.63 9.33002 13.25 7.42002 12.91 5.39002C12.44 2.61002 10.12 0.390015 7.32001 0.0500152C3.09001 -0.469985 -0.469985 3.09001 0.0500152 7.32001C0.390015 10.12 2.61002 12.44 5.39002 12.91C7.42002 13.25 9.33002 12.63 10.73 11.43L11 11.71V12.5L15.25 16.75C15.66 17.16 16.33 17.16 16.74 16.75C17.15 16.34 17.15 15.67 16.74 15.26L12.5 11ZM6.50002 11C4.01002 11 2.00002 8.99002 2.00002 6.50002C2.00002 4.01002 4.01002 2.00002 6.50002 2.00002C8.99002 2.00002 11 4.01002 11 6.50002C11 8.99002 8.99002 11 6.50002 11Z" fill="#878FA2"/>
-                    </svg>
-                </template>
-            </SearchInput>
-            <!--found clinic-->
-            <SearchClinicView :state="state"  @click="state.toggleShowClinicsList()"></SearchClinicView>
+<!--found seo-->
+            <SeoSearchInputView :state="seoSearchState" @click="toogleShowSeoSearchResults()"/>
 
+<!--found clinic-->
+            <SearchClinicView :state="clinicsSearchState"  @click="toggleShowClinics()"></SearchClinicView>
         </div>
+
 <!--search results panel-->
 <!--            <transition name="fade">-->
             <div
-                v-show="state.showResultsPanel"
-                class="searchpanel__results">
+                v-if="showResultsPanel"
+                class="searchpanel__results"
+            ref="refResultPanel">
 <!--seo results-->
-                <div v-if="state.showSeoList && state.searchSeoResults.length > 0">
-                    <div class="searchpanel__results__left-side">
-
-                            <div class="searchpanel__results__items">
-                                <div
-                                    v-for="item in state.searchSeoResults"
-                                    class="dropdown-panel__items-list__item pointer"
-                                    @click="state.selectSeoItem(item)"
-                                    v-html="useTextHighLight(item.title, state.searchSeoString)"
-                                >
-
-                                </div>
-                            </div>
-                    </div>
-                </div>
-                <!--no results-->
-                <div v-else-if="state.searchSeoResults.length ===0  && state.showSeoList" class="searchpanel__results__no-results">
-                    <div class="searchpanel__results__no-results__search-image"></div>
-                    <div class="searchpanel__results__no-results__search-header text-semibold">По вашему запросу ничего не найдено</div>
-                    <div class="searchpanel__results__no-results__search-desc text-secondary">Попробуйте изменить запрос или перейдите на страницу врачей</div>
-                    <div class="searchpanel__results__no-results__search-button">
-                        <EcButton
-                            @click="goToDoctorsPage"
-                            class="primary"
-                        >Посмотреть врачей</EcButton>
-                    </div>
-                </div>
+                <SeoSearchResultsView v-if="showSeoSearchResults" :state="seoSearchState" />
 <!--clinic results-->
-                <div  v-show="state.clinics && state.showClinicsList"
+                <div  v-show="clinicsSearchState.clinics && showClinics"
                     class="searchpanel__results__right-side">
                     <div
                         v-for="clinic in clinics"
-                        @click="state.selectClinic(clinic)"
+                        @click="selectClinic(clinic)"
                     >
                         <div v-if="clinic.id !== 42"
                             class="dropdown-panel__items-list__item clinic pointer"

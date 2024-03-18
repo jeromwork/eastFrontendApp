@@ -11,7 +11,7 @@ const pageInfo = PageInfoService.getPageInfo
 // const route = useRoute();
 
 import { onMounted, ref, defineAsyncComponent } from 'vue';
-import MainPageSearch from "../../components/SearchPanel/MainPageSearch.vue";
+import MainPageSearch from "../../components/SearchPanel/MainPageSearchView.vue";
 
 
 

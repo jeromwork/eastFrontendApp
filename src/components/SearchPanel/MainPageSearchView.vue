@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import SearchPanelController from './Controller.vue'
 import MainSearchView from './views/MainSearchView.vue';
 
 
@@ -18,11 +17,7 @@ import MainSearchView from './views/MainSearchView.vue';
                 <h1 class="main_page__header-text">Точный диагноз <br>и бережное лечение</h1>
                 <div class="main_page__header-desc">Найдите своего врача здесь </div>
             </div>
-            <SearchPanelController  >
-                <template #default="{state}">
-                    <MainSearchView :state="state"/>
-                </template>
-            </SearchPanelController>
+            <MainSearchView/>
         </div>
 
     </div>

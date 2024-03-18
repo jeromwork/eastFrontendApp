@@ -5,13 +5,13 @@
 
 import SearchInput from "../../../UI/SearchInput.vue";
 import {defineProps} from "vue";
-import SearchState from "../../../state/SearchState";
+import ClinicsState from "../../../state/Search/ClinicsState";
 import ClinicCardSelectedView from "../../../UI/Clinics/views/ClinicCardSelectedView.vue";
 import type {ClinicInterface} from "../../../EastclinicVueApi";
 import useIsMobile from "../../../composables/useIsMobile";
 
-const props = defineProps<{ state:SearchState }>()
-const state = props.state as SearchState
+const props = defineProps<{ state:ClinicsState }>()
+const state = props.state as ClinicsState
 const currentClinic = computed(() => props.state.currentClinic).value as ClinicInterface
 
 const mobile = useIsMobile()
@@ -30,7 +30,7 @@ const mobile = useIsMobile()
         </svg>
         <span
             class="fake-search-input__input no-focus"
-            v-if="currentClinic && !mobile || !state.overlay && mobile &&  currentClinic"
+            v-if="currentClinic && !mobile || mobile &&  currentClinic"
         >
                     <div
                         class="dropdown-panel__items-list__item no-hover clinic"

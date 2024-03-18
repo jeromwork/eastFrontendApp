@@ -79,7 +79,6 @@
     justify-content: space-between;
     &__left-side {
       max-height: 420px;
-      width: 50%;
       height: auto;
       overflow-y: scroll;
       @include scroll;

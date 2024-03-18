@@ -2,7 +2,7 @@
 
 <script setup>
 import Gallery from '~/UI/Carousel'
-import MainPageSearch from "../components/SearchPanel/MainPageSearch.vue";
+import MainPageSearch from "../components/SearchPanel/MainPageSearchView.vue";
 
 const name = "index.vue";
 </script>
