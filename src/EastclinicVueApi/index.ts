@@ -20,6 +20,11 @@ import ClinicsRequest from './modules/Clinics/api/ClinicsRequest';
 
 import BookingService from './modules/Booking/BookingService'
 import Patient from "./modules/Booking/Patient";
+import PlaceLocationsService from "./modules/PlaceLocations/PlaceLocationsService";
+import SearchService from "./modules/Search/SearchService";
+import useTextHighLight from './util/useTextHighLight'
+
+
 
 
 import type PageInfoInterface from './interfaces/PageInfoInterface'
@@ -31,6 +36,8 @@ import type ScheduleInterface from "./interfaces/ScheduleInterface";
 import type ClinicInterface from "./interfaces/ClinicInterface";
 import type ServiceData from "./interfaces/ServiceData";
 import type ServiceCartInterface from "./interfaces/ServiceCartInterface";
+import type PlaceInterface from "./interfaces/PlaceInterface";
+import type SearchResultInterface from "./interfaces/SearchResultInterface";
 
 
 
@@ -53,6 +60,11 @@ export {
 
     BookingService,
     Patient,
+    PlaceLocationsService,
+    SearchService,
+
+
+    useTextHighLight
 };
 
 export type {
@@ -69,4 +81,6 @@ export type {
 
     ServiceData,
     ServiceCartInterface,
+    PlaceInterface,
+    SearchResultInterface,
 }

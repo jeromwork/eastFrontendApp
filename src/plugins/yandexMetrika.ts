@@ -30,7 +30,7 @@ export default defineNuxtPlugin(async ({ _ }) => {
     accurateTrackBounce:true,
     webvisor: true,
     ecommerce:"dataLayer",
-    isDev:false,
+    isDev:true,
     consoleLog:true,
     metrikaUrl:'https://mc.yandex.ru/metrika/tag.js',
   } as YandexMetrikaOptions;

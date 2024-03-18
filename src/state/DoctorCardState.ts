@@ -1,11 +1,10 @@
 import type {DoctorInterface, ClinicInterface} from "../EastclinicVueApi";
 import type {Ref} from 'vue'
 import {computed, ref} from "vue";
-import { DoctorsService, ScheduleService, BookingService, ScheduleRequest} from "../EastclinicVueApi";
+import { DoctorsService, ScheduleService, BookingService, ScheduleRequest, Patient} from "../EastclinicVueApi";
 import type BookingFormViewProps from "../components/Booking/imterfaces/BookingFormViewProprs";
 import { YandexMetrika } from "../composables/useYandexMetrika";
 import useCalltouch from "../composables/useCalltouch";
-import {Patient} from "#build/src/EastclinicVueApi";
 // import {Ecommerce} from "#build/src/EastclinicVueApi/modules/Ecommerce";
 
 interface DoctorCardInterface {

@@ -2,12 +2,15 @@
 
 <script setup>
 import Gallery from '~/UI/Carousel'
+import MainPageSearch from "../components/SearchPanel/MainPageSearchView.vue";
+
 const name = "index.vue";
 </script>
 <template>
     <NuxtLayout name="default">
     <div class="white" style="height: 100%;">
 
+        <MainPageSearch/>
 <!--        <MainPageSearch />-->
 
         <Gallery/>

@@ -25,11 +25,6 @@ import { YandexMetrika } from "../../../composables/useYandexMetrika";
 
 const props = defineProps<BookingFormViewProps>();
 
-
-
-
-const showChooseClinicScheduleBlock = ref(false)
-
 const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
 if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');
 
@@ -40,10 +35,7 @@ const bookingBlocks = doctorCardState.bookingFormViewProps as BookingFormViewPro
 
 const doctor = doctorCardState.Doctor as DoctorInterface
 
-const book = () => {
-    YandexMetrika.reachGoal('sdafwe')
-    doctorCardState.book()
-}
+
 
 </script>
 
@@ -129,7 +121,7 @@ const book = () => {
 
 
                                 <EcButton class="primary full-width shadow-button services-button-container"
-                                          @click="book">
+                                          @click="doctorCardState.book()">
                                     <span>Записаться</span>
 
                                 </EcButton>
