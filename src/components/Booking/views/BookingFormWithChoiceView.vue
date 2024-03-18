@@ -80,7 +80,7 @@ const doctor = doctorCardState.Doctor as DoctorInterface
                                     </div>
 
                                 </div>
-                                <PatientFormView/>
+                                <PatientFormView :state-patient="doctorCardState.BookingService.Patient"/>
 
 
 
