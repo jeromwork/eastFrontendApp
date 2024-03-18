@@ -22,7 +22,6 @@ class PageInfoService{
         request.with('component', 'east').with('action', 'getPageInfo')
 
         const {data, sessionId} = await (new PageInfoApi).get(request.with('component', 'east').getRequestData()) as ApiGetPageInfoResponseInterface;
-        console.log(22222222)
         this.state.set('pageInfo', data.resource);
         this.state.set('sessionId', sessionId);
         if(data.currentClinicId){

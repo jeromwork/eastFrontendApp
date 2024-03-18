@@ -32,7 +32,6 @@ class PlaceLocationsService {
 
             const res = await postToServer(API_MODX_URL, { component: 'placeslocations', action: 'get_places' }) as IPlaceResponse;
 
-            console.log(res?.data)
             if(res?.data?.length ){
                 const places: { [key: string]: IPlace } = {};
                 res.data.map( place=>{

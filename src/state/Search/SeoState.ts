@@ -35,6 +35,7 @@ export default class SeoState {
 
     public set searchSeoString(search:string){
         //todo clear symbols
+        search = search.replace(/[^0-9a-zA-ZА-ЯЁёа-я- ]+/ug, '');
         this._searchSeoString.value = search
 
     }
@@ -56,6 +57,8 @@ export default class SeoState {
             useNuxtApp().$router.push(path)
         }
     }
+
+
 
 
 }

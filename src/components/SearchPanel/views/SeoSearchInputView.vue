@@ -21,6 +21,7 @@ const goToDoctorsPage = () => {
     <SearchInput class="search-input left"
                  placeholder="Врачи, Болезни, Услуги"
                  v-model="state.searchSeoString"
+                 @input="state.searchSeoString = $event.target.value"
     >
         <template #leftIcon>
             <svg

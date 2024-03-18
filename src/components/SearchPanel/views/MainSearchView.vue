@@ -26,35 +26,48 @@ const clinicsSearchState = new ClinicsState();
 const currentClinic = computed(() => clinicsSearchState.currentClinic).value as ClinicInterface
 const clinics = clinicsSearchState.clinics as ClinicInterface[]
 
-const mobile = useIsMobile()
-const showResultsPanel:Ref<boolean> = ref(false);
+const isMobile = useIsMobile()
+const visibleResultsPanel:Ref<boolean> = ref(false);
 const showSeoSearchResults:Ref<boolean> = ref(false);
 const showClinics:Ref<boolean> = ref(false);
 
+//control visible clinics list
 const toggleShowClinics = (show?:boolean) => {
     if(show === undefined) show = !showClinics.value
     showClinics.value = show;
-    showResultsPanel.value = show
+    showResultsPanel();
     if(show) showSeoSearchResults.value = !show;
 }
 
+//close result panel by click outside
 const refResultPanel = ref(null)
-
 onClickOutside(refResultPanel, event => {
-    showResultsPanel.value = showSeoSearchResults.value = showClinics.value = false;
+    visibleResultsPanel.value = showSeoSearchResults.value = showClinics.value = false;
 })
+// control visible seo search results
 const toogleShowSeoSearchResults = ( ) =>{
     showSeoSearchResults.value = true;
-    showResultsPanel.value = true;
+    showResultsPanel();
     showClinics.value = false;
 }
 
 const selectClinic = (clinic) =>{
     clinicsSearchState.selectClinic(clinic)
-    showResultsPanel.value = false;
-    showSeoSearchResults.value = false;
-    showClinics.value = false;
+    visibleResultsPanel.value = showSeoSearchResults.value = showClinics.value = false;
 }
+//control visible all result panel, with scroll top if mobile mode
+const showResultsPanel = () => {
+    visibleResultsPanel.value = true;
+    if(isMobile){
+        console.log('scrollTop')
+        setTimeout(() => {
+            let html = document.getElementsByTagName('html')[0];
+            html.scrollTop = 0;
+        }, 50);
+    }
+
+}
+//todo show fullscreen for mobile
 
 </script>
 
@@ -74,7 +87,7 @@ const selectClinic = (clinic) =>{
 <!--search results panel-->
 <!--            <transition name="fade">-->
             <div
-                v-if="showResultsPanel"
+                v-if="visibleResultsPanel"
                 class="searchpanel__results"
             ref="refResultPanel">
 <!--seo results-->
@@ -88,7 +101,7 @@ const selectClinic = (clinic) =>{
                     >
                         <div v-if="clinic.id !== 42"
                             class="dropdown-panel__items-list__item clinic pointer"
-                            :class="{'active': (currentClinic?.id === clinic.id && mobile)}"
+                            :class="{'active': (currentClinic?.id === clinic.id && isMobile)}"
 
                         >
                             <ClinicCardInSelectListView :clinic="clinic"/>
