@@ -9,7 +9,8 @@ import SearchClinicView from "./SearchClinicView.vue";
 import EcButton from "../../../UI/Buttons/EcButton.vue";
 import SearchInput from "../../../UI/SearchInput.vue";
 import ClinicCardInSelectListView from "../../../UI/Clinics/views/ClinicCardInSelectListView.vue";
-
+import useTextHighLight from "../../../composables/useTextHighLight";
+import type {SearchResultInterface} from "../../../EastclinicVueApi";
 
 const props = defineProps<{ state:SearchState }>(
 )
@@ -20,6 +21,7 @@ const props = defineProps<{ state:SearchState }>(
 const state = props.state
 const currentClinic = computed(() => props.state.currentClinic).value as ClinicInterface
 const clinics = state.clinics as ClinicInterface[]
+
 
 const mobile = useIsMobile()
 const goToDoctorsPage = () => {
@@ -52,22 +54,24 @@ const goToDoctorsPage = () => {
             <SearchClinicView :state="state"  @click="state.toggleShowClinicsList()"></SearchClinicView>
 
         </div>
-
 <!--search results panel-->
 <!--            <transition name="fade">-->
             <div
                 v-show="state.showResultsPanel"
                 class="searchpanel__results">
 <!--seo results-->
-                <div v-if="!state.noResults && state.showSeoList">
+                <div v-if="state.showSeoList && state.searchSeoResults.length > 0">
                     <div class="searchpanel__results__left-side">
 
                             <div class="searchpanel__results__items">
                                 <div
                                     v-for="item in state.searchSeoResults"
-                                    @click="chooseItem(item)"
-                                    v-html="textHighlighting(item.title)"
-                                    class="dropdown-panel__items-list__item pointer"></div>
+                                    class="dropdown-panel__items-list__item pointer"
+                                    @click="state.selectSeoItem(item)"
+                                    v-html="useTextHighLight(item.title, state.searchSeoString)"
+                                >
+
+                                </div>
                             </div>
                     </div>
                 </div>
