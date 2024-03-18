@@ -24,7 +24,6 @@ export default class SearchState {
     protected _showSeoList:Ref<boolean> = ref(false);
     protected _showResultsPanel:Ref<boolean> = ref(false);
 
-    protected _noResults:Ref<boolean> = ref(false);
 
 
 
@@ -33,10 +32,9 @@ export default class SearchState {
         if(ClinicsService.currentClinic) this.currentClinic.value = ClinicsService.currentClinic;
         if(ClinicsService.clinics)    this.clinics = ClinicsService.clinics;
 
-        this._searchSeoResults.value = SearchService.foundItems() as SearchResultInterface[];
+        this._searchSeoResults = computed(() => SearchService.foundItems());
         watch(this._searchSeoString, async () => {
             await SearchService.searchFetch(this._searchSeoString.value);
-            this._noResults.value = !(this._searchSeoResults.value.length > 0)
         })
 
     }
@@ -54,8 +52,6 @@ export default class SearchState {
     public set searchSeoString(search:string){
         //todo clear symbols
         this._searchSeoString.value = search
-
-
 
     }
     public get searchSeoString():string{return this._searchSeoString.value;}
@@ -82,15 +78,12 @@ export default class SearchState {
 
     public get showResultsPanel():boolean{   return this._showResultsPanel.value; }
     public set showResultsPanel( show:boolean ){
-        console.log(show)
         this._showResultsPanel.value = show;
         if (!show){
             this.setShowSeoList(false);
             this.setShowClinicsList(false);
         }
     }
-    public get noResults():boolean{   return this._noResults.value; }
-
     public clearClinic():this{
         this.currentClinic.value = null;
         return this;

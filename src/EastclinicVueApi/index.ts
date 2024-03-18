@@ -22,6 +22,9 @@ import BookingService from './modules/Booking/BookingService'
 import Patient from "./modules/Booking/Patient";
 import PlaceLocationsService from "./modules/PlaceLocations/PlaceLocationsService";
 import SearchService from "./modules/Search/SearchService";
+import useTextHighLight from './util/useTextHighLight'
+
+
 
 
 import type PageInfoInterface from './interfaces/PageInfoInterface'
@@ -59,6 +62,9 @@ export {
     Patient,
     PlaceLocationsService,
     SearchService,
+
+
+    useTextHighLight
 };
 
 export type {

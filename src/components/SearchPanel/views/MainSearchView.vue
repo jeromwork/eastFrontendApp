@@ -9,7 +9,7 @@ import SearchClinicView from "./SearchClinicView.vue";
 import EcButton from "../../../UI/Buttons/EcButton.vue";
 import SearchInput from "../../../UI/SearchInput.vue";
 import ClinicCardInSelectListView from "../../../UI/Clinics/views/ClinicCardInSelectListView.vue";
-import useTextHighLight from "../../../composables/useTextHighLight";
+import {SearchService, useTextHighLight} from "../../../EastclinicVueApi";
 import type {SearchResultInterface} from "../../../EastclinicVueApi";
 
 const props = defineProps<{ state:SearchState }>(
@@ -21,7 +21,6 @@ const props = defineProps<{ state:SearchState }>(
 const state = props.state
 const currentClinic = computed(() => props.state.currentClinic).value as ClinicInterface
 const clinics = state.clinics as ClinicInterface[]
-
 
 const mobile = useIsMobile()
 const goToDoctorsPage = () => {
@@ -76,7 +75,7 @@ const goToDoctorsPage = () => {
                     </div>
                 </div>
                 <!--no results-->
-                <div v-else-if="state.noResults  && state.showSeoList" class="searchpanel__results__no-results">
+                <div v-else-if="state.searchSeoResults.length ===0  && state.showSeoList" class="searchpanel__results__no-results">
                     <div class="searchpanel__results__no-results__search-image"></div>
                     <div class="searchpanel__results__no-results__search-header text-semibold">По вашему запросу ничего не найдено</div>
                     <div class="searchpanel__results__no-results__search-desc text-secondary">Попробуйте изменить запрос или перейдите на страницу врачей</div>

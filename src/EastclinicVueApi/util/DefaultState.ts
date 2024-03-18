@@ -10,6 +10,7 @@ export default class DefaultState {
 
 
     public get(key: string) {
+
         return computed(()=>this._state[key]).value;
     }
 

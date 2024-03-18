@@ -1,13 +1,12 @@
 import StateManager from "../../util/StateManager";
 import type {Ref} from "vue";
-import {toRef} from "vue";
+import {toRef, ref} from "vue";
 import type SearchResultInterface from '../../interfaces/SearchResultInterface'
 
 import {postToServer} from "../../util/UseFetchToServer";
 import {API_MODX_URL} from "../../config";
+import {PageInfoService} from "../../../EastclinicVueApi";
 // import {createWebHistory, useRouter} from "vue-router";
-
-const state = new StateManager();
 
 
 type TSearchResponse = {
@@ -16,22 +15,19 @@ type TSearchResponse = {
 
 
 class SearchService {
-    private state: StateManager;
+    private searchSeoResults:Ref<SearchResultInterface[]> =  ref([]);
 
-    constructor() {
-        this.state = state;
-    }
+
 
     public async searchFetch( searchString:string = '' ){
-
-        const {data} = await postToServer(API_MODX_URL, { component: 'health', action: 'search' }) as TSearchResponse;
-
-        this.state.set('searchSeo', data);
+        const sessionId = PageInfoService.getSessionId();
+        const {data} = await postToServer(API_MODX_URL, { component: 'health', action: 'search', searchString, sessionId }) as TSearchResponse;
+        this.searchSeoResults.value = ( data && data.length ) ? data : [];
     }
 
 
-    public foundItems():SearchResultInterface[]|null{
-        return (this.state.get('searchSeo')) ?? null;
+    public foundItems():SearchResultInterface[]{
+        return computed(() => this.searchSeoResults.value).value;
     }
 
 }
