@@ -5,29 +5,32 @@ import PhoneButton from '../../UI/Contacts/PhoneButton.vue'
 import EcButton from "../../UI/Buttons/EcButton.vue";
 import {useRouter} from "vue-router";
 import {YandexMetrika} from "../../composables/useYandexMetrika";
-import Modal from "#build/src/UI/Modal.vue";
-import BookingFormShortView from "#build/src/components/Booking/views/BookingFormShortView.vue";
-
+import BookingFormShortView from "../Booking/views/BookingFormShortView.vue";
+import {ref} from "vue";
 
 const isSingleDoctorPage = computed(() => PageInfoService.pageInfo.type === 'doctor').value
+const showBooking = ref(false)
+
 const openModal = () => {
     YandexMetrika?.reachGoal(( isSingleDoctorPage ) ? 'booking-header-single' : 'booking-header-contacts');
-    if (window.innerWidth < 680){
-        useRouter().push('/booking');
-    } else {
-        showModalBooking.value = true;
-    }
-}
+    showBooking.value = true;
+//why /booking url ?
+    // if (window.innerWidth < 680){
+    //     useRouter().push('/booking');
+    // } else {
+    //     showBooking.value = true;
+    // }
 
-const showModalBooking = ref(false)
+
+}
 
 </script>
 
 <template>
 
-    <Modal  v-model:visible="showModalBooking" v-if="showModalBooking" >
-        <BookingFormShortView/>
-    </Modal>
+{{showBooking}}
+        <BookingFormShortView :show="showBooking" v-if="showBooking"/>
+
     <div class="header-wrapper">
 
         <header class="header">

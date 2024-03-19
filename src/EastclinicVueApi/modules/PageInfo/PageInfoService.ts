@@ -60,8 +60,8 @@ class PageInfoService{
         return (this.state.get('sessionId')  as string) ?? null;
     }
 
-    typeDoctorPage(){
-        return this.state.get('typeDoctorPage');
+    getPageType():string{
+        return this.state.get('pageInfo').type;
     }
 
     public get currentClinicId(): number | null {

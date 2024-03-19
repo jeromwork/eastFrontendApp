@@ -87,9 +87,12 @@ export default class BookingService{
             bookData.onlyMessages = true;
         }
         const res = await (new BookingApi).book(bookData);
+        if(!res) throw new Error('Ошибка сервера, попробуйте позже')
         if (!res.ok){
-            if ( res?.code === 24 || res?.code === 25 ){  //handle busy slot
+            if ( res.code === 24 || res.code === 25 ){  //handle busy slot
                 await ScheduleService.getSchedulesFromServer(new ScheduleRequest().withDoctor(this.doctor).forCountDays(30))
+            }else if (res.error) {
+                throw new Error(res.error)
             }
         }
         return res;

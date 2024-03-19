@@ -1,67 +1,48 @@
 
 <script setup lang="ts">
 import {    defineProps, reactive, ref, defineEmits, computed, onBeforeMount, onMounted, defineModel, inject} from "vue";
+import type ISlotsState from '../../../interfaces/ISlotsState'
 
 
 import type {Ref} from 'vue'
-import {DoctorCartStateSymbol} from "../../../composables/useSymbols";
-
-import { OpenBookingFormDispatch } from '../../../composables/useDispatches'
-import DoctorCardState from "../../../state/DoctorCardState";
+import {slotsStateSymbol} from "../../../composables/useSymbols";
 import {useDateFormat} from "@vueuse/core";
 
 
 const props = defineProps<{
-    isDownloaded?: Boolean,
+    isDownloaded?: Boolean;
     countShowSlots?: number; // Update the type to number[]
 }>();
 
 
-
-
-const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
-if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');
+const state = inject( slotsStateSymbol ) as ISlotsState
+if(!slotsStateSymbol) throw new Error('not have doctorCardState by doctorCardState');
 
 const countShowSlots = ref((props.countShowSlots) ?? 5 )
 
-const slotSelect = ( slot:number )=>{
-    doctorCardState
-        .setSelectedSlot(slot)
-        .setBookingFormBlocks({
-            showDoctorBlock:true,
-            showClinicBlock:true,
-            showScheduleBlock:true,})        //settings view booking form
-        .toogleModalBooking(true)
-}
-
-
  const showRestSlots = () => {
-     const slotsLength = (doctorCardState.slots?.length) ? doctorCardState.slots.length : 0;
+     const slotsLength = (state.slots?.length) ? state.slots?.length : 0;
      countShowSlots.value = (slotsLength === countShowSlots) ? 7 : slotsLength;
  }
- //useDateFormat(slot, 'HH:mm')
-
-
-
 </script>
 
 <template>
     <div>
 
         <div v-if="  true ">
-            <div class="slots__timeslots-wrapper" v-if="doctorCardState.slots">
+            <div class="slots__timeslots-wrapper" v-if="state.slots">
                 <template
-                    v-for="(slot, j) in doctorCardState.slots"
+                    v-for="(slot, j) in state.slots"
                 >
 
                     <button class="slots_item button primary slot"
-                            v-if="j < countShowSlots || countShowSlots+1 === doctorCardState.slots.length"
-                            @click.prevent="slotSelect(slot)"
+                            v-if="j < countShowSlots || countShowSlots+1 === state.slots.length"
+                            @click.prevent="state.setSelectedSlot(slot)"
                     >
                         {{useDateFormat(slot * 1000, 'HH:mm').value}}
                     </button>
                     <button class="slots_item button primary slot"
-                            v-else-if="j === countShowSlots && countShowSlots+1 !== doctorCardState.slots?.length"
+                            v-else-if="j === countShowSlots && countShowSlots+1 !== state.slots?.length"
                             @click.prevent="showRestSlots"
                     >
                         <span class="icons down-white"></span>

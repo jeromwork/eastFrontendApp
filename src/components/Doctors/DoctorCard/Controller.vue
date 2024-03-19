@@ -14,7 +14,7 @@ import {
     servicesInCartSymbol,
     servicesSelectedSymbol,
     servicesSymbol,
-    slotsRefSymbol,
+    slotsStateSymbol,
     workDaysReadonlyRefSymbol
 } from '../../../composables/useSymbols'
 
@@ -50,7 +50,14 @@ const props = defineProps<{    doctor: DoctorInterface }>();
 
 
 const doctorCardState =  new DoctorCardState().withDoctor(props.doctor).withBookingService(new BookingService())
+
+
 provide(DoctorCartStateSymbol,doctorCardState)
+provide(slotsStateSymbol,doctorCardState)
+
+
+
+
 
 </script>
 

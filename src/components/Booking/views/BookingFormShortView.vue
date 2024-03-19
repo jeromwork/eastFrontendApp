@@ -4,33 +4,34 @@ import type { Ref } from 'vue'
 import PatientFormView from "./PatientFormView.vue";
 import EcButton from "../../../UI/Buttons/EcButton.vue";
 import { YandexMetrika } from "../../../composables/useYandexMetrika";
-import useCalltouch from "#build/src/composables/useCalltouch";
-import { BookingService } from '../../../EastclinicVueApi'
+import useCalltouch from "../../../composables/useCalltouch";
+import {BookingService, PageInfoService} from '../../../EastclinicVueApi'
+import BookingSuccessMessageView from "./BookingSuccessMessageView.vue";
+import Modal from "../../../UI/Modal.vue";
 
+
+const props = defineProps({show:Boolean})
 
 
 const toggleLeaveMessage = () =>{
     console.log('toggleLeaveMessage')
 }
 
+const errorText:Ref<string> = ref('')
 const bookingService = new BookingService();
 const  book = async() => {
     //todo #captha_enable
-    //todo check fill form
-
-    //check patient
-
+try {
     const res = await bookingService.book()
+    if (!res) return;
 
-    // Ecommerce.withDoctor(this.Doctor).purchase();
+    if(res.ok) {
+        showBookingSuccessMessage.value = true;
+        showModalBooking.value = false;
 
-    if(res?.ok) {
-        this.toogleModalBooking(false);
-        this.toogleBookingSuccessMessage(true);
-        YandexMetrika.reachGoal('booking_done')
-        if(this.bookingService && this.bookingService.Cart?.count > 0){
-            YandexMetrika.reachGoal('service_booking_done')
-        }
+        YandexMetrika
+            .reachGoal('booking_done')
+            .reachGoal((PageInfoService.getPageType() === 'doctor') ? 'header_single_booking_done':'header_contacts_booking_done');
 
         useCalltouch()
             .forPatient(this.bookingService?.Patient)
@@ -38,11 +39,16 @@ const  book = async() => {
             .booking()
 
     }else {
-        if ( res?.code === 24 || res?.code === 25 ){  //handle busy slot
-            this.data.value.selectedSlot = null;
-            this.data.value.selectedSlotError = res.error;
-        }
+        errorText.value = (res.error) ? res.error : 'Произошла ошибка, попробуйте позднее'
     }
+
+}catch (e){
+    alert(e)
+}
+
+
+    // Ecommerce.withDoctor(this.Doctor).purchase();
+
 
 
 
@@ -50,10 +56,20 @@ const  book = async() => {
 
 }
 
+
+const showBookingSuccessMessage = ref(false)
+const showModalBooking = ref(props.show)
 </script>
 
 <template>
-    <div id="booking__dialog__wrapper" class="booking__dialog__scroll">
+    <teleport  to="body">
+        <Modal v-model:visible="showBookingSuccessMessage"  v-if="showBookingSuccessMessage">
+            <BookingSuccessMessageView/>
+        </Modal>
+    </teleport>
+
+    <Modal  v-model:visible="showModalBooking" v-if="showModalBooking" >
+        <div id="booking__dialog__wrapper" class="booking__dialog__scroll" >
         <div class="v-card-container divider">
             <div class="modal-card-title">
                 <span class="text-semibold">Запись в клинику</span>
@@ -66,7 +82,13 @@ const  book = async() => {
                         <div id="booking-form" class="v-card-container last">
                                 <div class="booking__dialog__item">
                                     <PatientFormView :state-patient="bookingService.Patient"/>
-                            <div class="v-card-container button-container padding-c"><!---->
+                            <div class="v-card-container button-container padding-c">
+<!--error server text-->
+                                <div v-if="errorText" class="booking__dialog__error_wrap">
+                                    <div v-html="errorText" class="error--text booking__dialog__error"></div>
+
+                                </div>
+<!--error server text-->
                                 <EcButton class="primary full-width shadow-button services-button-container"
                                           @click="book()">
                                     <span>Записаться</span>
@@ -84,10 +106,12 @@ const  book = async() => {
                             </div>
                         </div>
                     </div>
-
+                    </div></div>
             </div>
         </div>
     </div>
+    </Modal>
+
 </template>
 
 

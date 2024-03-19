@@ -36,6 +36,7 @@ const bookingBlocks = doctorCardState.bookingFormViewProps as BookingFormViewPro
 const doctor = doctorCardState.Doctor as DoctorInterface
 
 
+const showBookingScheduleBlock:Ref<boolean> = ref(false)
 
 </script>
 
@@ -52,23 +53,19 @@ const doctor = doctorCardState.Doctor as DoctorInterface
                 <div class="v-card-container divider" >
                     <div class="modal-card-title">
                         <span class="text-semibold">Запись
-                            <span v-if="doctor.is_cabinet">в кабинет диангостики</span>
-                            <span v-else-if="bookingBlocks.showDoctorBlock">на приём к врачу</span>
+                            <span v-if="doctor?.is_cabinet">в кабинет диангостики</span>
+                            <span v-else-if="doctor && bookingBlocks.showDoctorBlock">на приём к врачу</span>
                             <span v-else>в клинику</span>
                         </span>
-                        <span
-                                class="icons closesearch pointer modal-card-title_close"
+                        <span class="icons closesearch pointer modal-card-title_close"
                                 @click="doctorCardState.toggleBookingLeaveMessage(true)"
-                        ></span>
+                        >X</span>
                     </div>
                     <DoctorCardBookingView v-if="bookingBlocks.showDoctorBlock" />
                 </div>
                 <div ref="booking_scroll_dialog" class="border-radius-30 scroll">
                     <div class="booking__dialog">
-
-
-
-                        <div v-if=" !doctorCardState.showBookingScheduleBlock ">
+                        <div v-if="!showBookingScheduleBlock">
 
                             <ServicesBlockView v-if="bookingBlocks.showServicesBlock"/>
 
@@ -87,7 +84,7 @@ const doctor = doctorCardState.Doctor as DoctorInterface
                                 <!-- choose time -->
                                 <div
                                         v-if="bookingBlocks.showScheduleBlock"
-                                        @click="doctorCardState.toogleBookingScheduleBlock(true )"
+                                        @click="showBookingScheduleBlock = true"
                                         class="booking__dialog__item pointer">
                                     <div class="booking__dialog__card with-icon" :class="{'error-border':!!(doctorCardState.selectedSlotError)}">
                                         <div>
@@ -132,8 +129,8 @@ const doctor = doctorCardState.Doctor as DoctorInterface
 
 
                         <!--clinic schedule block-->
-                        <div v-if="doctorCardState.showBookingScheduleBlock" class="v-card-container last">
-                            <BackLink @click="doctorCardState.toogleBookingScheduleBlock(false)" to=""/>
+                        <div v-if="showBookingScheduleBlock" class="v-card-container last">
+                            <BackLink @click="showBookingScheduleBlock = false" to=""/>
                             <div class="slots" style="margin: 0 auto">
                                 <div class="slots__header text-secondary">
                                     Врач принимает

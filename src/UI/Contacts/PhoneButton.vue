@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps({phone:{type:String}, visible:{type:String, required:false, default:false}})
+const props = defineProps({phone:{type:String}, visible:{type:[String, Boolean], required:false, default:false}})
 </script>
 
 <template>
