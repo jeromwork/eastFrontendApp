@@ -8,14 +8,13 @@ import {ScheduleService,
 } from "../../../EastclinicVueApi";
 
 import {
-    bookingServiceSymbol,
     currentWorkingDayRefSymbol, DoctorCartStateSymbol,
     DoctorInfoSymbol,
     servicesInCartSymbol,
     servicesSelectedSymbol,
     servicesSymbol,
-    slotsStateSymbol,
-    workDaysReadonlyRefSymbol
+    ScheduleStateSymbol,
+    ClinicsStateSymbol, BookingStateSymbol, BookingServiceSymbol
 } from '../../../composables/useSymbols'
 
 
@@ -52,8 +51,12 @@ const props = defineProps<{    doctor: DoctorInterface }>();
 const doctorCardState =  new DoctorCardState().withDoctor(props.doctor).withBookingService(new BookingService())
 
 
-provide(DoctorCartStateSymbol,doctorCardState)
-provide(slotsStateSymbol,doctorCardState)
+provide( DoctorCartStateSymbol,doctorCardState )
+provide( ScheduleStateSymbol, doctorCardState )
+provide( DoctorInfoSymbol, doctorCardState.Doctor )
+provide( ClinicsStateSymbol, doctorCardState )
+provide( BookingStateSymbol, doctorCardState )
+provide( BookingServiceSymbol, doctorCardState.BookingService )
 
 
 

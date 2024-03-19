@@ -25,7 +25,7 @@ import type ServiceData from "../../../../EastclinicVueApi/interfaces/ServiceDat
 import ScheduleCardView from '../../../../UI/Schedule/views/ScheduleCardView.vue'
 import ClinicsSelectView from "../../../../UI/Clinics/views/ClinicsSelectView.vue";
 
-import {bookingServiceSymbol, DoctorCartStateSymbol} from "../../../../composables/useSymbols";
+import { DoctorCartStateSymbol } from "../../../../composables/useSymbols";
 import {BookingService, DoctorsService} from '../../../../EastclinicVueApi'
 import DoctorCardState from "../../../../state/DoctorCardState";
 

@@ -6,13 +6,13 @@ import type BookingFormViewProps from "../components/Booking/imterfaces/BookingF
 import { YandexMetrika } from "../composables/useYandexMetrika";
 import useCalltouch from "../composables/useCalltouch";
 // import {Ecommerce} from "#build/src/EastclinicVueApi/modules/Ecommerce";
-import type ISlotsState from '../interfaces/ISlotsState'
+import type IScheduleState from '../interfaces/IScheduleState'
+import type IClinicsState from "../interfaces/IClinicsState";
+import type IBookingState from "../interfaces/IBookingState";
 
 interface DoctorCardInterface{
     workDays: number[] | null;
     workingDay:number|null;
-    selectedSlot:number|null;
-    selectedSlotError?:string;
     selectedClinic: ClinicInterface | null;
 
     showModalBooking:boolean;
@@ -20,15 +20,12 @@ interface DoctorCardInterface{
     showLeaveMessage:boolean;
     showBookingScheduleBlock:boolean;
     showBookingSuccessMessage:boolean;
-    bookingFormViewProps:BookingFormViewProps | null;
 }
 
 
 
-export default class DoctorCardState   implements ISlotsState{
+export default class DoctorCardState   implements IScheduleState, IClinicsState, IBookingState{
     protected data: Ref<DoctorCardInterface> = ref({
-        selectedSlot:null,
-
         workDays: null,
         workingDay: null,
 
@@ -40,18 +37,18 @@ export default class DoctorCardState   implements ISlotsState{
         showLeaveMessage:false,
         showBookingScheduleBlock:false,
         showBookingSuccessMessage:false,
-        bookingFormViewProps:null,
-
 
     });
     protected _slots:Ref<number[] | null> = ref(null);
-
-
+    public selectedSlot:number | null = null; //implements IScheduleState
+    public selectedSlotError?:string; //implements IScheduleState
+    public selectedClinic:ClinicInterface | null = null; //implements IScheduleState
+    public bookingFormViewProps:BookingFormViewProps | null = null;
 
     protected bookingYAMetrikaGoal = '';
     protected bookingService:BookingService | null = null;  // Adjust the type here
     protected doctor: DoctorInterface | null = null;
-
+    public clinics: Readonly<ClinicInterface[]> | null = null;
 
     public withDoctor( doctor:DoctorInterface ):this{
         this.doctor = doctor;
@@ -68,8 +65,8 @@ export default class DoctorCardState   implements ISlotsState{
 
     protected initDoctorData(doctor:DoctorInterface):this{
         const selectedClinicInit = (new DoctorsService()).clinicWorkingDefault(doctor.id) as ClinicInterface ?? null;
-        this.data.value.selectedClinic = selectedClinicInit;
-
+        this.selectedClinic = selectedClinicInit;
+        this.clinics = doctor.clinics;
 
         const workingDay = ScheduleService.nearestWorkDay(doctor.id) as number ?? null
         this.data.value.workingDay = workingDay;
@@ -107,12 +104,12 @@ export default class DoctorCardState   implements ISlotsState{
     }
 
     public setBookingFormBlocks( viewProps:BookingFormViewProps ):this{
-        this.data.value.bookingFormViewProps = viewProps;
+        this.bookingFormViewProps = viewProps;
         return this;
     }
 
     public setSelectedClinic( clinic:ClinicInterface):this{
-        this.data.value.selectedClinic = clinic;
+        this.selectedClinic = clinic;
         //recalc working day
         this.setWorkingDay(ScheduleService.nearestWorkDay(this.Doctor.id, clinic.id) as number ?? null)
         return this;
@@ -128,8 +125,8 @@ export default class DoctorCardState   implements ISlotsState{
     }
     public get slots():Readonly<number[]> | null{        return (this._slots.value) ? readonly(this._slots.value) : null;    }
     public setSelectedSlot(slot:number|null):this{
-        this.data.value.selectedSlot = slot;
-        this.data.value.selectedSlotError = '';
+        this.selectedSlot = slot;
+        this.selectedSlotError = '';
         this.setBookingFormBlocks({
             showDoctorBlock:true,
             showClinicBlock:true,
@@ -160,12 +157,9 @@ export default class DoctorCardState   implements ISlotsState{
 
 
 
-    public get selectedSlot():number | null{        return this.data.value.selectedSlot;    }
-    public get selectedSlotError():string | undefined{        return this.data.value.selectedSlotError;    }
 
 
-    public get selectedClinic():ClinicInterface | null{
-        return this.data.value.selectedClinic;    }
+
 
     public get showModalBooking():boolean | null{        return this.data.value.showModalBooking;    }
     public set showModalBooking( show){     this.setShowModalBooking(!!(show));   }
@@ -177,7 +171,6 @@ export default class DoctorCardState   implements ISlotsState{
     }
 
     public get showLeaveMessage():boolean | null{        return this.data.value.showLeaveMessage;    }
-    public get bookingFormViewProps():BookingFormViewProps | null{        return this.data.value.bookingFormViewProps;    }
 
 
 
@@ -189,7 +182,7 @@ export default class DoctorCardState   implements ISlotsState{
 
         //if error form, scroll here
         if(!this.selectedSlot) {
-            this.data.value.selectedSlotError = 'Выберите время для записи';
+            this.selectedSlotError = 'Выберите время для записи';
             return null;
         }
 
@@ -217,17 +210,17 @@ export default class DoctorCardState   implements ISlotsState{
                 .booking()
 
             //clear form data
-            this.data.value.selectedSlot = null;
-            this.data.value.selectedSlotError = '';
+            this.selectedSlot = null;
+            this.selectedSlotError = '';
             this.data.value.workingDay = null;
-            this.data.value.selectedClinic = null;
+            this.selectedClinic = null;
             this.bookingService = null; //???
 
 
         }else {
             if ( res?.code === 24 || res?.code === 25 ){  //handle busy slot
-                this.data.value.selectedSlot = null;
-                this.data.value.selectedSlotError = res.error;
+                this.selectedSlot = null;
+                this.selectedSlotError = res.error;
             }
         }
 
@@ -240,8 +233,8 @@ export default class DoctorCardState   implements ISlotsState{
     protected setShowModalBooking(show:boolean){
         this.data.value.showModalBooking = show as boolean;
         if(!show){ //if close booking form
-            this.data.value.selectedSlot = null;
-            this.data.value.selectedSlotError = '';
+            this.selectedSlot = null;
+            this.selectedSlotError = '';
             this.data.value.workingDay = null;
         }else  { //if open booking form
             //set goal for yam

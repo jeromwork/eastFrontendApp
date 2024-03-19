@@ -3,10 +3,12 @@ import type {InjectionKey, Ref} from "vue";
 import type {ServiceCartInterface, ServiceData, ClinicInterface, DoctorInterface } from "../../EastclinicVueApi";
 import { BookingService } from "../../EastclinicVueApi";
 import type DoctorCardState from "../../state/DoctorCardState";
-import type ISlotsState from "../../interfaces/ISlotsState";
+import type IScheduleState from "../../interfaces/IScheduleState";
+import type IClinicsState from "../../interfaces/IClinicsState";
+import type IBookingState from "../../interfaces/IBookingState";
 
-export const bookingServiceSymbol:InjectionKey<BookingService> = Symbol.for('booking-service')
-export const DoctorInfoSymbol:InjectionKey<Ref<DoctorInterface>> = Symbol.for('DoctorInfo')
+export const BookingServiceSymbol:InjectionKey<BookingService> = Symbol.for('booking-service')
+export const DoctorInfoSymbol:InjectionKey<DoctorInterface> = Symbol.for('DoctorInfo')
 export const DoctorCartStateSymbol:InjectionKey<DoctorCardState> = Symbol.for('DoctorCartState')
 
 export const servicesInCartSymbol: InjectionKey<Ref<ServiceCartInterface>> = Symbol.for('doctor-services-in-cart')
@@ -15,7 +17,9 @@ export const servicesSelectedSymbol: InjectionKey<Ref<ServiceData[]>> = Symbol.f
 export const servicesSymbol:InjectionKey<Ref<ServiceData[]>> = Symbol.for('services')
 
 
-export const slotsStateSymbol:InjectionKey<ISlotsState> = Symbol.for('slots-state-of-doctor');
+export const ScheduleStateSymbol:InjectionKey<IScheduleState> = Symbol.for('schedule-state-of-doctor');
+export const ClinicsStateSymbol:InjectionKey<IClinicsState> = Symbol.for('clinics-state');
+export const BookingStateSymbol:InjectionKey<IBookingState> = Symbol.for('booking-state');
 
 
 

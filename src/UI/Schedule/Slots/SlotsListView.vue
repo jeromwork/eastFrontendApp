@@ -1,11 +1,11 @@
 
 <script setup lang="ts">
 import {    defineProps, reactive, ref, defineEmits, computed, onBeforeMount, onMounted, defineModel, inject} from "vue";
-import type ISlotsState from '../../../interfaces/ISlotsState'
+import type IScheduleState from '../../../interfaces/IScheduleState'
 
 
 import type {Ref} from 'vue'
-import {slotsStateSymbol} from "../../../composables/useSymbols";
+import {ScheduleStateSymbol} from "../../../composables/useSymbols";
 import {useDateFormat} from "@vueuse/core";
 
 
@@ -15,8 +15,8 @@ const props = defineProps<{
 }>();
 
 
-const state = inject( slotsStateSymbol ) as ISlotsState
-if(!slotsStateSymbol) throw new Error('not have doctorCardState by doctorCardState');
+const state = inject( ScheduleStateSymbol ) as IScheduleState
+if(!ScheduleStateSymbol) throw new Error('not have doctorCardState by doctorCardState');
 
 const countShowSlots = ref((props.countShowSlots) ?? 5 )
 

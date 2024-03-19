@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import {inject, ref} from "vue";
-import {bookingServiceSymbol, DoctorCartStateSymbol} from "../../../composables/useSymbols";
+import {BookingServiceSymbol, DoctorCartStateSymbol} from "../../../composables/useSymbols";
 import {BookingService} from "../../../EastclinicVueApi";
 import ServicesCartListView from "../../../UI/Services/views/ServicesCartListView.vue";
 import DoctorCardState from "../../../state/DoctorCardState";

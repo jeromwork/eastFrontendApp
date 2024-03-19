@@ -5,7 +5,7 @@ import SelectList from "../../SelectList/index.vue";
 import ServiceSelectOptionView from "./SelectOptionView.vue";
 import type { ServiceData } from "../../../EastclinicVueApi";
 import { BookingService } from "../../../EastclinicVueApi";
-import {bookingServiceSymbol, DoctorCartStateSymbol} from "../../../composables/useSymbols";
+import { DoctorCartStateSymbol} from "../../../composables/useSymbols";
 import EcButton from "../../../UI/Buttons/EcButton.vue";
 import {EventOpenBookingForm} from "../../../composables/useEvents";
 import type BookingFormViewProps from "../../../components/Booking/imterfaces/BookingFormViewProprs";
