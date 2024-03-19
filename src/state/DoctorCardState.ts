@@ -17,9 +17,6 @@ interface DoctorCardInterface{
 
     showModalBooking:boolean;
     showModalServices:boolean;
-    showLeaveMessage:boolean;
-    showBookingScheduleBlock:boolean;
-    showBookingSuccessMessage:boolean;
 }
 
 
@@ -31,19 +28,17 @@ export default class DoctorCardState   implements IScheduleState, IClinicsState,
 
         selectedClinic: null,
 
-
         showModalBooking:false,
         showModalServices:false,
-        showLeaveMessage:false,
-        showBookingScheduleBlock:false,
-        showBookingSuccessMessage:false,
 
     });
     protected _slots:Ref<number[] | null> = ref(null);
     public selectedSlot:number | null = null; //implements IScheduleState
     public selectedSlotError?:string; //implements IScheduleState
     public selectedClinic:ClinicInterface | null = null; //implements IScheduleState
-    public bookingFormViewProps:BookingFormViewProps | null = null;
+    public bookingFormViewProps:BookingFormViewProps | null = null;//implements IBookingState
+    public showBookingSuccessMessage:boolean = false; //implements IBookingState
+    public showLeaveMessage:boolean = false; //implements IBookingState
 
     protected bookingYAMetrikaGoal = '';
     protected bookingService:BookingService | null = null;  // Adjust the type here
@@ -93,13 +88,13 @@ export default class DoctorCardState   implements IScheduleState, IClinicsState,
     }
 
     public toggleBookingLeaveMessage( show:boolean ):this{
-        this.data.value.showLeaveMessage = show;
+        this.showLeaveMessage = show;
         return this;
     }
 
 
     public toogleBookingSuccessMessage(show:boolean):this{
-        this.data.value.showBookingSuccessMessage = show;
+        this.showBookingSuccessMessage = show;
         return this
     }
 
@@ -165,13 +160,6 @@ export default class DoctorCardState   implements IScheduleState, IClinicsState,
     public set showModalBooking( show){     this.setShowModalBooking(!!(show));   }
     public get showModalServices():boolean | null{        return this.data.value.showModalServices;    }
     public set showModalServices( show){        this.data.value.showModalServices = show as boolean;    }
-    public get showBookingSuccessMessage():boolean | null{        return this.data.value.showBookingSuccessMessage;    }
-    public set showBookingSuccessMessage( show){
-        this.data.value.showBookingSuccessMessage = show as boolean;
-    }
-
-    public get showLeaveMessage():boolean | null{        return this.data.value.showLeaveMessage;    }
-
 
 
 

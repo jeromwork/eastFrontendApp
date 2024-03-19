@@ -8,10 +8,11 @@ import useCalltouch from "../../../composables/useCalltouch";
 import {BookingService, PageInfoService} from '../../../EastclinicVueApi'
 import BookingSuccessMessageView from "./BookingSuccessMessageView.vue";
 import Modal from "../../../UI/Modal.vue";
+import BookingFormWithChoiceView from "./BookingFormWithChoiceView";
 
 
-const props = defineProps({show:Boolean})
-
+const props = defineProps({visible:Boolean})
+const visible = defineModel('visible', {type:Boolean, default:false, required:false})
 
 const toggleLeaveMessage = () =>{
     console.log('toggleLeaveMessage')
@@ -19,32 +20,32 @@ const toggleLeaveMessage = () =>{
 
 const errorText:Ref<string> = ref('')
 const bookingService = new BookingService();
-const  book = async() => {
-    //todo #captha_enable
-try {
-    const res = await bookingService.book()
-    if (!res) return;
-
-    if(res.ok) {
-        showBookingSuccessMessage.value = true;
-        showModalBooking.value = false;
-
-        YandexMetrika
-            .reachGoal('booking_done')
-            .reachGoal((PageInfoService.getPageType() === 'doctor') ? 'header_single_booking_done':'header_contacts_booking_done');
-
-        useCalltouch()
-            .forPatient(this.bookingService?.Patient)
-            .withTags([this.Doctor.shortFio as string, this.selectedClinic?.node_address as string])
-            .booking()
-
-    }else {
-        errorText.value = (res.error) ? res.error : 'Произошла ошибка, попробуйте позднее'
-    }
-
-}catch (e){
-    alert(e)
-}
+// const  book = async() => {
+//     //todo #captha_enable
+// try {
+//     const res = await bookingService.book()
+//     if (!res) return;
+//
+//     if(res.ok) {
+//         showBookingSuccessMessage.value = true;
+//         showModalBooking.value = false;
+//
+//         YandexMetrika
+//             .reachGoal('booking_done')
+//             .reachGoal((PageInfoService.getPageType() === 'doctor') ? 'header_single_booking_done':'header_contacts_booking_done');
+//
+//         useCalltouch()
+//             .forPatient(this.bookingService?.Patient)
+//             .withTags([this.Doctor.shortFio as string, this.selectedClinic?.node_address as string])
+//             .booking()
+//
+//     }else {
+//         errorText.value = (res.error) ? res.error : 'Произошла ошибка, попробуйте позднее'
+//     }
+//
+// }catch (e){
+//     alert(e)
+// }
 
 
     // Ecommerce.withDoctor(this.Doctor).purchase();
@@ -54,7 +55,7 @@ try {
 
     //todo show success or error message
 
-}
+// }
 
 
 const showBookingSuccessMessage = ref(false)
@@ -62,13 +63,10 @@ const showModalBooking = ref(props.show)
 </script>
 
 <template>
-    <teleport  to="body">
-        <Modal v-model:visible="showBookingSuccessMessage"  v-if="showBookingSuccessMessage">
-            <BookingSuccessMessageView/>
-        </Modal>
-    </teleport>
 
     <Modal  v-model:visible="showModalBooking" v-if="showModalBooking" >
+        <BookingFormWithChoiceView/>
+
         <div id="booking__dialog__wrapper" class="booking__dialog__scroll" >
         <div class="v-card-container divider">
             <div class="modal-card-title">

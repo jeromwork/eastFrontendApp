@@ -30,7 +30,9 @@ import {onClickOutside} from "@vueuse/core";
 import type IScheduleState from "../../../interfaces/IScheduleState";
 import ClinicCardSelectedView from "../../../UI/Clinics/views/ClinicCardSelectedView.vue";
 import type IClinicsState from "../../../interfaces/IClinicsState";
-import type IBookingState from "#build/src/interfaces/IBookingState";
+import type IBookingState from "../../../interfaces/IBookingState";
+import BookingSuccessMessageView from "../../Booking/views/BookingSuccessMessageView.vue";
+import Modal from "../../../UI/Modal.vue";
 
 
 const props = defineProps<BookingFormViewProps>();
@@ -61,10 +63,13 @@ onClickOutside(refBookingDialog, event => {
 </script>
 
 <template>
-
+    <teleport  to="body">
+        <Modal v-model:visible="bookingState.showBookingSuccessMessage"  v-if="bookingState.showBookingSuccessMessage">
+            <BookingSuccessMessageView/>
+        </Modal>
+    </teleport>
     <div  :class="{'mobile': false}" class="booking__dialog__wrapper"  ref="refBookingDialog"  >
         <div
-
                 class="vcard-padding position-relative booking-container"
                 :class="{'rounded-xl' : !useIsMobile()}"
         >

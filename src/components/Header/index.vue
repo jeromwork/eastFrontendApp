@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import {PageInfoService} from "../../EastclinicVueApi";
+import {PageInfoService, BookingService} from "../../EastclinicVueApi";
 import WhatsAppLink from '../../UI/Contacts/WhatsAppLink.vue'
 import PhoneButton from '../../UI/Contacts/PhoneButton.vue'
 import EcButton from "../../UI/Buttons/EcButton.vue";
 import {useRouter} from "vue-router";
 import {YandexMetrika} from "../../composables/useYandexMetrika";
-import BookingFormShortView from "../Booking/views/BookingFormShortView.vue";
-import {ref} from "vue";
+import BookingFormView from "../Booking/views/BookingFormView.vue";
+import {provide, ref} from "vue";
+import {BookingServiceSymbol, BookingStateSymbol} from "../../composables/useSymbols";
 
 const isSingleDoctorPage = computed(() => PageInfoService.pageInfo.type === 'doctor').value
 const showBooking = ref(false)
@@ -14,6 +15,10 @@ const showBooking = ref(false)
 const openModal = () => {
     YandexMetrika?.reachGoal(( isSingleDoctorPage ) ? 'booking-header-single' : 'booking-header-contacts');
     showBooking.value = true;
+    provide( BookingStateSymbol, doctorCardState )
+    provide( BookingServiceSymbol, new BookingService())
+
+    
 //why /booking url ?
     // if (window.innerWidth < 680){
     //     useRouter().push('/booking');
@@ -27,9 +32,7 @@ const openModal = () => {
 </script>
 
 <template>
-
-{{showBooking}}
-        <BookingFormShortView :show="showBooking" v-if="showBooking"/>
+        <BookingFormView v-if="showBooking" v-model:visible="showBooking"/>
 
     <div class="header-wrapper">
 
