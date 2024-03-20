@@ -1,24 +1,29 @@
 <script setup lang="ts">
 
 import {inject, ref, nextTick} from "vue";
-import { DoctorCartStateSymbol} from "../../../composables/useSymbols";
+import {BookingServiceSymbol, BookingStateSymbol, DoctorCartStateSymbol} from "../../../composables/useSymbols";
 import {BookingService} from "../../../EastclinicVueApi";
 import DoctorCardState from "../../../state/DoctorCardState";
 import EcButton from "../../../UI/Buttons/EcButton.vue";
 import type BookingFormViewProps from "../imterfaces/BookingFormViewProprs";
 import type {ClinicInterface} from "../../../EastclinicVueApi";
 import useIsMobile from "../../../composables/useIsMobile";
+import type IBookingState from "../../../interfaces/IBookingState";
 
 
 const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
 if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');
 
-const bookingService = doctorCardState.BookingService as BookingService;
+
+const bookingState = inject( BookingStateSymbol ) as IBookingState
+
+const bookingBlocks = bookingState.bookingFormViewProps as BookingFormViewProps;
+const bookingService = inject( BookingServiceSymbol ) as BookingService
+
 
 // const phone = computed(() => bookingService.Patient.phone)
 
 //its inpassible!! not working :value = bookingService.Patient.phone
-const bookingBlocks = doctorCardState.bookingFormViewProps as BookingFormViewProps;
 const chosenClinicNow = doctorCardState.selectedClinic as ClinicInterface;
 const fullscreen = useIsMobile();
 
@@ -66,13 +71,13 @@ const bookingSuccessClose = () => {
                         <div class="booking__dialog__doctor-card_info_desc">{{doctorCardState.Doctor.specials}}</div>
                     </div>
                 </div>
-                <div v-if="!doctorCardState.bookingFormViewProps?.showShortFormTitle"><span class="text-semibold">{{bookingService.Patient.fio}}</span>, ждем вас:</div>
+                <div v-if="!bookingBlocks?.showShortFormTitle"><span class="text-semibold">{{bookingService.Patient.fio}}</span>, ждем вас:</div>
 
-                <div  v-if="doctorCardState.bookingFormViewProps?.showShortFormTitle">
+                <div  v-if="bookingBlocks?.showShortFormTitle">
                     <span class="text-semibold">{{bookingService.Patient.fio}}</span>, оператор колл-центра перезвонит Вам в течение 15 минут для уточнения деталей и подтверждения записи на прием.
                 </div>
                 <div
-                        v-if="bookingBlocks.showScheduleBlock"
+                        v-if="bookingBlocks?.showScheduleBlock"
                         class="booking__dialog__success_datatable">
                     <div class="booking__dialog__success_datatable_row">
                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">

@@ -10,16 +10,22 @@ onMounted(() => {
 
 });
 
+import {onClickOutside} from "@vueuse/core";
 
+const refBookingDialog = ref(null)
+onClickOutside(refBookingDialog, event => {
+    visible.value=false
+})
 
 //todo debug click outside
 </script>
 
 <template>
-    <div v-if="visible" @mousedown.stop="visible=false" class="modal">
-        <div class="modal-content" @mousedown.stop>
+    <div v-if="visible" class="modal">
+        <div class="modal-content" ref="refBookingDialog">
             <slot name="default"></slot>
             <slot name="close">
+                {{visible}}
 <!--                <button @click="visible=false">Close</button>-->
             </slot>
 

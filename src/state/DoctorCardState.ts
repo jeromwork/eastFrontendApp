@@ -14,8 +14,6 @@ interface DoctorCardInterface{
     workDays: number[] | null;
     workingDay:number|null;
     selectedClinic: ClinicInterface | null;
-
-    showModalBooking:boolean;
     showModalServices:boolean;
 }
 
@@ -27,8 +25,6 @@ export default class DoctorCardState   implements IScheduleState, IClinicsState,
         workingDay: null,
 
         selectedClinic: null,
-
-        showModalBooking:false,
         showModalServices:false,
 
     });
@@ -36,9 +32,10 @@ export default class DoctorCardState   implements IScheduleState, IClinicsState,
     public selectedSlot:number | null = null; //implements IScheduleState
     public selectedSlotError?:string; //implements IScheduleState
     public selectedClinic:ClinicInterface | null = null; //implements IScheduleState
-    public bookingFormViewProps:BookingFormViewProps | null = null;//implements IBookingState
-    public showBookingSuccessMessage:boolean = false; //implements IBookingState
-    public showLeaveMessage:boolean = false; //implements IBookingState
+    public bookingFormViewProps:Ref<BookingFormViewProps| Object> = ref({});//implements IBookingState
+    public showBookingSuccessMessage:Ref<boolean> = ref(false); //implements IBookingState
+    public showLeaveMessage:Ref<boolean> = ref(false); //implements IBookingState
+    public showModalBooking:boolean = false; //implements IBookingState
 
     protected bookingYAMetrikaGoal = '';
     protected bookingService:BookingService | null = null;  // Adjust the type here
@@ -88,18 +85,18 @@ export default class DoctorCardState   implements IScheduleState, IClinicsState,
     }
 
     public toggleBookingLeaveMessage( show:boolean ):this{
-        this.showLeaveMessage = show;
+        this.showLeaveMessage.value = show;
         return this;
     }
 
 
     public toogleBookingSuccessMessage(show:boolean):this{
-        this.showBookingSuccessMessage = show;
+        this.showBookingSuccessMessage.value = show;
         return this
     }
 
     public setBookingFormBlocks( viewProps:BookingFormViewProps ):this{
-        this.bookingFormViewProps = viewProps;
+        this.bookingFormViewProps.value = viewProps;
         return this;
     }
 
@@ -152,12 +149,6 @@ export default class DoctorCardState   implements IScheduleState, IClinicsState,
 
 
 
-
-
-
-
-    public get showModalBooking():boolean | null{        return this.data.value.showModalBooking;    }
-    public set showModalBooking( show){     this.setShowModalBooking(!!(show));   }
     public get showModalServices():boolean | null{        return this.data.value.showModalServices;    }
     public set showModalServices( show){        this.data.value.showModalServices = show as boolean;    }
 
@@ -219,7 +210,8 @@ export default class DoctorCardState   implements IScheduleState, IClinicsState,
     }
 
     protected setShowModalBooking(show:boolean){
-        this.data.value.showModalBooking = show as boolean;
+        this.showModalBooking = show as boolean;
+        console.log(show)
         if(!show){ //if close booking form
             this.selectedSlot = null;
             this.selectedSlotError = '';

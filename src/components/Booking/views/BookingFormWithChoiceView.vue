@@ -60,11 +60,12 @@ onClickOutside(refBookingDialog, event => {
     showLeaveMessage.value = true;
 })
 
+console.log(bookingBlocks)
 </script>
 
 <template>
     <teleport  to="body">
-        <Modal v-model:visible="bookingState.showBookingSuccessMessage"  v-if="bookingState.showBookingSuccessMessage">
+        <Modal v-model:visible="bookingState.showBookingSuccessMessage.value"  v-if="bookingState.showBookingSuccessMessage">
             <BookingSuccessMessageView/>
         </Modal>
     </teleport>

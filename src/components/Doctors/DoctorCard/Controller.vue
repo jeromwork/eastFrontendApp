@@ -60,18 +60,20 @@ provide( BookingServiceSymbol, doctorCardState.BookingService )
 
 
 
-
+const showBookingSuccessMessage = ref(false)
+console.log(doctorCardState.showBookingSuccessMessage)
 
 </script>
 
 <template>
+    {{doctorCardState.showModalBooking}}
     <Modal  v-model:visible="doctorCardState.showModalBooking" v-if="doctorCardState.showModalBooking" >
           <BookingFormWithChoiceView/>
     </Modal>
     <Modal v-model:visible="doctorCardState.showModalServices" v-if="doctorCardState.showModalServices">
         <ServicesSelectListView :services="doctor.service_data"/>
     </Modal>
-    <Modal v-model:visible="doctorCardState.showBookingSuccessMessage"  v-if="doctorCardState.showBookingSuccessMessage">
+    <Modal v-model:visible="doctorCardState.showBookingSuccessMessage.value">
         <BookingSuccessMessageView/>
     </Modal>
   <slot></slot>
