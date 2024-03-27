@@ -4,6 +4,7 @@ import type {Ref} from "vue";
 import { YandexMetrika } from "../composables/useYandexMetrika";
 import useCalltouch from "../composables/useCalltouch";
 import { DoctorsService, ScheduleService, BookingService, ScheduleRequest, Patient} from "../EastclinicVueApi";
+import type { IBookingRequest } from "../EastclinicVueApi";
 export default class BookingState implements IBookingState{
     public bookingFormViewProps:Ref<BookingFormViewProps| Object> = ref({});
     public _showBookingSuccessMessage:Ref<boolean> = ref(false);
@@ -11,7 +12,8 @@ export default class BookingState implements IBookingState{
     protected _showLeaveMessage:Ref<boolean> = ref(false);
     protected _showModalBooking:Ref<boolean> = ref(false);
     protected _errorText:Ref<string> = ref('');
-
+    public bookingService = new BookingService();
+    public Patient:Patient = new Patient()
 
     public get errorText():string{
         return this._errorText.value;
@@ -24,6 +26,7 @@ export default class BookingState implements IBookingState{
     }
     public set showModalBooking(show:boolean){
         this._showModalBooking.value = show;
+        this.showBookingScheduleBlock = false;
     }
 
     public get showLeaveMessage():boolean{
@@ -58,32 +61,39 @@ export default class BookingState implements IBookingState{
         this.bookingFormViewProps.value = viewProps;
         return this;
     }
-    public async book():Promise<null|undefined>{
+    public async book():Promise<IBookingRequest|undefined>{
+        if(!this.Patient.checkFioResume() || !this.Patient.checkPhoneResume() )  return ;
+        try {
+            const bookingService = new BookingService().withPatient(this.Patient);
 
-        const bookingService = new BookingService();
-        const res = await bookingService.book()
+            const res = await bookingService.book()
 
-        // Ecommerce.withDoctor(this.Doctor).purchase();
+            // Ecommerce.withDoctor(this.Doctor).purchase();
 
-        if(res?.ok) {
-            this.showModalBooking = false;
-            this.showLeaveMessage = false;
-            this.showBookingSuccessMessage = true;
+            if(res?.ok) {
+                this.showModalBooking = false;
+                this.showLeaveMessage = false;
+                this.showBookingSuccessMessage = true;
 
-            YandexMetrika.reachGoal('booking_done')
+                YandexMetrika.reachGoal('booking_done')
 
-            useCalltouch()
-                .forPatient(bookingService.Patient as Patient)
-                // .withTags([this.Doctor.shortFio as string, this.selectedClinic?.node_address as string]) //todo not found tags for short form
-                .booking()
+                useCalltouch()
+                    .forPatient(this.Patient as Patient)
+                    // .withTags([this.Doctor.shortFio as string, this.selectedClinic?.node_address as string]) //todo not found tags for short form
+                    .booking()
 
-        }else {
-            if (res?.error){
-                this.errorText = res.error;
+            }else {
+                if (res?.error){
+                    this.errorText = res?.error as string;
+                }else this.errorText = 'Ошибка сервера, попробуйте позже';
             }
+            return res;
+        }catch (e) {
+            this.errorText = 'Ошибка сервера, попробуйте позже';
         }
 
         return ;
+
     }
 
 

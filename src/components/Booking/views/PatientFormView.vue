@@ -8,7 +8,6 @@ const props = defineProps<{ statePatient : Patient }>()
 
 //its inpossible!! not working :value = bookingService.Patient.phone
 
-const dsd = ref('')
 const setFio = (e) => {
     props.statePatient.setFio(e.target.value)
     e.target.value = props.statePatient.fio
@@ -21,6 +20,7 @@ const setFio = (e) => {
 </script>
 
 <template>
+
 
     <form   ref="bookingForm"
             id="booking-inputs"
@@ -55,7 +55,6 @@ const setFio = (e) => {
             </div>
             <span v-if="statePatient.phoneError">{{statePatient.phoneError}}</span>
         </div>
-
 
 
     </form>

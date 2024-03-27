@@ -1,6 +1,7 @@
 import type BookingFormViewProps from "../components/Booking/imterfaces/BookingFormViewProprs";
 import { ref } from "vue";
 import  type {Ref} from "vue";
+import type { IBookingRequest } from '../EastclinicVueApi'
 
 export default interface IBookingState{
 
@@ -14,7 +15,7 @@ export default interface IBookingState{
     toggleBookingLeaveMessage( show:boolean ):this;
     toogleBookingSuccessMessage(show:boolean):this;
     setBookingFormBlocks( viewProps:BookingFormViewProps ):this;
-    book():Promise<null|undefined>;
+    book():Promise<IBookingRequest|undefined>;
 
 
 

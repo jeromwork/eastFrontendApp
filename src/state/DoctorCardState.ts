@@ -1,7 +1,13 @@
-import type {DoctorInterface, ClinicInterface} from "../EastclinicVueApi";
+import type {DoctorInterface, ClinicInterface, IBookingRequest} from "../EastclinicVueApi";
 import type {Ref} from 'vue'
 import {computed, ref} from "vue";
-import { DoctorsService, ScheduleService, BookingService, ScheduleRequest, Patient} from "../EastclinicVueApi";
+import {
+    DoctorsService,
+    ScheduleService,
+    BookingService,
+    ScheduleRequest,
+    Patient
+} from "../EastclinicVueApi";
 import type BookingFormViewProps from "../components/Booking/imterfaces/BookingFormViewProprs";
 import { YandexMetrika } from "../composables/useYandexMetrika";
 import useCalltouch from "../composables/useCalltouch";
@@ -44,15 +50,7 @@ export default class DoctorCardState   implements IClinicsState{
 
     constructor() {
 //set callback during selected slot
-        this.scheduleState.selectedSlotCallback = function (this:any, slot:number){
-            this.bookingState.setBookingFormBlocks({
-                showDoctorBlock:true,
-                showClinicBlock:true,
-                showScheduleBlock:true})        //settings view booking form
-            this.toogleModalBooking(true)
-            this.bookingState.showBookingScheduleBlock = false;
-        }.bind(this );
-
+        this.scheduleState.selectedSlotCallback = this.selectedSlotCallback.bind(this );
         this.bookingState.book = this.book.bind(this)
 
     }
@@ -137,33 +135,33 @@ export default class DoctorCardState   implements IClinicsState{
     public set showModalServices( show){        this.data.value.showModalServices = show as boolean;    }
 
 
-
-    public async book(){
+//this method replace bookingService.book()
+    public async book():Promise<IBookingRequest|undefined>{
         //todo #captha_enable
         //todo check fill form
-
+        //check patient
+        if(!this.bookingState.Patient.checkFioResume() || !this.bookingState.Patient.checkPhoneResume() )  return ;
 
         //if error form, scroll here
         if(!this.scheduleState.selectedSlot) {
             this.scheduleState.selectedSlotError = 'Выберите время для записи';
-            return null;
+            return;
         }
 
 
-        //check patient
         this.BookingService
             .withDoctor(this.Doctor)
             .withClinic(this.selectedClinic)
-            .withSlot(this.scheduleState.selectedSlot);
+            .withSlot(this.scheduleState.selectedSlot)
+            .withPatient(this.bookingState.Patient)
+
         const res = await this.BookingService.book()
 
         // Ecommerce.withDoctor(this.Doctor).purchase();
 
         if(res?.ok) {
             this.toogleModalBooking(false);
-            this.bookingState.showBookingSuccessMessage = true;
-            YandexMetrika.reachGoal('booking_done')
-            if(this.bookingService && this.bookingService.Cart?.count > 0){
+            if(this.bookingState.bookingService.Cart?.count > 0){
                 YandexMetrika.reachGoal('service_booking_done')
             }
 
@@ -183,12 +181,17 @@ export default class DoctorCardState   implements IClinicsState{
         }else {
             if ( res?.code === 24 || res?.code === 25 ){  //handle busy slot
                 this.scheduleState.selectedSlot = null;
-                this.scheduleState.selectedSlotError = res.error as string;
+                this.scheduleState.selectedSlotError = res?.error as string;
+                await ScheduleService.getSchedulesFromServer(new ScheduleRequest().withDoctor(this.Doctor).forCountDays(30))
+            }else {
+                if (res?.error){
+                    this.bookingState.errorText = res.error;
+                }
             }
+
         }
 
-
-
+        return res;
         //todo show success or error message
 
     }
@@ -208,6 +211,15 @@ export default class DoctorCardState   implements IClinicsState{
 
         }
         return this;
+    }
+
+    protected selectedSlotCallback ( slot:number){
+        this.bookingState.setBookingFormBlocks({
+            showDoctorBlock:true,
+            showClinicBlock:true,
+            showScheduleBlock:true})        //settings view booking form
+        this.toogleModalBooking(true)
+
     }
 
 }

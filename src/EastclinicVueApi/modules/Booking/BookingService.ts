@@ -21,7 +21,7 @@ interface BookingDataInterface {
 export default class BookingService{
     protected data:Ref<BookingDataInterface> = ref({slot:null, clinic:null, doctor:null, sessionId:null});
     public Cart:Cart = new Cart();
-    public Patient:Patient = new Patient()
+    public Patient:Patient|null = null;
 
 
 
@@ -37,6 +37,11 @@ export default class BookingService{
 
     public withSlot(slot:number|null):this{
         this.data.value.slot = slot;
+        return this;
+    }
+
+    public withPatient(patient:Patient):this{
+        this.Patient = patient;
         return this;
     }
 
@@ -65,8 +70,9 @@ export default class BookingService{
         // if (!this.doctor) throw new Error('Not set doctor to booking')
         // if (!this.selectedClinic) throw new Error('Not set clinic to booking')
         // if(!this.Patient.patientName) throw new Error('Not set patient name to booking')
-        if(!this.Patient.checkFioResume() || !this.Patient.checkPhoneResume() )  return null;
+
         // if (!this.doctor) return null;
+        if (!this.Patient) throw new Error('not set patient data')
 
         const bookData:BookingResponseInterface = {
             key : 'a56f164d50be6d6164c6117a6b75cafe93cc3d43dc698861bdda75ab1d23809d',
@@ -86,14 +92,10 @@ export default class BookingService{
         if(this.doctor?.is_cabinet){
             bookData.onlyMessages = true;
         }
-        const res = await (new BookingApi).book(bookData);
+        const res = await new BookingApi().book(bookData);
         if(!res) throw new Error('Ошибка сервера, попробуйте позже')
-        if (!res.ok){
-            if ( res.code === 24 || res.code === 25 ){  //handle busy slot
-                await ScheduleService.getSchedulesFromServer(new ScheduleRequest().withDoctor(this.doctor).forCountDays(30))
-            }else if (res.error) {
-                throw new Error(res.error)
-            }
+        if (!res.ok && res.error){
+            throw new Error(res.error)
         }
         return res;
 

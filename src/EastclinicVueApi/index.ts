@@ -1,4 +1,3 @@
-/// <reference path="./interfaces/Interfaces.d.ts" />
 
 
 // import DoctorsRequest from './modules/Doctors/api/DoctorsRequest'
@@ -38,6 +37,7 @@ import type ServiceData from "./interfaces/ServiceData";
 import type ServiceCartInterface from "./interfaces/ServiceCartInterface";
 import type PlaceInterface from "./interfaces/PlaceInterface";
 import type SearchResultInterface from "./interfaces/SearchResultInterface";
+import type IBookingRequest from "./interfaces/IBookingRequest";
 
 
 
@@ -83,4 +83,8 @@ export type {
     ServiceCartInterface,
     PlaceInterface,
     SearchResultInterface,
+
+    IBookingRequest,
+
+
 }

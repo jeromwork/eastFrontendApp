@@ -50,7 +50,6 @@ const props = defineProps<{    doctor: DoctorInterface }>();
 
 
 const doctorCardState =  new DoctorCardState().withDoctor(props.doctor).withBookingService(new BookingService())
-const bookingState = doctorCardState.bookingState;
 
 provide( DoctorCartStateSymbol,doctorCardState )
 provide( ScheduleStateSymbol, doctorCardState.scheduleState )
@@ -63,8 +62,8 @@ provide( BookingServiceSymbol, doctorCardState.BookingService )
 </script>
 
 <template>
-    <Modal  v-model:visible="bookingState.showModalBooking" v-if="bookingState.showModalBooking" >
-        <BookingFormWithChoiceView v-if="bookingState.showModalBooking"/>
+    <Modal  v-model:visible="doctorCardState.bookingState.showModalBooking" v-if="doctorCardState.bookingState.showModalBooking" >
+        <BookingFormWithChoiceView/>
     </Modal>
     <Modal v-model:visible="doctorCardState.showModalServices" v-if="doctorCardState.showModalServices">
         <ServicesSelectListView :services="doctor.service_data"/>

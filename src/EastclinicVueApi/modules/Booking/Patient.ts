@@ -71,6 +71,7 @@ class Patient implements PatientInterface{
         this.checkPhone(this.phone)
         this.patientData.value.phoneError = ''
         if (this.phone.replace(/[^0-9]/g, '').length !== 11) this.patientData.value.phoneError =  'Пожалуйста, введите корректный телефон';
+        console.log(this.patientData.value.phoneError)
         return !(this.patientData.value.phoneError);
     }
     public checkPhone( phone:string ):boolean{

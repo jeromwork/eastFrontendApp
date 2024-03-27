@@ -9,17 +9,20 @@ import BookingFormView from "../Booking/views/BookingFormView.vue";
 import BookingState from "../../state/BookingState";
 import {provide, ref} from "vue";
 import {BookingServiceSymbol, BookingStateSymbol} from "../../composables/useSymbols";
+import Modal from "../../UI/Modal.vue";
+import BookingFormWithChoiceView from "../Booking/views/BookingFormWithChoiceView.vue";
 
 const isSingleDoctorPage = computed(() => PageInfoService.pageInfo.type === 'doctor').value
 const showBooking = ref(false)
-
+const bookingState = new BookingState();
+provide( BookingStateSymbol, bookingState )
 const openModal = () => {
     YandexMetrika?.reachGoal(( isSingleDoctorPage ) ? 'booking-header-single' : 'booking-header-contacts');
     showBooking.value = true;
-    provide( BookingStateSymbol, BookingState )
-    provide( BookingServiceSymbol, new BookingService())
 
-    
+    bookingState.setBookingFormBlocks({ showShortFormTitle:true })
+    bookingState.showModalBooking = true;
+
 //why /booking url ?
     // if (window.innerWidth < 680){
     //     useRouter().push('/booking');
@@ -34,7 +37,9 @@ const openModal = () => {
 
 <template>
 <!--        <BookingFormView v-if="showBooking" v-model:visible="showBooking"/>-->
-
+    <Modal  v-model:visible="bookingState.showModalBooking" v-if="bookingState.showModalBooking" >
+        <BookingFormWithChoiceView />
+    </Modal>
     <div class="header-wrapper">
 
         <header class="header">

@@ -13,7 +13,6 @@ import ScheduleCardView from "../../../UI/Schedule/views/ScheduleCardView.vue";
 import type DoctorCardViewProps from "../../Doctors/Interfaces/DoctorCardViewProps";
 import DoctorCardBookingView from '../../Doctors/DoctorCard/views/Booking.vue'
 import {
-    BookingServiceSymbol,
     BookingStateSymbol,
     ClinicsStateSymbol,
     DoctorCartStateSymbol,
@@ -33,6 +32,7 @@ import type IClinicsState from "../../../interfaces/IClinicsState";
 import type BookingState from "../../../state/BookingState";
 import BookingSuccessMessageView from "../../Booking/views/BookingSuccessMessageView.vue";
 import Modal from "../../../UI/Modal.vue";
+import type {ClinicInterface} from "#build/src/EastclinicVueApi";
 
 
 const props = defineProps<BookingFormViewProps>();
@@ -42,13 +42,12 @@ const props = defineProps<BookingFormViewProps>();
 
 
 
-const doctor = inject( DoctorInfoSymbol ) as DoctorInterface
-const scheduleState = inject( ScheduleStateSymbol ) as IScheduleState
-const clinicsState = inject( ClinicsStateSymbol ) as IClinicsState
+const doctor:DoctorInterface|null = inject( DoctorInfoSymbol, null );
+const scheduleState:IScheduleState|null = inject( ScheduleStateSymbol, null);
+const clinicsState:IClinicsState|null = inject( ClinicsStateSymbol, null )
 const bookingState = inject( BookingStateSymbol ) as BookingState
 
 const bookingBlocks = bookingState.bookingFormViewProps as BookingFormViewProps;
-const bookingService = inject( BookingServiceSymbol ) as BookingService
 
 const showLeaveMessage:Ref<boolean> = ref(false)
 
@@ -71,7 +70,7 @@ onClickOutside(refBookingDialog, event => {
                 :class="{'rounded-xl' : !useIsMobile()}"
         >
 
-            <div v-if="doctor" class="booking__dialog__scroll" id="booking__dialog__wrapper" >
+            <div class="booking__dialog__scroll" id="booking__dialog__wrapper" >
                 <div class="v-card-container divider" >
                     <div class="modal-card-title">
                         <span class="text-semibold">Запись
@@ -99,32 +98,32 @@ onClickOutside(refBookingDialog, event => {
                                     </div>
 
                                 </div>
-                                <PatientFormView :state-patient="bookingService.Patient"/>
+                                <PatientFormView :state-patient="bookingState.Patient"/>
 
 
 
 <!-- selected time -->
                                 <div
-                                        v-if="bookingBlocks.showScheduleBlock"
+                                        v-if="bookingBlocks.showScheduleBlock && scheduleState"
                                         @click="bookingState.showBookingScheduleBlock = true"
                                         class="booking__dialog__item pointer">
-                                    <div class="booking__dialog__card with-icon" :class="{'error-border':!!(scheduleState.selectedSlotError)}">
+                                    <div class="booking__dialog__card with-icon" :class="{'error-border':!!(scheduleState?.selectedSlotError)}">
                                         <div>
 
                                             <div class="booking__dialog__label">
                                                 Дата и время приема
                                             </div>
 
-                                            <span v-if="scheduleState.selectedSlot">{{ useDateFormat(scheduleState.selectedSlot *1000, 'YYYY-MM-DD HH:mm:ss').value}}</span>
+                                            <span v-if="scheduleState?.selectedSlot">{{ useDateFormat(scheduleState?.selectedSlot *1000, 'YYYY-MM-DD HH:mm:ss').value}}</span>
                                             <span class="booking__dialog__card_input-text" v-else>Выбрать время</span>
                                         </div>
 
                                         <span class="icons pen"></span>
                                     </div>
-                                    <div class="booking__dialog__card_error" v-show="scheduleState.selectedSlotError"  >
+                                    <div class="booking__dialog__card_error" v-show="scheduleState?.selectedSlotError"  >
                                         <div
                                                 class="v-messages theme--light error--text"
-                                                v-html="scheduleState.selectedSlotError"
+                                                v-html="scheduleState?.selectedSlotError"
                                         >
                                         </div>
                                     </div>
@@ -136,13 +135,13 @@ onClickOutside(refBookingDialog, event => {
                                     class="booking__dialog__item pointer">
                                     <div
                                         @click="bookingState.showBookingScheduleBlock = true"
-                                        class="booking__dialog__card with-icon" style="padding-bottom: 7px; padding-top: 7px" :class="{'error-border':!!(scheduleState.selectedSlotError)}">
+                                        class="booking__dialog__card with-icon" style="padding-bottom: 7px; padding-top: 7px" :class="{'error-border':!!(scheduleState?.selectedSlotError)}">
                                         <div>
                                             <div class="booking__dialog__label">
                                                 Клиника
                                             </div>
 
-                                            <div v-if="clinicsState.selectedClinic">
+                                            <div v-if="clinicsState?.selectedClinic">
                                                 <ClinicCardSelectedView :clinic="clinicsState.selectedClinic"/>
                                             </div>
                                             <div v-else class="">
@@ -187,10 +186,10 @@ onClickOutside(refBookingDialog, event => {
 
                                 </div>
                                 <ClinicsSelectView
-                                    v-if="doctor?.clinics && clinicsState.selectedClinic"
-                                    :clinics="doctor.clinics"
-                                    :modelValue = "clinicsState.selectedClinic"
-                                    @update:modelValue="clinicsState.setSelectedClinic($event);"
+                                    v-if="doctor?.clinics && clinicsState?.selectedClinic"
+                                    :clinics="doctor?.clinics as ClinicInterface[]"
+                                    :modelValue = "clinicsState?.selectedClinic"
+                                    @update:modelValue="clinicsState?.setSelectedClinic($event);"
 
                                 />
                                 <div class="slots__header text-secondary">
