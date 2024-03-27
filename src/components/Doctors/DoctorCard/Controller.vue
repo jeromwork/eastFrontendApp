@@ -8,14 +8,13 @@ import {ScheduleService,
 } from "../../../EastclinicVueApi";
 
 import {
-    bookingServiceSymbol,
     currentWorkingDayRefSymbol, DoctorCartStateSymbol,
     DoctorInfoSymbol,
     servicesInCartSymbol,
     servicesSelectedSymbol,
     servicesSymbol,
-    slotsRefSymbol,
-    workDaysReadonlyRefSymbol
+    ScheduleStateSymbol,
+    ClinicsStateSymbol, BookingStateSymbol, BookingServiceSymbol
 } from '../../../composables/useSymbols'
 
 
@@ -25,7 +24,6 @@ import DoctorCardBooking from '../DoctorCard/views/Booking.vue'
 import {BookingService} from "../../../EastclinicVueApi";
 import BookingFormWithChoiceView from "../../Booking/views/BookingFormWithChoiceView.vue";
 import Modal from "../../../UI/Modal.vue";
-import type BookingFormViewProps from "../../Booking/imterfaces/BookingFormViewProprs";
 import ServicesSelectListView from "../../../UI/Services/views/ServicesSelectListView.vue";
 import DoctorCardState from "../../../state/DoctorCardState";
 import BookingSuccessMessageView from '../../Booking/views/BookingSuccessMessageView.vue'
@@ -50,20 +48,31 @@ const props = defineProps<{    doctor: DoctorInterface }>();
 
 
 const doctorCardState =  new DoctorCardState().withDoctor(props.doctor).withBookingService(new BookingService())
-provide(DoctorCartStateSymbol,doctorCardState)
 
+provide( DoctorCartStateSymbol,doctorCardState )
+provide( ScheduleStateSymbol, doctorCardState.scheduleState )
+provide( DoctorInfoSymbol, doctorCardState.Doctor )
+provide( ClinicsStateSymbol, doctorCardState )
+provide( BookingStateSymbol, doctorCardState.bookingState )
+provide( BookingServiceSymbol, doctorCardState.BookingService )
+
+
+watch(doctorCardState.bookingState._showBookingSuccessMessage, ()=>{
+    console.log(3235234626888888)
+})
 </script>
 
 <template>
-    <Modal  v-model:visible="doctorCardState.showModalBooking" v-if="doctorCardState.showModalBooking" >
-          <BookingFormWithChoiceView/>
-    </Modal>
-    <Modal v-model:visible="doctorCardState.showModalServices" v-if="doctorCardState.showModalServices">
-        <ServicesSelectListView :services="doctor.service_data"/>
-    </Modal>
-    <Modal v-model:visible="doctorCardState.showBookingSuccessMessage"  v-if="doctorCardState.showBookingSuccessMessage">
-        <BookingSuccessMessageView/>
-    </Modal>
+
+        <Modal  v-model:visible="doctorCardState.bookingState.showModalBooking"  >
+            <BookingFormWithChoiceView />
+        </Modal>
+        <Modal v-model:visible="doctorCardState.bookingState.showBookingSuccessMessage" >
+            <BookingSuccessMessageView />
+        </Modal>
+        <Modal v-model:visible="doctorCardState.showModalServices">
+            <ServicesSelectListView :services="doctor.service_data"/>
+        </Modal>
   <slot></slot>
 </template>
 

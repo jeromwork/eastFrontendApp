@@ -1,54 +1,58 @@
-import type {DoctorInterface, ClinicInterface} from "../EastclinicVueApi";
+import type {DoctorInterface, ClinicInterface, IBookingRequest} from "../EastclinicVueApi";
 import type {Ref} from 'vue'
 import {computed, ref} from "vue";
-import { DoctorsService, ScheduleService, BookingService, ScheduleRequest, Patient} from "../EastclinicVueApi";
+import {
+    DoctorsService,
+    ScheduleService,
+    BookingService,
+    ScheduleRequest,
+    Patient
+} from "../EastclinicVueApi";
 import type BookingFormViewProps from "../components/Booking/imterfaces/BookingFormViewProprs";
 import { YandexMetrika } from "../composables/useYandexMetrika";
 import useCalltouch from "../composables/useCalltouch";
 // import {Ecommerce} from "#build/src/EastclinicVueApi/modules/Ecommerce";
+import type IScheduleState from '../interfaces/IScheduleState'
+import type IClinicsState from "../interfaces/IClinicsState";
+import type IBookingState from "../interfaces/IBookingState";
+import BookingState from "../state/BookingState";
+import ScheduleState from "../state/ScheduleState";
 
-interface DoctorCardInterface {
+interface DoctorCardInterface{
     workDays: number[] | null;
     workingDay:number|null;
-    slots: number[] | null;
-    selectedSlot:number|null;
-    selectedSlotError?:string;
-    selectedClinic: ClinicInterface | null;
-
-    showModalBooking:boolean;
     showModalServices:boolean;
-    showLeaveMessage:boolean;
-    showBookingScheduleBlock:boolean;
-    showBookingSuccessMessage:boolean;
-    bookingFormViewProps:BookingFormViewProps | null;
 }
 
 
 
-export default class DoctorCardState {
+export default class DoctorCardState   implements IClinicsState{
     protected data: Ref<DoctorCardInterface> = ref({
-        slots: null,
-        selectedSlot:null,
-
         workDays: null,
         workingDay: null,
 
-        selectedClinic: null,
-
-
-        showModalBooking:false,
         showModalServices:false,
-        showLeaveMessage:false,
-        showBookingScheduleBlock:false,
-        showBookingSuccessMessage:false,
-        bookingFormViewProps:null,
-
 
     });
+
+
+    protected _selectedClinic:Ref<ClinicInterface | null> = ref(null); //implements IScheduleState
+
+    public bookingState:BookingState = new BookingState();
+    public scheduleState:ScheduleState = new ScheduleState();
+
+
     protected bookingYAMetrikaGoal = '';
     protected bookingService:BookingService | null = null;  // Adjust the type here
     protected doctor: DoctorInterface | null = null;
+    public clinics: Readonly<ClinicInterface[]> | null = null;
 
+    constructor() {
+//set callback during selected slot
+        this.scheduleState.selectedSlotCallback = this.selectedSlotCallback.bind(this );
+        this.bookingState.book = this.book.bind(this)
+
+    }
 
     public withDoctor( doctor:DoctorInterface ):this{
         this.doctor = doctor;
@@ -65,13 +69,13 @@ export default class DoctorCardState {
 
     protected initDoctorData(doctor:DoctorInterface):this{
         const selectedClinicInit = (new DoctorsService()).clinicWorkingDefault(doctor.id) as ClinicInterface ?? null;
-        this.data.value.selectedClinic = selectedClinicInit;
-
+        this.selectedClinic = selectedClinicInit;
+        this.clinics = doctor.clinics;
 
         const workingDay = ScheduleService.nearestWorkDay(doctor.id) as number ?? null
         this.data.value.workingDay = workingDay;
 
-        this.data.value.slots = computed(() => {
+        this.scheduleState.slots = computed(() => {
             if (!workingDay || !selectedClinicInit.id) return null;
             const slotsDoctor = ScheduleService.getSlots(selectedClinicInit?.id as number, doctor.id, workingDay as number);
             return slotsDoctor ?? null;
@@ -82,38 +86,17 @@ export default class DoctorCardState {
 
 
 
-    public toogleModalBooking( show:boolean ):this{
-        this.setShowModalBooking(show);
-        return this;
-    }
+
 
     public toogleModalServices( show:boolean ):this{
         this.data.value.showModalServices = show;
         return this;
     }
 
-    public toggleBookingLeaveMessage( show:boolean ):this{
-        this.data.value.showLeaveMessage = show;
-        return this;
-    }
 
-    public toogleBookingScheduleBlock(show:boolean):this{
-        this.data.value.showBookingScheduleBlock = show;
-        return this
-    }
-
-    public toogleBookingSuccessMessage(show:boolean):this{
-        this.data.value.showBookingSuccessMessage = show;
-        return this
-    }
-
-    public setBookingFormBlocks( viewProps:BookingFormViewProps ):this{
-        this.data.value.bookingFormViewProps = viewProps;
-        return this;
-    }
 
     public setSelectedClinic( clinic:ClinicInterface):this{
-        this.data.value.selectedClinic = clinic;
+        this.selectedClinic = clinic;
         //recalc working day
         this.setWorkingDay(ScheduleService.nearestWorkDay(this.Doctor.id, clinic.id) as number ?? null)
         return this;
@@ -122,18 +105,11 @@ export default class DoctorCardState {
     public setWorkingDay(day:number|null):this{
         this.data.value.workingDay = day;
         //recalc slots for day
-        if (!day || !this.selectedClinic?.id) this.data.value.slots =  null;
+        if (!day || !this.selectedClinic?.id) this.scheduleState.slots =  null;
         const slotsDoctor = ScheduleService.getSlots(this.selectedClinic?.id as number, this.Doctor.id, day as number);
-        this.data.value.slots = slotsDoctor ?? null;
+        this.scheduleState.slots = slotsDoctor ?? null;
         return this;
     }
-
-    public setSelectedSlot(slot:number|null):this{
-        this.data.value.selectedSlot = slot;
-        this.data.value.selectedSlotError = '';
-        return this;
-    }
-
 
 
     public get BookingService():BookingService{
@@ -152,59 +128,42 @@ export default class DoctorCardState {
     }
     public get workingDay():number | null{        return this.data.value.workingDay;    }
 
-    public get slots():Readonly<number[]> | null{        return (this.data.value.slots) ? readonly(this.data.value.slots) : null;    }
-
-    public get selectedSlot():number | null{        return this.data.value.selectedSlot;    }
-    public get selectedSlotError():string | undefined{        return this.data.value.selectedSlotError;    }
 
 
-    public get selectedClinic():ClinicInterface | null{
-        return this.data.value.selectedClinic;    }
-
-    public get showModalBooking():boolean | null{        return this.data.value.showModalBooking;    }
-    public set showModalBooking( show){     this.setShowModalBooking(!!(show));   }
     public get showModalServices():boolean | null{        return this.data.value.showModalServices;    }
     public set showModalServices( show){        this.data.value.showModalServices = show as boolean;    }
-    public get showBookingScheduleBlock():boolean | null{        return this.data.value.showBookingScheduleBlock;    }
-    // public set showBookingScheduleBlock( show){        this.data.value.showBookingScheduleBlock = show as boolean;    }
-
-    public get showBookingSuccessMessage():boolean | null{        return this.data.value.showBookingSuccessMessage;    }
-    public set showBookingSuccessMessage( show){
-        this.data.value.showBookingSuccessMessage = show as boolean;
-    }
-
-    public get showLeaveMessage():boolean | null{        return this.data.value.showLeaveMessage;    }
-    public get bookingFormViewProps():BookingFormViewProps | null{        return this.data.value.bookingFormViewProps;    }
 
 
+    public get selectedClinic():ClinicInterface | null{        return this._selectedClinic.value;    }
+    public set selectedClinic( clinic:ClinicInterface|null ){        this._selectedClinic.value = clinic;    }
 
-
-    public async book(){
+//this method replace bookingService.book()
+    public async book():Promise<IBookingRequest|undefined>{
         //todo #captha_enable
         //todo check fill form
-
+        //check patient
+        if(!this.bookingState.Patient.checkFioResume() || !this.bookingState.Patient.checkPhoneResume() )  return ;
 
         //if error form, scroll here
-        if(!this.selectedSlot) {
-            this.data.value.selectedSlotError = 'Выберите время для записи';
-            return null;
+        if(!this.scheduleState.selectedSlot) {
+            this.scheduleState.selectedSlotError = 'Выберите время для записи';
+            return;
         }
 
 
-        //check patient
         this.BookingService
             .withDoctor(this.Doctor)
             .withClinic(this.selectedClinic)
-            .withSlot(this.selectedSlot);
+            .withSlot(this.scheduleState.selectedSlot)
+            .withPatient(this.bookingState.Patient)
+
         const res = await this.BookingService.book()
 
         // Ecommerce.withDoctor(this.Doctor).purchase();
 
         if(res?.ok) {
             this.toogleModalBooking(false);
-            this.toogleBookingSuccessMessage(true);
-            YandexMetrika.reachGoal('booking_done')
-            if(this.bookingService && this.bookingService.Cart?.count > 0){
+            if(this.BookingService.Cart?.count > 0){
                 YandexMetrika.reachGoal('service_booking_done')
             }
 
@@ -214,34 +173,38 @@ export default class DoctorCardState {
                 .booking()
 
             //clear form data
-            this.data.value.selectedSlot = null;
-            this.data.value.selectedSlotError = '';
+            this.scheduleState.selectedSlot = null;
+            this.scheduleState.selectedSlotError = '';
             this.data.value.workingDay = null;
-            this.data.value.selectedClinic = null;
-            this.bookingService = null; //???
+            this.selectedClinic = null;
+            this.bookingService = new BookingService(); //???
 
 
         }else {
             if ( res?.code === 24 || res?.code === 25 ){  //handle busy slot
-                this.data.value.selectedSlot = null;
-                this.data.value.selectedSlotError = res.error;
+                this.scheduleState.selectedSlot = null;
+                this.scheduleState.selectedSlotError = res?.error as string;
+                await ScheduleService.getSchedulesFromServer(new ScheduleRequest().withDoctor(this.Doctor).forCountDays(30))
+            }else {
+                if (res?.error){
+                    this.bookingState.errorText = res.error;
+                }
             }
+
         }
 
-
-
+        return res;
         //todo show success or error message
 
     }
 
-    protected setShowModalBooking(show:boolean){
-        this.data.value.showModalBooking = show as boolean;
+    public toogleModalBooking( show:boolean ):this{
+        this.bookingState.showModalBooking = show as boolean;
         if(!show){ //if close booking form
-            this.data.value.selectedSlot = null;
-            this.data.value.selectedSlotError = '';
+            this.scheduleState.selectedSlot = null;
+            this.scheduleState.selectedSlotError = '';
             this.data.value.workingDay = null;
         }else  { //if open booking form
-            this.data.value.showBookingScheduleBlock = false;
             //set goal for yam
             if(this.bookingService && this.bookingService.Cart?.count > 0){
                 this.bookingYAMetrikaGoal = 'service_booking_done';
@@ -249,6 +212,16 @@ export default class DoctorCardState {
 
 
         }
+        return this;
+    }
+
+    protected selectedSlotCallback ( slot:number){
+        this.bookingState.setBookingFormBlocks({
+            showDoctorBlock:true,
+            showClinicBlock:true,
+            showScheduleBlock:true})        //settings view booking form
+        this.toogleModalBooking(true)
+
     }
 
 }

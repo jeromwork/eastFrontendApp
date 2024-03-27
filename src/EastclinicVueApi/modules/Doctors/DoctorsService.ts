@@ -119,7 +119,9 @@ export default class DoctorsService{
                         const img = doctorInfo.content[i]
                         if(img.type === '120x120' && img.typeFile === 'image') photo120x120 =  img;
                     }
-                    photo120x120 = { id : null, type:'120x120', typeFile:"image", url:doctorInfo.photos['120x120'][0] } as ContentInterface;
+                    if (doctorInfo?.photos?.['120x120']?.[0]){
+                        photo120x120 = { id : null, type:'120x120', typeFile:"image", url:doctorInfo.photos['120x120'][0] } as ContentInterface;
+                    }else  photo120x120 =  { id : null, type:'120x120', typeFile:"image", url:'/images/photo_soon.png' } as ContentInterface;
                 } else {
                     photo120x120 =  { id : null, type:'120x120', typeFile:"image", url:'/images/photo_soon.png' } as ContentInterface;
                 }

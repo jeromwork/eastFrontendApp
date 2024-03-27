@@ -1,31 +1,36 @@
 <script setup lang="ts">
 
 import {inject, ref, nextTick} from "vue";
-import { DoctorCartStateSymbol} from "../../../composables/useSymbols";
-import {BookingService} from "../../../EastclinicVueApi";
+import {
+    BookingServiceSymbol,
+    BookingStateSymbol, ClinicsStateSymbol,
+    DoctorCartStateSymbol,
+    DoctorInfoSymbol, ScheduleStateSymbol
+} from "../../../composables/useSymbols";
+import { BookingService } from "../../../EastclinicVueApi";
+import type { DoctorInterface} from "../../../EastclinicVueApi";
 import DoctorCardState from "../../../state/DoctorCardState";
 import EcButton from "../../../UI/Buttons/EcButton.vue";
 import type BookingFormViewProps from "../imterfaces/BookingFormViewProprs";
 import type {ClinicInterface} from "../../../EastclinicVueApi";
 import useIsMobile from "../../../composables/useIsMobile";
+import type IBookingState from "../../../interfaces/IBookingState";
+import type BookingState from "../../../state/BookingState";
+import type IScheduleState from "../../../interfaces/IScheduleState";
+import type IClinicsState from "../../../interfaces/IClinicsState";
 
-
-const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
-if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');
-
-const bookingService = doctorCardState.BookingService as BookingService;
-
-// const phone = computed(() => bookingService.Patient.phone)
-
-//its inpassible!! not working :value = bookingService.Patient.phone
-const bookingBlocks = doctorCardState.bookingFormViewProps as BookingFormViewProps;
-const chosenClinicNow = doctorCardState.selectedClinic as ClinicInterface;
+const bookingState:BookingState = inject( BookingStateSymbol ) as BookingState
+if(!bookingState) throw new Error('not have bookingState by BookingState');
+const bookingBlocks = bookingState.bookingFormViewProps as BookingFormViewProps;
+const scheduleState:IScheduleState|null = inject( ScheduleStateSymbol, null);
+const doctor:DoctorInterface|null = inject( DoctorInfoSymbol, null );
+const clinicsState:IClinicsState|null = inject( ClinicsStateSymbol, null )
+const chosenClinicNow = clinicsState?.selectedClinic as ClinicInterface;
 const fullscreen = useIsMobile();
 
 const bookingSuccessClose = () => {
 
 }
-
 
 </script>
 
@@ -43,7 +48,7 @@ const bookingSuccessClose = () => {
                         <path d="M45 18.4914C30.3672 18.4914 18.4914 30.3672 18.4914 45C18.4914 59.6328 30.3672 71.5086 45 71.5086C59.6328 71.5086 71.5086 59.6328 71.5086 45C71.5086 30.3672 59.6328 18.4914 45 18.4914ZM37.8162 56.3722L28.2996 46.8556C27.2657 45.8218 27.2657 44.1517 28.2996 43.1179C29.3334 42.0841 31.0034 42.0841 32.0373 43.1179L39.6983 50.7524L57.9362 32.5144C58.97 31.4806 60.6401 31.4806 61.6739 32.5144C62.7078 33.5483 62.7078 35.2183 61.6739 36.2522L41.5539 56.3722C40.5466 57.406 38.85 57.406 37.8162 56.3722Z" fill="white"/>
                     </svg>
                     <div class="booking__dialog__success_header_item_side">
-                        <div class="booking__dialog__success_header_item_head">Вы успешно записаны<span v-if="doctorCardState.Doctor"> к врачу</span>!</div>
+                        <div class="booking__dialog__success_header_item_head">Вы успешно записаны<span v-if="doctor"> к врачу</span>!</div>
                     </div>
                 </div>
 
@@ -57,29 +62,29 @@ const bookingSuccessClose = () => {
         </div>
         <div class="scroll v-card-text">
             <div class="booking__dialog__success_message">
-                <div v-if="bookingBlocks?.showDoctorBlock" class="booking__dialog__doctor-card  mb-6">
+                <div v-if="bookingBlocks?.showDoctorBlock && doctor" class="booking__dialog__doctor-card  mb-6">
                     <div class="booking__dialog__doctor-card_photo">
-                        <img :src="doctorCardState.Doctor.photo120x120" :alt="doctorCardState.Doctor.fullname">
+                        <img :src="doctor?.photo120x120" :alt="doctor?.fullname">
                     </div>
                     <div class="booking__dialog__doctor-card_info">
-                        <div class="text-semibold">{{doctorCardState.Doctor.fullname}}</div>
-                        <div class="booking__dialog__doctor-card_info_desc">{{doctorCardState.Doctor.specials}}</div>
+                        <div class="text-semibold">{{doctor?.fullname}}</div>
+                        <div class="booking__dialog__doctor-card_info_desc">{{doctor?.specials}}</div>
                     </div>
                 </div>
-                <div v-if="!doctorCardState.bookingFormViewProps?.showShortFormTitle"><span class="text-semibold">{{bookingService.Patient.fio}}</span>, ждем вас:</div>
+                <div v-if="!bookingBlocks?.showShortFormTitle"><span class="text-semibold">{{bookingState.Patient.fio}}</span>, ждем вас:</div>
 
-                <div  v-if="doctorCardState.bookingFormViewProps?.showShortFormTitle">
-                    <span class="text-semibold">{{bookingService.Patient.fio}}</span>, оператор колл-центра перезвонит Вам в течение 15 минут для уточнения деталей и подтверждения записи на прием.
+                <div  v-if="bookingBlocks?.showShortFormTitle">
+                    <span class="text-semibold">{{bookingState.Patient.fio}}</span>, оператор колл-центра перезвонит Вам в течение 15 минут для уточнения деталей и подтверждения записи на прием.
                 </div>
                 <div
-                        v-if="bookingBlocks.showScheduleBlock"
+                        v-if="bookingBlocks?.showScheduleBlock"
                         class="booking__dialog__success_datatable">
-                    <div class="booking__dialog__success_datatable_row">
+                    <div class="booking__dialog__success_datatable_row" v-if="scheduleState?.selectedSlot">
                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
                             <circle cx="20" cy="20" r="20" fill="#F2F3F6"/>
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M15 9C15.5523 9 16 9.44772 16 10V11H24V10C24 9.44772 24.4477 9 25 9C25.5523 9 26 9.44772 26 10V11H26.6667C28.5076 11 30 12.511 30 14.375V26.625C30 28.489 28.5076 30 26.6667 30H13.3333C11.4924 30 10 28.489 10 26.625V14.375C10 12.511 11.4924 11 13.3333 11H14V10C14 9.44772 14.4477 9 15 9ZM13 16.0833C12.4477 16.0833 12 16.531 12 17.0833V26.9167C12 27.515 12.5117 28 13.1429 28H26.8571C27.4883 28 28 27.515 28 26.9167V17.0833C28 16.531 27.5523 16.0833 27 16.0833H13ZM15 19V21H17V19H15ZM19 19H21V21H19V19ZM23 19V21H25V19H23ZM25 23V25H23V23H25ZM21 23H19V25H21V23ZM17 23V25H15V23H17Z" fill="#171E36"/>
                         </svg>
-                        <span>{{useDateFormat(doctorCardState.selectedSlot * 1000, 'DD \n ddd', { locales: 'ru' }).value}}</span>
+                        <span>{{useDateFormat(scheduleState?.selectedSlot * 1000, 'DD \n ddd', { locales: 'ru' }).value}}</span>
                     </div>
                     <div class="booking__dialog__success_datatable_row align-start">
                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
@@ -133,7 +138,7 @@ const bookingSuccessClose = () => {
                 <EcButton
                         large
                         class="primary full-width mt-6"
-                        @click="doctorCardState.toogleBookingSuccessMessage(false)"
+                        @click="bookingState.toogleBookingSuccessMessage(false)"
                 >Отлично
                 </EcButton>
             </div>
