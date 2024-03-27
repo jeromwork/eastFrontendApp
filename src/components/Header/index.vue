@@ -5,11 +5,11 @@ import PhoneButton from '../../UI/Contacts/PhoneButton.vue'
 import EcButton from "../../UI/Buttons/EcButton.vue";
 import {useRouter} from "vue-router";
 import {YandexMetrika} from "../../composables/useYandexMetrika";
-import BookingFormView from "../Booking/views/BookingFormView.vue";
 import BookingState from "../../state/BookingState";
 import {provide, ref} from "vue";
-import {BookingServiceSymbol, BookingStateSymbol} from "../../composables/useSymbols";
+import { BookingStateSymbol } from "../../composables/useSymbols";
 import Modal from "../../UI/Modal.vue";
+import BookingSuccessMessageView from "../Booking/views/BookingSuccessMessageView.vue";
 import BookingFormWithChoiceView from "../Booking/views/BookingFormWithChoiceView.vue";
 
 const isSingleDoctorPage = computed(() => PageInfoService.pageInfo.type === 'doctor').value
@@ -36,10 +36,14 @@ const openModal = () => {
 </script>
 
 <template>
-<!--        <BookingFormView v-if="showBooking" v-model:visible="showBooking"/>-->
-    <Modal  v-model:visible="bookingState.showModalBooking" v-if="bookingState.showModalBooking" >
-        <BookingFormWithChoiceView />
-    </Modal>
+
+        <Modal  v-model:visible="bookingState.showModalBooking"  >
+            <BookingFormWithChoiceView />
+        </Modal>
+        <Modal v-model:visible="bookingState.showBookingSuccessMessage" >
+            <BookingSuccessMessageView />
+        </Modal>
+
     <div class="header-wrapper">
 
         <header class="header">

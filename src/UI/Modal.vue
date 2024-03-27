@@ -21,17 +21,20 @@ onClickOutside(refBookingDialog, event => {
 </script>
 
 <template>
-    <div v-if="visible" class="modal">
-        <div class="modal-content" ref="refBookingDialog">
-            <slot name="default"></slot>
-            <slot name="close">
-                {{visible}}
-<!--                <button @click="visible=false">Close</button>-->
-            </slot>
+    <teleport  to="body">
+        <div v-if="visible" class="modal">
+            <div class="modal-content" ref="refBookingDialog">
+                <slot name="default"></slot>
+                <slot name="close">
+                    {{visible}}
+    <!--                <button @click="visible=false">Close</button>-->
+                </slot>
 
 
+            </div>
         </div>
-    </div>
+
+    </teleport>
 </template>
 
 <style scoped>

@@ -21,7 +21,6 @@ import ScheduleState from "../state/ScheduleState";
 interface DoctorCardInterface{
     workDays: number[] | null;
     workingDay:number|null;
-    selectedClinic: ClinicInterface | null;
     showModalServices:boolean;
 }
 
@@ -32,12 +31,12 @@ export default class DoctorCardState   implements IClinicsState{
         workDays: null,
         workingDay: null,
 
-        selectedClinic: null,
         showModalServices:false,
 
     });
 
-    public selectedClinic:ClinicInterface | null = null; //implements IScheduleState
+
+    protected _selectedClinic:Ref<ClinicInterface | null> = ref(null); //implements IScheduleState
 
     public bookingState:BookingState = new BookingState();
     public scheduleState:ScheduleState = new ScheduleState();
@@ -135,6 +134,9 @@ export default class DoctorCardState   implements IClinicsState{
     public set showModalServices( show){        this.data.value.showModalServices = show as boolean;    }
 
 
+    public get selectedClinic():ClinicInterface | null{        return this._selectedClinic.value;    }
+    public set selectedClinic( clinic:ClinicInterface|null ){        this._selectedClinic.value = clinic;    }
+
 //this method replace bookingService.book()
     public async book():Promise<IBookingRequest|undefined>{
         //todo #captha_enable
@@ -161,7 +163,7 @@ export default class DoctorCardState   implements IClinicsState{
 
         if(res?.ok) {
             this.toogleModalBooking(false);
-            if(this.bookingState.bookingService.Cart?.count > 0){
+            if(this.BookingService.Cart?.count > 0){
                 YandexMetrika.reachGoal('service_booking_done')
             }
 
@@ -175,13 +177,14 @@ export default class DoctorCardState   implements IClinicsState{
             this.scheduleState.selectedSlotError = '';
             this.data.value.workingDay = null;
             this.selectedClinic = null;
-            this.bookingService = null; //???
+            this.bookingService = new BookingService(); //???
 
 
         }else {
             if ( res?.code === 24 || res?.code === 25 ){  //handle busy slot
                 this.scheduleState.selectedSlot = null;
                 this.scheduleState.selectedSlotError = res?.error as string;
+                console.log(111111111111)
                 await ScheduleService.getSchedulesFromServer(new ScheduleRequest().withDoctor(this.Doctor).forCountDays(30))
             }else {
                 if (res?.error){

@@ -7,7 +7,9 @@ import Patient from "./Patient";
 import Cart from "./Cart";
 import type BookingResponseInterface from "./api/BookingResponseInterface";
 import BookingApi from "./api/BookingApi";
-import {ScheduleRequest, ScheduleService} from "../../../EastclinicVueApi";
+import {PageInfoService, ScheduleRequest, ScheduleService} from "../../../EastclinicVueApi";
+
+
 
 
 interface BookingDataInterface {
@@ -15,14 +17,14 @@ interface BookingDataInterface {
     slot : number|null
     clinic : ClinicInterface|null
     doctor : DoctorInterface|null
-    sessionId:string|null
+    sessionId:string|null,
+    type:string|null
 }
 
 export default class BookingService{
-    protected data:Ref<BookingDataInterface> = ref({slot:null, clinic:null, doctor:null, sessionId:null});
+    protected data:Ref<BookingDataInterface> = ref({slot:null, clinic:null, doctor:null, sessionId:null, type:null});
     public Cart:Cart = new Cart();
     public Patient:Patient|null = null;
-
 
 
     public withDoctor( doctor:DoctorInterface):this{
@@ -45,11 +47,11 @@ export default class BookingService{
         return this;
     }
 
-    public withSessionId(sessionId:string):this{
-        this.data.value.sessionId = sessionId;
-        return this;
-    }
 
+public withTypeBooking(type:string):this{
+        this.data.value.type = type
+        return this;
+}
 
     public get doctor():DoctorInterface|null{
         return ( this.data.value.doctor) ?? null;
@@ -81,22 +83,24 @@ export default class BookingService{
             slot:   ( this.slot ) ?? '',
             name: this.Patient.fio,
             // surname: this.Patient.surname,
-            phone:this.Patient.phone
+            phone:this.Patient.phone,
+            sessionId:PageInfoService.getSessionId(),
         };
 
 
         if(this.data.value.sessionId){
             bookData.sessionId = this.data.value.sessionId;
         }
+        if(this.data.value.type)   bookData.type = this.data.value.type;
 
         if(this.doctor?.is_cabinet){
             bookData.onlyMessages = true;
         }
         const res = await new BookingApi().book(bookData);
         if(!res) throw new Error('Ошибка сервера, попробуйте позже')
-        if (!res.ok && res.error){
-            throw new Error(res.error)
-        }
+        // if (!res.ok && res.error){
+        //     throw new Error(res.error)
+        // }
         return res;
 
 

@@ -14,4 +14,5 @@ export default interface BookingResponseInterface {
     name: string|undefined|null,
     // surname: string|undefined|null,
     phone:string|undefined|null,
+    type?:string,
 }

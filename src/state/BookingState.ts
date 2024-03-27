@@ -64,28 +64,30 @@ export default class BookingState implements IBookingState{
     public async book():Promise<IBookingRequest|undefined>{
         if(!this.Patient.checkFioResume() || !this.Patient.checkPhoneResume() )  return ;
         try {
-            const bookingService = new BookingService().withPatient(this.Patient);
-
-            const res = await bookingService.book()
-
+            const bookingService = new BookingService();
+            bookingService
+                .withTypeBooking('short')
+                .withPatient(this.Patient)
+            //const res = await bookingService.book()
+const res = {ok:true};
             // Ecommerce.withDoctor(this.Doctor).purchase();
 
             if(res?.ok) {
-                this.showModalBooking = false;
+
                 this.showLeaveMessage = false;
                 this.showBookingSuccessMessage = true;
-
-                YandexMetrika.reachGoal('booking_done')
-
-                useCalltouch()
-                    .forPatient(this.Patient as Patient)
-                    // .withTags([this.Doctor.shortFio as string, this.selectedClinic?.node_address as string]) //todo not found tags for short form
-                    .booking()
+                this.showModalBooking = false;
+                // YandexMetrika.reachGoal('booking_done')
+                //
+                // useCalltouch()
+                //     .forPatient(this.Patient as Patient)
+                //     // .withTags([this.Doctor.shortFio as string, this.selectedClinic?.node_address as string]) //todo not found tags for short form
+                //     .booking()
 
             }else {
-                if (res?.error){
-                    this.errorText = res?.error as string;
-                }else this.errorText = 'Ошибка сервера, попробуйте позже';
+                // if (res?.error){
+                //     this.errorText = res?.error as string;
+                // }else this.errorText = 'Ошибка сервера, попробуйте позже';
             }
             return res;
         }catch (e) {

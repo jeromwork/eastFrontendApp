@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 
-import { defineProps,  ref, inject } from "vue";
+import { defineProps,  ref, inject, watch } from "vue";
 import type { Ref } from 'vue'
 import { useDateFormat, useNow } from '@vueuse/core'
 import type {BookingService, ServiceCartInterface, DoctorInterface} from "../../../EastclinicVueApi";
@@ -32,7 +32,7 @@ import type IClinicsState from "../../../interfaces/IClinicsState";
 import type BookingState from "../../../state/BookingState";
 import BookingSuccessMessageView from "../../Booking/views/BookingSuccessMessageView.vue";
 import Modal from "../../../UI/Modal.vue";
-import type {ClinicInterface} from "#build/src/EastclinicVueApi";
+import type {ClinicInterface} from "../../../EastclinicVueApi";
 
 
 const props = defineProps<BookingFormViewProps>();
@@ -46,7 +46,7 @@ const doctor:DoctorInterface|null = inject( DoctorInfoSymbol, null );
 const scheduleState:IScheduleState|null = inject( ScheduleStateSymbol, null);
 const clinicsState:IClinicsState|null = inject( ClinicsStateSymbol, null )
 const bookingState = inject( BookingStateSymbol ) as BookingState
-
+const patient = bookingState.Patient;
 const bookingBlocks = bookingState.bookingFormViewProps as BookingFormViewProps;
 
 const showLeaveMessage:Ref<boolean> = ref(false)
@@ -56,20 +56,18 @@ onClickOutside(refBookingDialog, event => {
     //not work
     showLeaveMessage.value = true;
 })
+
+watch(bookingState._showBookingSuccessMessage, ()=>{
+    console.log(3235234626888888)
+})
 </script>
 
 <template>
-    <teleport  to="body">
-        <Modal v-model:visible="bookingState.showBookingSuccessMessage"  v-if="bookingState.showBookingSuccessMessage">
-            <BookingSuccessMessageView/>
-        </Modal>
-    </teleport>
     <div  :class="{'mobile': false}" class="booking__dialog__wrapper"  ref="refBookingDialog"  >
         <div
                 class="vcard-padding position-relative booking-container"
                 :class="{'rounded-xl' : !useIsMobile()}"
         >
-
             <div class="booking__dialog__scroll" id="booking__dialog__wrapper" >
                 <div class="v-card-container divider" >
                     <div class="modal-card-title">
@@ -98,9 +96,7 @@ onClickOutside(refBookingDialog, event => {
                                     </div>
 
                                 </div>
-                                <PatientFormView :state-patient="bookingState.Patient"/>
-
-
+                                <PatientFormView :state-patient="patient"/>
 
 <!-- selected time -->
                                 <div

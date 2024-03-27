@@ -24,10 +24,8 @@ import DoctorCardBooking from '../DoctorCard/views/Booking.vue'
 import {BookingService} from "../../../EastclinicVueApi";
 import BookingFormWithChoiceView from "../../Booking/views/BookingFormWithChoiceView.vue";
 import Modal from "../../../UI/Modal.vue";
-import type BookingFormViewProps from "../../Booking/imterfaces/BookingFormViewProprs";
 import ServicesSelectListView from "../../../UI/Services/views/ServicesSelectListView.vue";
 import DoctorCardState from "../../../state/DoctorCardState";
-import BookingState from "../../../state/BookingState";
 import BookingSuccessMessageView from '../../Booking/views/BookingSuccessMessageView.vue'
 
 //В этом компоненте обращаемся к сервису за данными по доктору
@@ -59,16 +57,22 @@ provide( BookingStateSymbol, doctorCardState.bookingState )
 provide( BookingServiceSymbol, doctorCardState.BookingService )
 
 
+watch(doctorCardState.bookingState._showBookingSuccessMessage, ()=>{
+    console.log(3235234626888888)
+})
 </script>
 
 <template>
-    <Modal  v-model:visible="doctorCardState.bookingState.showModalBooking" v-if="doctorCardState.bookingState.showModalBooking" >
-        <BookingFormWithChoiceView/>
-    </Modal>
-    <Modal v-model:visible="doctorCardState.showModalServices" v-if="doctorCardState.showModalServices">
-        <ServicesSelectListView :services="doctor.service_data"/>
-    </Modal>
 
+        <Modal  v-model:visible="doctorCardState.bookingState.showModalBooking"  >
+            <BookingFormWithChoiceView />
+        </Modal>
+        <Modal v-model:visible="doctorCardState.bookingState.showBookingSuccessMessage" >
+            <BookingSuccessMessageView />
+        </Modal>
+        <Modal v-model:visible="doctorCardState.showModalServices">
+            <ServicesSelectListView :services="doctor.service_data"/>
+        </Modal>
   <slot></slot>
 </template>
 
