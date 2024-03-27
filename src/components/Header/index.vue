@@ -11,6 +11,7 @@ import { BookingStateSymbol } from "../../composables/useSymbols";
 import Modal from "../../UI/Modal.vue";
 import BookingSuccessMessageView from "../Booking/views/BookingSuccessMessageView.vue";
 import BookingFormWithChoiceView from "../Booking/views/BookingFormWithChoiceView.vue";
+import LeaveMessageView from "../Booking/views/LeaveMessageView.vue";
 
 const isSingleDoctorPage = computed(() => PageInfoService.pageInfo.type === 'doctor').value
 const showBooking = ref(false)
@@ -43,6 +44,11 @@ const openModal = () => {
         <Modal v-model:visible="bookingState.showBookingSuccessMessage" >
             <BookingSuccessMessageView />
         </Modal>
+    <Modal v-model:visible="bookingState.showLeaveMessage" >
+        <LeaveMessageView />
+    </Modal>
+
+
 
     <div class="header-wrapper">
 
