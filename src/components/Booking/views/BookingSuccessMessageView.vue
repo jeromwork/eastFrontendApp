@@ -31,7 +31,6 @@ const fullscreen = useIsMobile();
 const bookingSuccessClose = () => {
 
 }
-console.log(223232332233)
 
 </script>
 

@@ -184,7 +184,6 @@ export default class DoctorCardState   implements IClinicsState{
             if ( res?.code === 24 || res?.code === 25 ){  //handle busy slot
                 this.scheduleState.selectedSlot = null;
                 this.scheduleState.selectedSlotError = res?.error as string;
-                console.log(111111111111)
                 await ScheduleService.getSchedulesFromServer(new ScheduleRequest().withDoctor(this.Doctor).forCountDays(30))
             }else {
                 if (res?.error){
