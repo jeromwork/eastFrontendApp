@@ -157,6 +157,7 @@ export default interface DoctorInterface {
     photo232x269? : ContentInterface;
 
     appointmentOnline:boolean,
+    dismissed?:boolean,
     specials?:string,
     shortFio?:string,
     specials_of_service?:Speciality[];
@@ -164,8 +165,8 @@ export default interface DoctorInterface {
 
     // workDays?:Readonly<Ref<|number[]>>;
     clinics: Readonly<ClinicInterface[]|null>
-    clinicWorkingSelected: Ref<ClinicInterface|null>
-
+    clinicWorkingSelected: Ref<ClinicInterface|null>;
+    description_private?:string;
 }
 
 

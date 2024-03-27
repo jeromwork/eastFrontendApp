@@ -2,7 +2,9 @@ import {BASE_URL, API_URL, API_MODX_URL} from '../../../config';
 import {postToServer} from '../../../util/UseFetchToServer';
 import type ApiDoctorsResponseInterface from "./ResponceInterfaces/ApiDoctorsResponseInterface";
 
-
+type TResponsePrivateDesc = {
+    data:{ok:boolean, error?:string, message?:string}
+}
 
 export default class DoctorsApi {
     protected _url:string = '/doctors';
@@ -20,6 +22,11 @@ export default class DoctorsApi {
             // You might want to return something in case of an error, or throw it again
             throw error;
         }
+    }
+
+
+    public async savePrivateDesc(requestData: Object):Promise<TResponsePrivateDesc>{
+        return await postToServer(API_MODX_URL, { ...requestData }) as TResponsePrivateDesc;
     }
 
     withUrl(url:string):this{

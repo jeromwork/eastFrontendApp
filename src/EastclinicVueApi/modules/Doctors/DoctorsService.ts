@@ -212,5 +212,20 @@ export default class DoctorsService{
     }
 
 
+    public async savePrivateDesc(doctor:DoctorInterface, descString:string){
+        const requestData = {
+            action:'doctors/set',
+            component:'health',
+            id:doctor.id,
+            description_private:descString
+        }
+
+        const response = await (new DoctorsModxApi).savePrivateDesc(requestData) ;
+        // changedData
+
+        if (response?.data?.ok && response?.data?.message) alert(response.data.message)
+        else  alert('Не работает сохранение описания доктора, обратитесь к разработчикам')
+        return response;
+    }
 
 }

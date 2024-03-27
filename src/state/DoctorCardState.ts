@@ -79,36 +79,28 @@ export default class DoctorCardState   implements IClinicsState{
             const slotsDoctor = ScheduleService.getSlots(selectedClinicInit?.id as number, doctor.id, workingDay as number);
             return slotsDoctor ?? null;
         }).value;
+        //add main photos
+        const photo232x269 = this.doctor?.content?.filter((content) => content.typeFile == 'image' && content.type == '232x269')?.[0];
+        doctor.photo232x269 =(photo232x269) ?? { id : null, type:'232x269', typeFile:"image", url:'/images/photo_soon.png' };
+        doctor.photo232x269.alt = this.doctor?.specials+' '+this.doctor?.fullname +' '+ this.clinicsWorkDescription(doctor);
+
+        const photo120x120 = this.doctor?.content?.filter((content) => content.typeFile == 'image' && content.type == '120x120')?.[0];
+        doctor.photo120x120 =(photo120x120) ?? { id : null, type:'120x120', typeFile:"image", url:'/images/photo_soon.png' };
+        doctor.photo120x120.alt = this.doctor?.specials+' '+this.doctor?.fullname +' '+ this.clinicsWorkDescription(doctor);
+
         return this;
     }
 
 
-    public contentBySize(size:string):ContentInterface|undefined{
-        return this.doctor?.content?.filter((content) => content.type == size)
-    }
-
-    public get photo232x269():ContentInterface{
-        const content = this.doctor?.content?.filter((content) => content.typeFile == 'image' && content.type == '232x269')?.[0];
-        if (!content) return { id : null, type:'232x269', typeFile:"image", url:'/images/photo_soon.png' };
-        content.alt = this.doctor?.specials+' '+this.doctor?.fullname +' '+ this.clinicsWorkDescription();
-        return content;
-    }
-    public get photo120x120():ContentInterface{
-        const content = this.doctor?.content?.filter((content) => content.typeFile == 'image' && content.type == '120x120')?.[0];
-        if (!content) return { id : null, type:'120x120', typeFile:"image", url:'/images/photo_soon.png' };
-        content.alt = this.doctor?.specials+' '+this.doctor?.fullname +' '+ this.clinicsWorkDescription();
-        return content;
-    }
-
-    protected   clinicsWorkDescription():string{
+       protected   clinicsWorkDescription(doctor:DoctorInterface):string{
         let clinicPart = '';
-        if(this.doctor?.filials){
-            if(this.doctor.filials[42]) return 'Ист клиник, прием онлайн';
+        if(doctor?.filials){
+            if(doctor.filials[42]) return 'Ист клиник, прием онлайн';
             if(this.selectedClinic){
                 return 'прием в медицинском центре '+ this.selectedClinic.full_name;
             }
-            clinicPart = (Object.keys(this.doctor.filials).length > 1) ? 'прием в  медицинских центрах ' : 'прием в медицинском центре ';
-            const clinicsTitles = (this.doctor?.clinics?.map((clinic) => clinic.full_name)) ?? [];
+            clinicPart = (Object.keys(doctor.filials).length > 1) ? 'прием в  медицинских центрах ' : 'прием в медицинском центре ';
+            const clinicsTitles = (doctor?.clinics?.map((clinic) => clinic.full_name)) ?? [];
             clinicPart += clinicsTitles.join(', ')
         }
         return clinicPart;
@@ -257,6 +249,13 @@ export default class DoctorCardState   implements IClinicsState{
             showScheduleBlock:true})        //settings view booking form
         this.toogleModalBooking(true)
 
+    }
+
+
+    public async savePrivateDesc(descString:string){
+        if(!this.doctor) return;
+        await new DoctorsService().savePrivateDesc(this.doctor, descString) //todo will debugging Gomer
+        return;
     }
 
 }

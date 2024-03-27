@@ -17,6 +17,7 @@ const sendEcommerce = () =>{
     //do we need it?
 }
 
+
 </script>
 
 <template>222
@@ -24,7 +25,7 @@ const sendEcommerce = () =>{
         <div class="doctor-card-2">
             <div class="doctor-card-2__photo">
                 <nuxt-link :to="'/'+doctor.uri" @click.native="sendEcommerce" class="doctor-card-2__photo__item">
-                    <img loading="lazy" width="auto" :src="doctorCardState.photo232x269?.url" :alt="doctorCardState.photo232x269?.alt" >
+                    <img loading="lazy" width="auto" :src="doctor.photo232x269?.url" :alt="doctor.photo232x269?.alt" >
                     <div class="doctor-card-2__photo__panel">
                         <div>
                             <div
@@ -37,11 +38,45 @@ const sendEcommerce = () =>{
                             <div
                                 v-if="doctorCardState.photosCount !== 0"
                                 class="doctor-card-2__photo__counts">
-                                {{(doctorCardState.photo232x269) ? '1' : ''}}/{{doctorCardState.photosCount}}
+                                {{(doctor.photo232x269) ? '1' : ''}}/{{doctorCardState.photosCount}}
                             </div>
                         </div>
                     </div>
                 </nuxt-link>
+            </div>
+            <div
+                v-if="doctor.awards"
+                class="doctor-card-2__awards">
+                <!--        <AwardsDropdown-->
+                <!--          :items="awards"-->
+                <!--          @openZoomImage="passZoomImages"-->
+                <!--        />-->
+            </div>
+
+            <div class="doctor-card-2__info">
+                <nuxt-link @click.native="sendEcommerce" class="text-decoration-none" :to="'/'+doctor.uri">
+                    <div class="doctor-card-2__speciality">
+                        <span>{{doctor.specials}}</span>
+                    </div>
+                    <div class="doctor-card-2__fio">
+                        <span>{{doctor.fullname}}</span>
+                    </div>
+                </nuxt-link>
+
+                <div class="doctor-card-2__divider"></div>
+                <div class="doctor-card-2__divider"></div>
+                <div v-if="doctor.description_private">
+
+                </div>
+                <span class="text-secondary text-no-wrap text-green">
+                    <input type="text" :value="doctor.description_private" @change="doctorCardState.savePrivateDesc($event.target.value)"></span>
+                <Rating
+                    v-if="doctor.rating !== 0 && !doctor.dismissed"
+                    :reviews="doctor.comments"
+                    :level="doctor.rating"
+                    :uri="(doctor.uri) ? '/'+doctor.uri+'#reviews' : '/'"
+
+                />
             </div>
         </div>
     </div>
