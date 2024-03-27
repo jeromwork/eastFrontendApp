@@ -12,8 +12,7 @@ export default interface IBookingState{
     showModalBooking:boolean;
     showBookingScheduleBlock:boolean;
 
-    toggleBookingLeaveMessage( show:boolean ):this;
-    toogleBookingSuccessMessage(show:boolean):this;
+
     setBookingFormBlocks( viewProps:BookingFormViewProps ):this;
     book():Promise<IBookingRequest|undefined>;
 

@@ -27,6 +27,7 @@ import Modal from "../../../UI/Modal.vue";
 import ServicesSelectListView from "../../../UI/Services/views/ServicesSelectListView.vue";
 import DoctorCardState from "../../../state/DoctorCardState";
 import BookingSuccessMessageView from '../../Booking/views/BookingSuccessMessageView.vue'
+import LeaveMessageView from "../../Booking/views/LeaveMessageView.vue";
 
 //В этом компоненте обращаемся к сервису за данными по доктору
 //Возможно доктора уже загружены - в списке докторов, тогда просто отображаем данные доктора
@@ -57,9 +58,6 @@ provide( BookingStateSymbol, doctorCardState.bookingState )
 provide( BookingServiceSymbol, doctorCardState.BookingService )
 
 
-watch(doctorCardState.bookingState._showBookingSuccessMessage, ()=>{
-    console.log(3235234626888888)
-})
 </script>
 
 <template>
@@ -70,6 +68,9 @@ watch(doctorCardState.bookingState._showBookingSuccessMessage, ()=>{
         <Modal v-model:visible="doctorCardState.bookingState.showBookingSuccessMessage" >
             <BookingSuccessMessageView />
         </Modal>
+      <Modal v-model:visible="doctorCardState.bookingState.showLeaveMessage" >
+          <LeaveMessageView />
+      </Modal>
         <Modal v-model:visible="doctorCardState.showModalServices">
             <ServicesSelectListView :services="doctor.service_data"/>
         </Modal>

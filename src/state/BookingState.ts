@@ -7,8 +7,8 @@ import { DoctorsService, ScheduleService, BookingService, ScheduleRequest, Patie
 import type { IBookingRequest } from "../EastclinicVueApi";
 export default class BookingState implements IBookingState{
     public bookingFormViewProps:Ref<BookingFormViewProps| Object> = ref({});
-    public _showBookingSuccessMessage:Ref<boolean> = ref(false);
-    public _showBookingScheduleBlock:Ref<boolean> = ref(false);
+    protected _showBookingSuccessMessage:Ref<boolean> = ref(false);
+    protected _showBookingScheduleBlock:Ref<boolean> = ref(false);
     protected _showLeaveMessage:Ref<boolean> = ref(false);
     protected _showModalBooking:Ref<boolean> = ref(false);
     protected _errorText:Ref<string> = ref('');
@@ -26,6 +26,7 @@ export default class BookingState implements IBookingState{
     }
     public set showModalBooking(show:boolean){
         this._showModalBooking.value = show;
+        if (!show && !this.showLeaveMessage)     this.showLeaveMessage = true;
         this.showBookingScheduleBlock = false;
     }
 
@@ -50,9 +51,18 @@ export default class BookingState implements IBookingState{
         this._showBookingSuccessMessage.value = show;
     }
 
-    toggleBookingLeaveMessage( show:boolean ):this{
-        return this;
-    };
+    // toggleBookingLeaveMessage( show:boolean ):this{
+    //     if (show){
+    //         this.showLeaveMessage = true;
+    //         this.showModalBooking = false;
+    //         this.showBookingSuccessMessage = false;
+    //     }else {
+    //
+    //     }
+    //
+    //
+    //     return this;
+    // };
     public toogleBookingSuccessMessage(show:boolean):this{
         this._showBookingSuccessMessage.value = show;
         return this
