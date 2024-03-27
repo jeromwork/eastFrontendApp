@@ -147,7 +147,6 @@ const clinics = doctor.clinics;
                         @click="doctorCardState.toogleModalServices(true)"
                         class="font-12 main-color pointer text-semibold">Другие услуги
                     </span>
-                    {{ doctorCardState.selectedClinic?.id }}
                     <ClinicsSelectView
                         v-if="clinics && currentClinic" :clinics="clinics"
                         :modelValue = "doctorCardState.selectedClinic"

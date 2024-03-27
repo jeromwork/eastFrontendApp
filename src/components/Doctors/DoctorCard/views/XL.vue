@@ -5,6 +5,11 @@ import {inject, ref} from "vue";
 import {DoctorCartStateSymbol} from "../../../../composables/useSymbols";
 import DoctorCardState from "../../../../state/DoctorCardState";
 import type { DoctorInterface } from "../../../../EastclinicVueApi";
+import type RatingViewProps from "../../../../UI/Rating/RatingViewProps";
+import Rating from '../../../../UI/Rating/Controller.vue';
+import RatingDetailView from '../../../../UI/Rating/RatingDetailView.vue';
+import Chevrons from "#build/src/UI/Chevrons/index.vue";
+import ServicesBlockView from "../../../../UI/Services/views/ServicesBlockView.vue";
 
 const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
 if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');
@@ -70,13 +75,28 @@ const sendEcommerce = () =>{
                 </div>
                 <span class="text-secondary text-no-wrap text-green">
                     <input type="text" :value="doctor.description_private" @change="doctorCardState.savePrivateDesc($event.target.value)"></span>
-                <Rating
-                    v-if="doctor.rating !== 0 && !doctor.dismissed"
-                    :reviews="doctor.comments"
-                    :level="doctor.rating"
-                    :uri="(doctor.uri) ? '/'+doctor.uri+'#reviews' : '/'"
+                    <Rating v-if="doctor.rating"
+                            :reviews-count="doctor.comments"
+                            :level="doctor.rating"
+                            :uri="'/'+doctor.uri"
+                            #default="ratingInfo"
+                    >
+                        <RatingDetailView v-bind="ratingInfo as RatingViewProps"></RatingDetailView>
+                    </Rating>
 
-                />
+            </div>
+            <div
+                v-if="!doctor.dismissed"
+                class="doctor-card-2__info-2"
+            >
+                <div class="doctor-card-2__divider"></div>
+                <div class="doctor-card-2__divider"></div>
+                <div class="doctor-card-2__experience text-semibold">
+                    <Chevrons :chevrons="doctor.chevrons"  />
+                </div>
+                <div class="doctor-card-2__divider"></div>
+                <div class="doctor-card-2__divider"></div>
+                <ServicesBlockView :favoriteService="doctor.favoriteService" :services="doctor.service_data" ></ServicesBlockView>
             </div>
         </div>
     </div>
