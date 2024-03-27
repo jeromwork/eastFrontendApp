@@ -52,6 +52,7 @@ export default class DoctorsService{
 
         let doctors = this.addSpecialsString(response.doctors)
         doctors = this.addPhoto120x120(doctors);
+        doctors = this.addPhoto232x269(doctors);
         doctors = this.addFavoriteService(doctors);
         doctors = this.addClinicsForDoctors(doctors);
         doctors = this.addClinicWorkingSelected(doctors);
@@ -120,7 +121,7 @@ export default class DoctorsService{
                         if(img.type === '120x120' && img.typeFile === 'image') photo120x120 =  img;
                     }
                     if (doctorInfo?.photos?.['120x120']?.[0]){
-                        photo120x120 = { id : null, type:'120x120', typeFile:"image", url:doctorInfo.photos['120x120'][0] } as ContentInterface;
+                        photo120x120 = { id : null, type:'120x120', typeFile:"image", url:doctorInfo.photos['120x120'][0], alt:this.photoAlt(doctorInfo) } as ContentInterface;
                     }else  photo120x120 =  { id : null, type:'120x120', typeFile:"image", url:'/images/photo_soon.png' } as ContentInterface;
                 } else {
                     photo120x120 =  { id : null, type:'120x120', typeFile:"image", url:'/images/photo_soon.png' } as ContentInterface;
@@ -129,6 +130,48 @@ export default class DoctorsService{
         }
 
         return doctors;
+    }
+
+
+    protected addPhoto232x269(doctors:DoctorInterface[]):DoctorInterface[]{
+        for (const d in doctors){
+            const doctorInfo = doctors[d];
+            let photo120x120 = null;
+            if ( doctorInfo.content ){
+                for (const i in doctorInfo.content){
+                    const img = doctorInfo.content[i]
+                    if(img.type === '232x269' && img.typeFile === 'image') photo120x120 =  img;
+                }
+                if (doctorInfo?.photos?.['232x269']?.[0]){
+                    photo120x120 = { id : null, type:'232x269', typeFile:"image", url:doctorInfo.photos['232x269'][0] } as ContentInterface;
+                }else  photo120x120 =  { id : null, type:'232x269', typeFile:"image", url:'/images/photo_soon.png' } as ContentInterface;
+            } else {
+                photo120x120 =  { id : null, type:'232x269', typeFile:"image", url:'/images/photo_soon.png' } as ContentInterface;
+            }
+            doctors[d].photo120x120 = photo120x120  as ContentInterface;
+        }
+
+        return doctors;
+    }
+
+    protected photoAlt(doctor:DoctorInterface):string{
+        const currentClinic = ( ClinicsService.currentClinic )??null;
+        let clinicsWorkDescription = '';
+        if(doctor.filials){
+            if(doctor.filials[42]) return 'Ист клиник, прием онлайн';
+            if(currentClinic){
+                return 'прием в медицинском центре '+ currentClinic.full_name;
+            }
+
+            clinicsWorkDescription = (Object.keys(doctor.filials).length > 1) ? 'прием в  медицинских центрах ' : 'прием в медицинском центре ';
+            const clinicsTitles = doctor.clinics?.map((clinic)=>clinic.full_name);
+
+            clinicsWorkDescription += (clinicsTitles) ? clinicsTitles.join(', ') : '';
+        }
+
+
+
+        return doctor.specials+' '+doctor.fullname +' '+ clinicsWorkDescription;
     }
 
     protected addFavoriteService(doctors:DoctorInterface[]):DoctorInterface[]{

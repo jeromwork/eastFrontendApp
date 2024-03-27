@@ -12,11 +12,10 @@ import type BookingFormViewProps from "../components/Booking/imterfaces/BookingF
 import { YandexMetrika } from "../composables/useYandexMetrika";
 import useCalltouch from "../composables/useCalltouch";
 // import {Ecommerce} from "#build/src/EastclinicVueApi/modules/Ecommerce";
-import type IScheduleState from '../interfaces/IScheduleState'
 import type IClinicsState from "../interfaces/IClinicsState";
-import type IBookingState from "../interfaces/IBookingState";
 import BookingState from "../state/BookingState";
 import ScheduleState from "../state/ScheduleState";
+import type {ContentInterface} from "#build/src/EastclinicVueApi";
 
 interface DoctorCardInterface{
     workDays: number[] | null;
@@ -84,9 +83,45 @@ export default class DoctorCardState   implements IClinicsState{
     }
 
 
+    public contentBySize(size:string):ContentInterface|undefined{
+        return this.doctor?.content?.filter((content) => content.type == size)
+    }
 
+    public get photo232x269():ContentInterface{
+        const content = this.doctor?.content?.filter((content) => content.typeFile == 'image' && content.type == '232x269')?.[0];
+        if (!content) return { id : null, type:'232x269', typeFile:"image", url:'/images/photo_soon.png' };
+        content.alt = this.doctor?.specials+' '+this.doctor?.fullname +' '+ this.clinicsWorkDescription();
+        return content;
+    }
+    public get photo120x120():ContentInterface{
+        const content = this.doctor?.content?.filter((content) => content.typeFile == 'image' && content.type == '120x120')?.[0];
+        if (!content) return { id : null, type:'120x120', typeFile:"image", url:'/images/photo_soon.png' };
+        content.alt = this.doctor?.specials+' '+this.doctor?.fullname +' '+ this.clinicsWorkDescription();
+        return content;
+    }
 
+    protected   clinicsWorkDescription():string{
+        let clinicPart = '';
+        if(this.doctor?.filials){
+            if(this.doctor.filials[42]) return 'Ист клиник, прием онлайн';
+            if(this.selectedClinic){
+                return 'прием в медицинском центре '+ this.selectedClinic.full_name;
+            }
+            clinicPart = (Object.keys(this.doctor.filials).length > 1) ? 'прием в  медицинских центрах ' : 'прием в медицинском центре ';
+            const clinicsTitles = (this.doctor?.clinics?.map((clinic) => clinic.full_name)) ?? [];
+            clinicPart += clinicsTitles.join(', ')
+        }
+        return clinicPart;
+    }
 
+    public get existsVideoContent():boolean{
+        return !!(this.doctor?.content?.filter((content) => content.typeFile == 'video')?.length);
+    }
+
+    public get photosCount():number{
+        const count = this.doctor?.content?.filter((content) => content.typeFile == 'image' && content.type == '232x269')?.length;
+        return (count) ?? 0
+    }
 
     public toogleModalServices( show:boolean ):this{
         this.data.value.showModalServices = show;

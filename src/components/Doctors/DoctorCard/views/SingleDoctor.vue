@@ -59,10 +59,6 @@ const mobileScreen = ref(false)
 const currentClinic = doctorCardState.selectedClinic
 const clinics = doctor.clinics;
 
-const asd = (e) => {
-    console.log(e)
-}
-
 </script>
 
 <template>

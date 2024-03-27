@@ -154,6 +154,7 @@ export default interface DoctorInterface {
     awards?: AwardInterface[];
     chevrons?: ChevronInterface[];
     photo120x120? : ContentInterface;
+    photo232x269? : ContentInterface;
 
     appointmentOnline:boolean,
     specials?:string,

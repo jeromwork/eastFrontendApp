@@ -1,163 +1,48 @@
 <script setup lang="ts">
-//в этом компоненте только прием пропсов, проверка, и их отображение
-//в том числе во вложенных компонентах
-
-import { defineProps, withDefaults, reactive, ref, toRef, defineEmits, computed, toRaw, defineOptions, defineModel } from "vue";
-import type { Ref } from 'vue'
-import type {DoctorInterface} from "../../../../EastclinicVueApi";
-import type DoctorCardViewProps from "../../Interfaces/DoctorCardViewProps";
-
-import BackLink from "../../../../UI/BackLink/BackLink.vue";
-import BackLinkMobile from "../../../../UI/BackLink/BackLinkMobile.vue";
-import Chevrons from '../../../../UI/Chevrons'
-import StickyBlock from '../../../../UI/StickyBlock'
-import Reviews from '../../../Reviews/Controller.vue'
-import ReviewCardController from '../../../Reviews/ReviewCard/Controller.vue'
-import ReviewCardXL from '../../../Reviews/ReviewCard/views/XL.vue'
-import AwardCardWithIcon from "../../../../UI/Awards/AwardCardWithIcon.vue";
-// import Rating from '../../../../UI/Rating/Controller.vue'
-// import RatingDetailView from '../../../../UI/Rating/RatingDetailView.vue'
-// import type RatingViewProps from "../../../../UI/Rating/RatingViewProps";
-// import Gallery from "../../Gallery.vue";
-import FixedBlock from "../../../../UI/FixedBlock.vue";
-import FavoriteServiceCard from '../../../../UI/Services/views/FavoriteView.vue'
-import type ServiceData from "../../../../EastclinicVueApi/interfaces/ServiceData";
-import ServicesModalView from '../../../../UI/Services/views/ServicesModalView.vue'
-import ScheduleCardView from '../../../../UI/Schedule/views/ScheduleCardView.vue'
-import ClinicsSelectView from "../../../../UI/Clinics/views/ClinicsSelectView.vue";
-
-//календарь это не зависимый от доктора компонент
-//он может принимать массив или объект disables days, что бы дни были неактивны
-//календарей может быть несколько видов
-//для начала вид с прокруткой
-//v-model календаря может возвращать один день или период дней
-//это обрабатывается  в контроллере календаря
-//для календаря с каруселью будут вьюшка одного дня,
-//вьюшка группы дней
-//значки вперед назад
 
 
-//слот не имеет смысла без расписания.
-//это маленькая вьюшка с форматированным временм
-//кроме этого есть вьюшки групп слотов, управление read more
+import {inject, ref} from "vue";
+import {DoctorCartStateSymbol} from "../../../../composables/useSymbols";
+import DoctorCardState from "../../../../state/DoctorCardState";
+import type { DoctorInterface } from "../../../../EastclinicVueApi";
 
+const doctorCardState = inject( DoctorCartStateSymbol ) as DoctorCardState
+if(!doctorCardState) throw new Error('not have doctorCardState by doctorCardState');
 
+const doctor = doctorCardState.Doctor as DoctorInterface;
 
-
-
-const props = defineProps<DoctorCardViewProps>();
-const servicesSelected =  defineModel('servicesSelected' )
-
-
-
-const doctor = ref(props.doctor) as Ref<DoctorInterface>;
-const mobileScreen = ref(false)
-const showModalServices = ref(false);
-
-const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Number })
-// const currentSlotModel = defineModel('currentSlotModel',{ type: Number })
-
+const currentClinic = doctorCardState.selectedClinic
+const clinics = doctor.clinics;
+const sendEcommerce = () =>{
+    //do we need it?
+}
 
 </script>
 
-<template>
-
-
-    <BackLink/>
-    <slot name="body">
-
-    </slot>
-
-    <div class="single-doctor" v-if="doctor">
-        <div class="single-doctor__main">
-            <div class="single-doctor__info">
-                <div class="doctor__top__info__desc desc">
-                    <h1 class="doctor__top__info__desc_fio" itemprop="name">{{doctor.fullname}}</h1>
-                    <div class="doctor__top__info__desc_specials" itemprop="medicalSpecialty">{{doctor.specials}}</div>
-<!--                    <Rating v-if="doctor.rating"-->
-<!--                            :reviews-count="doctor.comments"-->
-<!--                            :level="doctor.rating"-->
-<!--                            :uri="'/'+doctor.uri"-->
-<!--                            #default="ratingInfo"-->
-<!--                    >-->
-<!--                        <RatingDetailView v-bind="ratingInfo as RatingViewProps"></RatingDetailView>-->
-<!--                    </Rating>-->
-                </div>
-
-                <div
-                    class="single-doctor__add-info">
-                    <div
-                        v-if="doctor.tv__dop_info_vrach"
-                        class="single-doctor__add-info__item">
-                        <span>{{doctor.tv__dop_info_vrach}}</span>
-                    </div>
-                    <div
-                        v-if="doctor.pregnant=== 1"
-                        class="single-doctor__add-info__item">
-                        <span>Работает с беременными</span>
-                    </div>
-                    <div
-                        v-if="doctor.appointmentOnline"
-                        class="single-doctor__add-info__item">
-                        <span>Доктор ведет приём только онлайн</span>
-                    </div>
-                </div>
-            </div>
-            <hr class="single-doctor-hr">
-            <div class="single-doctor__main-info">
-                <AwardCardWithIcon  v-if="doctor.awards"  :award-info="doctor.awards[0]"  />
-                <Chevrons :chevrons="doctor.chevrons"  />
-
-            </div>
-            <StickyBlock :hide-default="true">
-                <div class="main-container">
-                    <div class="single-doctor__top-toolbar">
-                        <div class="single-doctor__top-toolbar__left">
-                            <BackLinkMobile/>
-                            <div class="single-doctor__top-toolbar__doctor">
-                                <div class="single-doctor__top-toolbar__doctor-photo">
-                                    <img :src="doctor.photo120x120?.url" :alt="doctor.fullname">
-                                </div>
-                                <div class="single-doctor__top-toolbar__doctor-info">
-                                    <div class="text-semibold single-doctor__top-toolbar__doctor-name">{{doctor.fullname}}</div>
-                                    <div class="single-doctor__top-toolbar__doctor-desc">{{doctor.specials}}</div>
-                                </div>
+<template>222
+    <div class="doctor-card-2-container">
+        <div class="doctor-card-2">
+            <div class="doctor-card-2__photo">
+                <nuxt-link :to="'/'+doctor.uri" @click.native="sendEcommerce" class="doctor-card-2__photo__item">
+                    <img loading="lazy" width="auto" :src="doctorCardState.photo232x269?.url" :alt="doctorCardState.photo232x269?.alt" >
+                    <div class="doctor-card-2__photo__panel">
+                        <div>
+                            <div
+                                v-if="doctorCardState.existsVideoContent"
+                                class="doctor-card-2__photo__video-button">
+                                <span class="icons playbutton"></span>
                             </div>
                         </div>
-
+                        <div>
+                            <div
+                                v-if="doctorCardState.photosCount !== 0"
+                                class="doctor-card-2__photo__counts">
+                                {{(doctorCardState.photo232x269) ? '1' : ''}}/{{doctorCardState.photosCount}}
+                            </div>
+                        </div>
                     </div>
-
-                </div>
-            </StickyBlock>
-        </div>
-
-
-        <div
-            v-if="!mobileScreen"
-            class="single-doctor__aside"  id="info-tabs">
-            <FixedBlock>
-                <div class="single-doctor__booking">
-
-                    <div class="header-h3 text-semibold mb-6">
-                        Записаться на приём:
-                    </div>
-                    <FavoriteServiceCard
-                        :service="doctor.favoriteService as ServiceData"
-                    />
-                    <span
-                        @click="showModalServices=true"
-                        class="font-12 main-color pointer text-semibold">Другие услуги
-                    </span>
-
-                    <ServicesModalView v-model:visible="showModalServices" v-model:servicesSelected="servicesSelected" :services="doctor.service_data" />
-
-                    <ClinicsSelectView v-if="doctor.clinics && clinicWorkingSelected" :clinics="doctor.clinics"  :current-clinic="clinicWorkingSelected"/>
-
-                    <ScheduleCardView v-bind="{workDays, currentWorkingDay, slots, selectedSlot}"/>
-
-                </div>
-            </FixedBlock>
-
+                </nuxt-link>
+            </div>
         </div>
     </div>
 
@@ -166,171 +51,205 @@ const currentWorkingDayModel = defineModel('currentWorkingDayModel',{ type: Numb
 </template>
 
 <style lang="scss">
-.single-doctor {
-    display: flex;
-    &__main {
-        max-width: 674px;
-        min-width: 566px;
-        margin-right: 56px;
-        @media (max-width: 1165px) {
-            max-width: none;
-            width: auto;
-            flex-shrink: 1;
+@import "~/public/scss/parts/_colors";
+@import "~/public/scss/parts/_mixins";
+@import "~/public/scss/parts/_grid";
+@import "~/public/scss/parts/_typography";
+.doctor-card-2 {
+    display: grid;
+    grid-template-areas: "dc2-photo dc2-info dc2-slots"
+                          "dc2-photo dc2-info-2 dc2-slots"
+                          "dc2-awards dc2-phone dc2-slots";
+    grid-template-columns: 232px 40% 1fr;
+    grid-template-rows: auto auto 1fr;
+    @media (max-width: 1075px) {
+        grid-template-columns:  minmax(162px, 232px) 335px;
+        grid-template-areas: "dc2-photo dc2-info"
+                            "dc-2photo dc2-awards"
+                            "dc-2photo dc2-info-2"
+                            "dc-2photo dc2-slots"
+                            "dc-2photo dc2-phone";
+    }
+    @media (max-width: 584px) {
+        grid-template-columns:  1fr 106px;
+        grid-template-areas: "dc2-info dc2-photo"
+                            "dc2-awards dc2-awards"
+                            "dc2-info-2 dc2-info-2"
+                            "dc2-slots dc2-slots"
+                            "dc2-phone dc2-phone";
+    }
+    &__divider {
+        height: 8px;
+    }
+    &-container {
+        background-color: #fff;
+        border-radius: 30px;
+        padding: $margin-6;
+        margin-bottom: $margin-4;
+        @media (max-width: 585px) {
+            padding: $margin-5;
         }
-        @media (max-width: 1024px) {
-            width: 100%;
-            max-width: 1100px;
-            min-width: 280px;
+    }
+    &__photo {
+        grid-area: dc2-photo;
+        display: flex;
+        flex-direction: column;
+        margin-right: 24px;
+
+        @media (min-width: 585px) and (max-width: 1075px){
+            grid-row: span 3;
+        }
+        @media (max-width: 584px) {
+            height: 106px;
             margin-right: 0;
+            grid-row: span 1;
+        }
+        &__item {
+            height: auto;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-self: baseline;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            & img {
+                width: 100%;
+            }
+        }
+        &__panel {
+            position: absolute;
+            bottom: 10px;
+            padding: 0 10px;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        &__video-button, &__counts {
+            background-color: rgba(1,1,1, 0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 24px;
+            cursor: pointer;
+            @media (max-width: 585px) {
+                height: 18px;
+            }
+        }
+        &__video-button {
+            width: 24px;
+            height: 24px;
+            @media (max-width: 585px) {
+                width: 18px;
+                height: 18px;
+                & .icons {
+                    width: 8px;
+                }
+            }
+        }
+        &__counts {
+            font-size: 14px;
+            width: 46px;
+            color: #fff;
+            border-radius: 15px;
+            @media (max-width: 585px) {
+                width: 34px;
+                font-size: 12px;
+            }
         }
     }
-    &__aside {
-        width: 35%;
-        position: relative;
-    }
-    &__booking {
-        box-shadow: 0px 4px 24px 0px rgba(135, 143, 162, 0.25);
-        border-radius: 20px;
-        border: 1px solid #E5E5E7;
-        padding: 24px;
-        max-width: 380px;
-        position: sticky;
-        top: 0;
-        &.no-shadow {
-            box-shadow: none;
-            border: none;
-            padding: 0;
+    &__awards {
+        grid-area: dc2-awards;
+        margin-right: 24px;
+        @media (min-width: 1076px) {
+            grid-row: 1/4;
+            margin-top: 245px;
         }
+        & .doctor-awards__item {
+            padding: 10px 0;
+            max-width: unset;
+        }
+        & .doctor-awards__item_text {
+            margin-right: 4px;
+        }
+        @media (max-width: 1075px) {
+            margin: 12px 0 4px;
+            border-bottom: 1px solid $border-gray-color;
+        }
+    }
+    &__price {
+        //font-size: 14px;
+        //&__title, &__item, &__text {
+        //  @media (max-width: 585px) {
+        //    font-size: 14px;
+        //  }
+        //}
     }
     &__info {
-        margin-top: 32px;
-        @media (max-width: 768px) {
-            margin-top: 0;
+        grid-area: dc2-info;
+        @media (max-width: 585px) {
+            margin-right: 10px;
         }
     }
-    &__add-info {
-        margin-top: 18px;
-        &__item {
-            display: inline-flex;
-            padding: 8px 12px;
-            justify-content: center;
-            align-items: center;
-            border-radius: 27px;
-            border: 1px solid #D5D7D9;
-            @media (max-width: 768px) {
-                font-size: 14px;
-                white-space: nowrap;
-                padding: 6px 12px;
-            }
-            &:not(:last-child) {
-                margin-bottom: 10px;
-                margin-right: 10px;
-            }
-        }
-    }
-    &__main-info {
-        &__item {
-            display: flex;
-            align-items: start;
-            line-height: 16px;
-            &:not(:last-child) {
-                margin-bottom: 24px;
-            }
-            & div {
-                align-self: center;
-            }
-            & div:not(:last-child) {
-                margin-bottom: 4px;
-            }
-            & img {
-                padding-right: 24px;
-            }
-        }
+    &__info-2 {
+
+        grid-area: dc2-info-2
 
     }
-    &__top-toolbar {
+    &__slots {
+        grid-area: dc2-slots;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 70px;
-        gap: 16px;
-        @media (max-width: 768px) {
-            height: 48px;
+        justify-content: right;
+        @media (max-width: 1075px) {
+            margin-top: $margin-4;
         }
-        &__left {
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-        }
-        &__back {
-            display: none;
-            @media (max-width: 768px) {
-                display: inherit;
-                margin-right: 20px;
-            }
-        }
-        &__doctor {
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-            &-photo {
-                border-radius: 50%;
-                overflow: hidden;
-                flex-shrink: 0;
-                width: 44px;
-                height: 44px;
-                margin-right: 16px;
-                & img {
-                    width: 100%;
-                }
-                @media (max-width: 768px) {
-                    width: 32px;
-                    height: 32px;
-                    margin-right: 8px;
-                }
-            }
-            &-phone {
-                display: none;
-                @media (max-width: 768px) {
-                    display: inherit;
-                }
-            }
-            &-name {
-                font-size: 18px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                @media (max-width: 768px) {
-                    font-size: 14px;
-                }
-            }
-            &-info {
-                overflow: hidden;
-            }
-            &-desc {
-                font-size: 14px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                @media (max-width: 768px) {
-                    font-size: 12px;
-                }
-            }
-
-
+        @media (max-width: 585px) {
+            justify-content: normal;
         }
     }
-    &-hr {
-        margin: 32px 0;
-    }
-    &-ul {
-        list-style-type: circle;
-        list-style-position: inside;
-        margin: 24px 0;
-        & li:not(:last-child) {
-            margin-bottom: 8px;
+    &__speciality {
+        color: $text-gray-color;
+        font-size: 16px;
+        @include text-semibold;
+        margin-bottom: 4px;
+        line-height: inherit;
+        @media (max-width: 585px) {
+            font-size: 12px;
         }
+    }
+    &__fio {
+        font-size: 18px;
+        @include text-bold;
+        line-height: 20px;
+        &:hover {
+            text-decoration: underline !important;
+        }
+
+        @media (max-width: 585px) {
+            font-size: 16px;
+        }
+    }
+    &__phone {
+        grid-area: dc2-phone;
+        @media (max-width: 585px) {
+            font-size: 14px;
+        }
+    }
+    & .doctor-awards__wrapper {
+        margin-bottom: 0;
     }
 }
-
+.menuable__content__active {
+    border-radius: 10px;
+    padding: 8px;
+    background-color: #fff;
+}
+.dropdown-panel__items-list__item {
+    padding: 9px 4px;
+}
+.dropdown-panel__items-list__item.clinic-select  {
+    font-size: 14px;
+}
 </style>

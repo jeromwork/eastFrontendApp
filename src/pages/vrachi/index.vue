@@ -12,6 +12,8 @@ const pageInfo = PageInfoService.getPageInfo
 
 import { onMounted, ref, defineAsyncComponent } from 'vue';
 import MainPageSearch from "../../components/SearchPanel/MainPageSearchView.vue";
+import MainSearchView from "../../components/SearchPanel/views/MainSearchView.vue";
+import XL from "../../components/Doctors/DoctorCard/views/XL.vue";
 
 
 
@@ -32,13 +34,13 @@ onMounted(() => {
 
         <NuxtLayout name="doctors">
 
-            <MainPageSearch/>
+            <MainSearchView/>
 
             <Doctors>
                 <template #doctorsList="{doctor}">
 
                     <DoctorCardController v-bind="{doctor}" #default="doctorInfoPrepared" >
-                        <SingleDoctor v-bind="doctorInfoPrepared"/>
+                        <XL v-bind="doctorInfoPrepared"/>
                     </DoctorCardController>
                 </template>
                 <template #singleDoctor="{doctor}">
