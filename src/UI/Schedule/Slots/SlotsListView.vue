@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 import {    defineProps, reactive, ref, defineEmits, computed, onBeforeMount, onMounted, defineModel, inject} from "vue";
-import type IScheduleState from '../../../interfaces/IScheduleState'
+import type ScheduleState from '../../../state/ScheduleState'
 
 
 import type {Ref} from 'vue'
@@ -15,7 +15,7 @@ const props = defineProps<{
 }>();
 
 
-const state = inject( ScheduleStateSymbol ) as IScheduleState
+const state = inject( ScheduleStateSymbol ) as ScheduleState
 if(!ScheduleStateSymbol) throw new Error('not have doctorCardState by doctorCardState');
 
 const countShowSlots = ref((props.countShowSlots) ?? 5 )
@@ -24,6 +24,7 @@ const countShowSlots = ref((props.countShowSlots) ?? 5 )
      const slotsLength = (state.slots?.length) ? state.slots?.length : 0;
      countShowSlots.value = (slotsLength === countShowSlots) ? 7 : slotsLength;
  }
+
 </script>
 
 <template>

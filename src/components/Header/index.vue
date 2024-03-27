@@ -6,7 +6,7 @@ import EcButton from "../../UI/Buttons/EcButton.vue";
 import {useRouter} from "vue-router";
 import {YandexMetrika} from "../../composables/useYandexMetrika";
 import BookingFormView from "../Booking/views/BookingFormView.vue";
-import ShortBookingState from "../../state/ShortBookingState";
+import BookingState from "../../state/BookingState";
 import {provide, ref} from "vue";
 import {BookingServiceSymbol, BookingStateSymbol} from "../../composables/useSymbols";
 
@@ -16,7 +16,7 @@ const showBooking = ref(false)
 const openModal = () => {
     YandexMetrika?.reachGoal(( isSingleDoctorPage ) ? 'booking-header-single' : 'booking-header-contacts');
     showBooking.value = true;
-    provide( BookingStateSymbol, ShortBookingState )
+    provide( BookingStateSymbol, BookingState )
     provide( BookingServiceSymbol, new BookingService())
 
     

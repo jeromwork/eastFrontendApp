@@ -30,7 +30,7 @@ import {onClickOutside} from "@vueuse/core";
 import type IScheduleState from "../../../interfaces/IScheduleState";
 import ClinicCardSelectedView from "../../../UI/Clinics/views/ClinicCardSelectedView.vue";
 import type IClinicsState from "../../../interfaces/IClinicsState";
-import type IBookingState from "../../../interfaces/IBookingState";
+import type BookingState from "../../../state/BookingState";
 import BookingSuccessMessageView from "../../Booking/views/BookingSuccessMessageView.vue";
 import Modal from "../../../UI/Modal.vue";
 
@@ -45,27 +45,23 @@ const props = defineProps<BookingFormViewProps>();
 const doctor = inject( DoctorInfoSymbol ) as DoctorInterface
 const scheduleState = inject( ScheduleStateSymbol ) as IScheduleState
 const clinicsState = inject( ClinicsStateSymbol ) as IClinicsState
-const bookingState = inject( BookingStateSymbol ) as IBookingState
+const bookingState = inject( BookingStateSymbol ) as BookingState
 
 const bookingBlocks = bookingState.bookingFormViewProps as BookingFormViewProps;
 const bookingService = inject( BookingServiceSymbol ) as BookingService
 
-const showBookingScheduleBlock:Ref<boolean> = ref(false)
 const showLeaveMessage:Ref<boolean> = ref(false)
 
 const refBookingDialog = ref(null)
 onClickOutside(refBookingDialog, event => {
-    console.log(111111)
     //not work
     showLeaveMessage.value = true;
 })
-
-console.log(bookingBlocks)
 </script>
 
 <template>
     <teleport  to="body">
-        <Modal v-model:visible="bookingState.showBookingSuccessMessage.value"  v-if="bookingState.showBookingSuccessMessage">
+        <Modal v-model:visible="bookingState.showBookingSuccessMessage"  v-if="bookingState.showBookingSuccessMessage">
             <BookingSuccessMessageView/>
         </Modal>
     </teleport>
@@ -91,7 +87,7 @@ console.log(bookingBlocks)
                 </div>
                 <div ref="booking_scroll_dialog" class="border-radius-30 scroll">
                     <div class="booking__dialog">
-                        <div v-if="!showBookingScheduleBlock">
+                        <div v-if="!bookingState.showBookingScheduleBlock">
 
                             <ServicesBlockView v-if="bookingBlocks.showServicesBlock"/>
 
@@ -110,7 +106,7 @@ console.log(bookingBlocks)
 <!-- selected time -->
                                 <div
                                         v-if="bookingBlocks.showScheduleBlock"
-                                        @click="showBookingScheduleBlock = true"
+                                        @click="bookingState.showBookingScheduleBlock = true"
                                         class="booking__dialog__item pointer">
                                     <div class="booking__dialog__card with-icon" :class="{'error-border':!!(scheduleState.selectedSlotError)}">
                                         <div>
@@ -139,7 +135,7 @@ console.log(bookingBlocks)
                                     v-if="bookingBlocks.showClinicBlock"
                                     class="booking__dialog__item pointer">
                                     <div
-                                        @click="showBookingScheduleBlock = true"
+                                        @click="bookingState.showBookingScheduleBlock = true"
                                         class="booking__dialog__card with-icon" style="padding-bottom: 7px; padding-top: 7px" :class="{'error-border':!!(scheduleState.selectedSlotError)}">
                                         <div>
                                             <div class="booking__dialog__label">
@@ -160,6 +156,15 @@ console.log(bookingBlocks)
                                 </div>
 <!-- /selected clinic -->
 
+                                <div class="booking__dialog__error_wrap"
+                                     v-if="bookingState.errorText"
+                                >
+                                    <div
+                                        class="error--text booking__dialog__error"
+                                        v-html="bookingState.errorText"
+                                    >
+                                    </div>
+                                </div>
                                 <EcButton class="primary full-width shadow-button services-button-container"
                                           @click="bookingState.book()">
                                     <span>Записаться</span>
@@ -172,8 +177,8 @@ console.log(bookingBlocks)
 
 
 <!--clinic schedule block-->
-                        <div v-if="showBookingScheduleBlock" class="v-card-container last">
-                            <BackLink @click="showBookingScheduleBlock = false" to=""/>
+                        <div v-if="bookingState.showBookingScheduleBlock" class="v-card-container last">
+                            <BackLink @click="bookingState.showBookingScheduleBlock = false" to=""/>
                             <div class="slots" style="margin: 0 auto">
                                 <div class="slots__header text-secondary">
                                     Врач принимает

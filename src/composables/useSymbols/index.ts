@@ -5,7 +5,7 @@ import { BookingService } from "../../EastclinicVueApi";
 import type DoctorCardState from "../../state/DoctorCardState";
 import type IScheduleState from "../../interfaces/IScheduleState";
 import type IClinicsState from "../../interfaces/IClinicsState";
-import type IBookingState from "../../interfaces/IBookingState";
+import type BookingState from "../../state/BookingState";
 
 export const BookingServiceSymbol:InjectionKey<BookingService> = Symbol.for('booking-service')
 export const DoctorInfoSymbol:InjectionKey<DoctorInterface> = Symbol.for('DoctorInfo')
@@ -19,7 +19,7 @@ export const servicesSymbol:InjectionKey<Ref<ServiceData[]>> = Symbol.for('servi
 
 export const ScheduleStateSymbol:InjectionKey<IScheduleState> = Symbol.for('schedule-state-of-doctor');
 export const ClinicsStateSymbol:InjectionKey<IClinicsState> = Symbol.for('clinics-state');
-export const BookingStateSymbol:InjectionKey<IBookingState> = Symbol.for('booking-state');
+export const BookingStateSymbol:InjectionKey<BookingState> = Symbol.for('booking-state');
 
 
 

@@ -29,7 +29,7 @@ const servicesNames = computed(() => (bookingService.Cart.selectedServicesList?.
 
 const openBookingForm = () =>{
     YandexMetrika?.reachGoal('service_booking');
-    doctorCardState.setBookingFormBlocks( {showDoctorBlock:true,
+    doctorCardState.bookingState.setBookingFormBlocks( {showDoctorBlock:true,
         showServicesBlock:true,
         showScheduleBlock:true,} );
     doctorCardState.toogleModalServices(false );

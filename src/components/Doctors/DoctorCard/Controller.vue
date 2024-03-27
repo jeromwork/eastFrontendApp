@@ -27,6 +27,7 @@ import Modal from "../../../UI/Modal.vue";
 import type BookingFormViewProps from "../../Booking/imterfaces/BookingFormViewProprs";
 import ServicesSelectListView from "../../../UI/Services/views/ServicesSelectListView.vue";
 import DoctorCardState from "../../../state/DoctorCardState";
+import BookingState from "../../../state/BookingState";
 import BookingSuccessMessageView from '../../Booking/views/BookingSuccessMessageView.vue'
 
 //В этом компоненте обращаемся к сервису за данными по доктору
@@ -49,33 +50,26 @@ const props = defineProps<{    doctor: DoctorInterface }>();
 
 
 const doctorCardState =  new DoctorCardState().withDoctor(props.doctor).withBookingService(new BookingService())
-
+const bookingState = doctorCardState.bookingState;
 
 provide( DoctorCartStateSymbol,doctorCardState )
-provide( ScheduleStateSymbol, doctorCardState )
+provide( ScheduleStateSymbol, doctorCardState.scheduleState )
 provide( DoctorInfoSymbol, doctorCardState.Doctor )
 provide( ClinicsStateSymbol, doctorCardState )
-provide( BookingStateSymbol, doctorCardState )
+provide( BookingStateSymbol, doctorCardState.bookingState )
 provide( BookingServiceSymbol, doctorCardState.BookingService )
 
-
-
-const showBookingSuccessMessage = ref(false)
-console.log(doctorCardState.showBookingSuccessMessage)
 
 </script>
 
 <template>
-    {{doctorCardState.showModalBooking}}
-    <Modal  v-model:visible="doctorCardState.showModalBooking" v-if="doctorCardState.showModalBooking" >
-          <BookingFormWithChoiceView/>
+    <Modal  v-model:visible="bookingState.showModalBooking" v-if="bookingState.showModalBooking" >
+        <BookingFormWithChoiceView v-if="bookingState.showModalBooking"/>
     </Modal>
     <Modal v-model:visible="doctorCardState.showModalServices" v-if="doctorCardState.showModalServices">
         <ServicesSelectListView :services="doctor.service_data"/>
     </Modal>
-    <Modal v-model:visible="doctorCardState.showBookingSuccessMessage.value">
-        <BookingSuccessMessageView/>
-    </Modal>
+
   <slot></slot>
 </template>
 

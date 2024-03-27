@@ -6,9 +6,10 @@ export default interface IBookingState{
 
 
     bookingFormViewProps:Ref<BookingFormViewProps| Object>;
-    showBookingSuccessMessage:Ref<boolean>;
-    showLeaveMessage:Ref<boolean>;
+    showBookingSuccessMessage:boolean;
+    showLeaveMessage:boolean;
     showModalBooking:boolean;
+    showBookingScheduleBlock:boolean;
 
     toggleBookingLeaveMessage( show:boolean ):this;
     toogleBookingSuccessMessage(show:boolean):this;
